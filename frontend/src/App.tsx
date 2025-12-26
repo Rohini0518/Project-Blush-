@@ -1,12 +1,11 @@
-import { Box } from '@mui/material'
-import './App.css'
+import Navbar from './components/Navbar'
 
 function App() {
 
   return (
-    <>
-      <Box sx={{ color: "secondary.main" }}> Material theme </Box>
-    </>
+    <div style={{padding:"2px",margin:"2px"}}>
+      <Navbar/>
+    </div>
   )
 }
 
