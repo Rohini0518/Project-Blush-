@@ -16,27 +16,36 @@ export default function Navbar() {
       sx={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
         padding: "0.5rem",
-        width: "100%",
-        marginTop: "40px",
+        backgroundColor:"#deeedcff"
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        {isMobile && (
-          <IconButton>
-            <SearchIcon />
+        {!isMobile && (
+          <IconButton aria-label="fire">
+            <LocalFireDepartmentIcon sx={{ fontSize: 36 , color: "#ff6b35" }} />
           </IconButton>
         )}
-        <IconButton aria-label="fire">
-          <LocalFireDepartmentIcon sx={{ color: "#ff6b35" }} />
-        </IconButton>
-        {(isMobile || isTablet) && (
-          <IconButton aria-label="menu">
-            <MenuIcon />
+
+        {(isMobile || isTablet) && (<>
+        
+          <IconButton aria-label="menu" sx={{ color: "#000" }}>
+            <MenuIcon sx={{ fontSize: 36 }} />
           </IconButton>
+          <IconButton sx={{ color: "#000" }}>
+          <SearchIcon sx={{ fontSize:32 }} />
+        </IconButton>
+          </>
         )}
       </Box>
+       <Box 
+        sx={{ 
+          display: "flex", 
+          justifyContent: "center", 
+          alignItems: "center",
+          flex: 1, 
+        }}
+      >
       <Box
         component="img"
         src={blushLogo}
@@ -46,21 +55,19 @@ export default function Navbar() {
           width: isMobile ? 80 : 120,
           borderRadius: "50%",
           objectFit: "cover",
-          position: "absolute",
-          left: "50%",
         }}
       />
+      </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        {!isMobile && (
-          <IconButton>
-            <SearchIcon />
-          </IconButton>
-        )}
-        <IconButton aria-label="wishlist">
-          <FavoriteBorderIcon />
+        {!isMobile&&
+        <IconButton sx={{ color: "#000" }}>
+          <SearchIcon sx={{ fontSize:isMobile?32: 36 }} />
+        </IconButton>}
+        <IconButton aria-label="wishlist" sx={{ color: "#000" }}>
+          <FavoriteBorderIcon sx={{ fontSize:isMobile?32: 36 }} />
         </IconButton>
-        <IconButton aria-label="add to cart">
-          <ShoppingCartIcon />
+        <IconButton aria-label="add to cart" sx={{ color: "#000" }}>
+          <ShoppingCartIcon sx={{fontSize:isMobile?32: 36 }} />
         </IconButton>
       </Box>
     </Box>
