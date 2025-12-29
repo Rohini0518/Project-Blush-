@@ -51,8 +51,8 @@ export default function Navbar() {
         src={blushLogo}
         alt="Logo"
         sx={{
-          height: isMobile ? 80 : 120,
-          width: isMobile ? 80 : 120,
+          height: isMobile ? 80 : 100,
+          width: isMobile ? 80 : 100,
           borderRadius: "50%",
           objectFit: "cover",
         }}
