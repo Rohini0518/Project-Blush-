@@ -21,20 +21,33 @@ export default function ImageSlider() {
       <Box
         sx={{
           width: "100%",
-          height: 400,
+          height: 600,
           overflow: "hidden",
         }}
       >
-        <Box
-          component="img"
-          src={images[currentImage]}
-          alt="banner"
-          sx={{
-            width: "100%",
-            height: "100%",
-            transition: "opacity 0.6s ease-in-out",
-          }}
-        ></Box>
+       <Box
+       sx={{
+        display:"flex",
+        height:"100%",
+        transform:`translate3d(-${currentImage*100}%,0,0)`,
+        transition:"transform 600ms ease",
+        willChange:"transform"
+       }}>{images.map((img,index)=>(
+
+       <Box 
+        key={index}
+        component="img"
+        src={img}
+        sx={{
+            width:"100%",
+            height:"100%",
+            flexShrink:0,
+            objectFit:"cover",
+        }}
+        />
+       ))}
+       
+       </Box>
       </Box>
     </>
   );
