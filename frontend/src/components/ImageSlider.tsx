@@ -21,33 +21,32 @@ export default function ImageSlider() {
       <Box
         sx={{
           width: "100%",
-          height: 600,
+          height: { xs: 220, sm: 300, md: 450, lg: 500 },
           overflow: "hidden",
         }}
       >
-       <Box
-       sx={{
-        display:"flex",
-        height:"100%",
-        transform:`translate3d(-${currentImage*100}%,0,0)`,
-        transition:"transform 600ms ease",
-        willChange:"transform"
-       }}>{images.map((img,index)=>(
-
-       <Box 
-        key={index}
-        component="img"
-        src={img}
-        sx={{
-            width:"100%",
-            height:"100%",
-            flexShrink:0,
-            objectFit:"cover",
-        }}
-        />
-       ))}
-       
-       </Box>
+        <Box
+          sx={{
+            display: "flex",
+            height: "100%",
+            transform: `translate3d(-${currentImage * 100}%,0,0)`,
+            transition: "transform 600ms ease",
+            willChange: "transform",
+          }}
+        >
+          {images.map((img, index) => (
+            <Box
+              key={index}
+              component="img"
+              src={img}
+              sx={{
+                width: "100%",
+                height: "100%",
+                flexShrink: 0,
+              }}
+            />
+          ))}
+        </Box>
       </Box>
     </>
   );

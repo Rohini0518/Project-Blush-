@@ -15,7 +15,11 @@ export default function AllLinksNavbar() {
   return (
     <Box
       sx={{
-        display: "flex",
+        display: {
+          xs:"none",
+          sm:"none",
+          md:"flex"
+        },
         justifyContent: "center",
         alignItems: "center",
         gap: 3,
@@ -29,9 +33,9 @@ export default function AllLinksNavbar() {
             component="span"
             sx={{
               color: "#333333",
-              fontSize: "16px",
+              fontSize: {md:"12px",lg:"14px"},
               fontFamily: "Poppins, sans-serif",
-              padding: "20px 15px",
+              padding: "8px",
               display: "inline-block",
               fontWeight: 200,
               "&:hover": {
