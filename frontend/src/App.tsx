@@ -1,6 +1,7 @@
 import AllLinksNavbar from "./components/AllLinksNavbar";
 import ImageSlider from "./components/ImageSlider";
 import Navbar from "./components/Navbar";
+import ShopByCategory from "./components/ShopByCategory";
 import { useTabTitleChange } from "./hooks/useTabTitleChange";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Navbar />
       <AllLinksNavbar />
       <ImageSlider />
+      <ShopByCategory/>
     </div>
   );
 }
