@@ -6,34 +6,39 @@ import categoryPartWear from "../assets/category-semiparty.jpeg";
 import categoryImg from "../assets/category-img.png";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import categoryTop from "../assets/top.png";
+import partWear from "../assets/category-partywear.png";
+import trendyWear from "../assets/partywear.jpg";
+import logo from "../assets/blushlogo.jpg"
 
 const ShopByCategory = () => {
   const categoryImages: { id: number; img: string }[] = [
     { id: 1, img: categorykurtha },
     { id: 2, img: categoryPartWear },
-    { id: 3, img: categoryImg },
-    { id: 4, img: categoryPartWear },
-    { id: 5, img: categorykurtha },
+    { id: 3, img: categoryTop },
+    { id: 4, img: partWear },
+    { id: 5, img: trendyWear },
     { id: 6, img: categoryImg },
-    { id: 7, img: categoryImg },
+    { id: 7, img: logo },
   ];
 
   const [startIndex, setStartIndex] = useState(0);
   const VISIBLE_COUNT = 4;
-  const visibleImages = categoryImages.slice(
-    startIndex,
-    startIndex + VISIBLE_COUNT
+  
+ const visibleImages = Array.from({ length: VISIBLE_COUNT }, (_, i) => {
+  return categoryImages[(startIndex + i) % categoryImages.length];
+});
+
+ const handleNext = () => {
+  setStartIndex((prev) => (prev + 1) % categoryImages.length);
+};
+
+const handlePrev = () => {
+  setStartIndex((prev) =>
+    (prev - 1 + categoryImages.length) % categoryImages.length
   );
-  const handleNext = () => {
-    if (startIndex + VISIBLE_COUNT < categoryImages.length) {
-      setStartIndex(startIndex + 1);
-    }
-  };
-  const handlePrev = () => {
-    if (startIndex > 0) {
-      setStartIndex(startIndex - 1);
-    }
-  };
+};
+
 
   return (
     <>
@@ -55,8 +60,6 @@ const ShopByCategory = () => {
               alignItems: "center",
               justifyContent: "center",
               transition: "opacity 0.3s ease, transform 0.3s ease",
-
-              opacity: startIndex === 0 ? 0.4 : 1,
             }}
           >
             <ArrowBackIosNewIcon sx={{ cursor: "pointer" }} />
@@ -75,8 +78,6 @@ const ShopByCategory = () => {
               justifyContent: "center",
               transition: "opacity 0.3s ease, transform 0.3s ease",
 
-              opacity:
-                startIndex + VISIBLE_COUNT >= categoryImages.length ? 0.4 : 1,
             }}
           >
             <ArrowForwardIosIcon sx={{ cursor: "pointer" }} />
