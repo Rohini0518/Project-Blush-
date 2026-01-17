@@ -1,4 +1,5 @@
 import AllLinksNavbar from "./components/AllLinksNavbar";
+import HomeProductSection from "./components/HomeProductSection";
 import ImageSlider from "./components/ImageSlider";
 import Navbar from "./components/Navbar";
 import ShopByCategory from "./components/ShopByCategory";
@@ -15,6 +16,7 @@ function App() {
       <AllLinksNavbar />
       <ImageSlider />
       <ShopByCategory/>
+      <HomeProductSection/>
     </div>
   );
 }
