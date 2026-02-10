@@ -1,3 +1,4 @@
+import { useState } from "react";
 import AllLinksNavbar from "./components/AllLinksNavbar";
 import HomeProductSection from "./components/HomeProductSection";
 import ImageSlider from "./components/ImageSlider";
@@ -10,13 +11,14 @@ function App() {
     ["Come back 👀", "Miss you 💖", "Cart is waiting 🛒"],
     2000
   );
+  const[search,setSearch]=useState("")
   return (
     <div style={{ padding: "2px", margin: "2px" }}>
-      <Navbar />
+      <Navbar search={search} setSearch={setSearch}/>
       <AllLinksNavbar />
       <ImageSlider />
       <ShopByCategory/>
-      <HomeProductSection/>
+      <HomeProductSection search={search}/>
     </div>
   );
 }

@@ -8,7 +8,11 @@ type product = {
   price: number;
   title: string;
 };
-export default function HomeProductSection() {
+
+type propsType={
+  search:string;
+}
+export default function HomeProductSection({search}:propsType) {
   const [data, setData] = useState<product[]>([]);
 
   useEffect(() => {
@@ -18,8 +22,9 @@ export default function HomeProductSection() {
           "https://fakestoreapiserver.reactbd.org/api/products?page=1&perPage=10",
         );
         const datajson = await response.json();
-        setData(datajson.data);
-        console.log(datajson);
+        const productsData=datajson.data
+        console.log(productsData,"products-data")
+        setData(productsData );
       } catch (error) {
         console.error("Error:", error);
       }
@@ -28,6 +33,8 @@ export default function HomeProductSection() {
     fetchData();
   }, []);
 
+  const filteredSearchProducts=data.filter((p)=>p.title.toLowerCase().includes(search.toLowerCase()))
+ 
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column", mt: 10 }}>
@@ -52,7 +59,7 @@ export default function HomeProductSection() {
             gap: "20px",
           }}
         >
-          {data.map((product) => (
+          {filteredSearchProducts.map((product) => (
             <ProductCard
               key={product.id}
               img={product.image}

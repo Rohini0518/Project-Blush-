@@ -16,13 +16,21 @@ export function useTabTitleChange(
   useEffect(() => {
     const handleVisibilityChange = () => {
       // always clear first (important)
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      // console.log(timeoutRef.current,"timeoutref.current")
+      if (timeoutRef.current) {
+        
+        clearTimeout(timeoutRef.current)};
+      if (intervalRef.current){
+        // console.log("clear interval -first -mount")
+        clearInterval(intervalRef.current)};
 
       if (document.hidden) {
         // wait before starting rotation
         timeoutRef.current = setTimeout(() => {
+            // console.log("set-timeout,delay,2000")
+
           intervalRef.current = setInterval(() => {
+            // console.log("set-interval,1000")
             document.title =
               rotatingTitles[indexRef.current % rotatingTitles.length];
             indexRef.current++;
@@ -32,6 +40,7 @@ export function useTabTitleChange(
         // user returned
         document.title = originalTitleRef.current;
         indexRef.current = 0;
+        // console.log("user returned")
       }
     };
 
@@ -42,8 +51,12 @@ export function useTabTitleChange(
         "visibilitychange",
         handleVisibilityChange
       );
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (timeoutRef.current){      
+          //  console.log("clear timeout")
+       clearTimeout(timeoutRef.current)};
+      if (intervalRef.current) {
+        // console.log("clear timeout")
+        clearInterval(intervalRef.current)};
     };
   }, [rotatingTitles, delay]);
 }

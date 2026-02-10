@@ -1,4 +1,4 @@
-import { Box, IconButton, useMediaQuery, useTheme } from "@mui/material";
+import { Box, IconButton, TextField, useMediaQuery, useTheme } from "@mui/material";
 import blushLogo from "../assets/blushlogo.jpg";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -6,7 +6,11 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import MenuIcon from "@mui/icons-material/Menu";
 
-export default function Navbar() {
+type NavbarProps={
+  search:string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+}
+export default function Navbar({search,setSearch}:NavbarProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -59,17 +63,31 @@ export default function Navbar() {
       />
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        {!isMobile&&
-        <IconButton sx={{ color: "#000" }}>
-          <SearchIcon sx={{ fontSize:isMobile?32: 36 }} />
-        </IconButton>}
-        <IconButton aria-label="wishlist" sx={{ color: "#000" }}>
-          <FavoriteBorderIcon sx={{ fontSize:isMobile?32: 36 }} />
-        </IconButton>
-        <IconButton aria-label="add to cart" sx={{ color: "#000" }}>
-          <ShoppingCartIcon sx={{fontSize:isMobile?32: 36 }} />
-        </IconButton>
-      </Box>
+
+      {!isMobile && (
+      <TextField
+      label="Search"
+      variant="outlined"
+      size="small"
+      sx={{
+        width: "300px",
+        backgroundColor: "#fff",
+        borderRadius: "20px",
+      }}
+      value={search}
+      onChange={(e)=>setSearch(e.target.value)}
+    />
+      )}
+
+  <IconButton sx={{ color: "#000" }}>
+    <FavoriteBorderIcon sx={{ fontSize: isMobile ? 32 : 36 }} />
+  </IconButton>
+
+  <IconButton sx={{ color: "#000" }}>
+    <ShoppingCartIcon sx={{ fontSize: isMobile ? 32 : 36 }} />
+  </IconButton>
+
+</Box>
     </Box>
   );
 }
