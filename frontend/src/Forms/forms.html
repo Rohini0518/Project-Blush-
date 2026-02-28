@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forms</title>
+  </head>
+  <style>
+    div {
+      padding: 10px;
+    }
+  </style>
+
+  <body>
+    <h2>Forms In Html</h2>
+    <form action="submit" method="" onsubmit="handleSubmit(event)">
+      <label for="firstNm">First Name: </label>
+      <input
+        type="text"
+        id="firstNm"
+        name="firstname"
+        placeholder="enter name"
+      />
+      <div>
+        <label for="userage">Age:</label>
+        <input type="number" id="userage" name="age" placeholder="enter age" />
+      </div>
+      <label>Gender:</label>
+      <input type="radio" id="female" name="gender" value="female" />Female
+      <input type="radio" id="male" name="gender" value="male" />Male
+      <div>
+        <label>skills:</label>
+        <input type="checkbox" name="skills" value="React" />React
+        <input type="checkbox" name="skills" value="js" />Js
+        <input type="checkbox" name="skills" value="Nodejs" />NodeJS
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+    <p id="output">Output:</p>
+  </body>
+  <script>
+    const output = document.getElementById("output");
+    const handleSubmit = (e) => {
+          const result = [];
+
+      e.preventDefault();
+      console.log(e.target, "e.target");
+      const formDataa = new FormData(e.target);
+      console.log(formDataa, "frm formdta");
+      for (let [key, value] of formDataa.entries()) {
+        console.log(key, value, "key-value");
+        result.push(`${key}:${value}`);
+      }
+      output.innerHTML = ` Output: ${result.join(", ")}` ;
+    };
+
+    const formm = document.querySelector("form");
+    const formData2 = new FormData(formm);
+    // output.innerHTML(formData2)
+    console.log(formData2, "formdata2");
+    console.log(formData2.getAll("skills"));
+  </script>
+</html>
+
+<!-- http://127.0.0.1:5500/submit?firstname=rho&age=24&gender=on&skills=on&skills=Nodejs -->
+<!-- http://127.0.0.1:5500/submit?firstname=ram&age=24&gender=male&skills=js&skills=Nodejs -->
+<!-- http://127.0.0.1:5500/forms.html?firstname=RAV&age=30&gender=male&skills=React&skills=js&skills=Nodejs -->
+
