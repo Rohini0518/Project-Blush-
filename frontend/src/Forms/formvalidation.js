@@ -1,37 +1,48 @@
+let output = document.getElementById("output");
 
-console.log("script js")
-let output=document.getElementById("output")
- const handleSubmit=(e)=>{
-    e.preventDefault()
-const result=[]
-const formData=new FormData(e.target)
-let fname=formData.get("firstname")
-let age=formData.get("age")
-let gender=formData.get("gender")
-let skills=formData.getAll("skills") 
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const result = [];
+  const formData = new FormData(e.target);
+  let fname = formData.get("firstname");
+  let age = formData.get("age");
+  let gender = formData.get("gender");
+  let skills = formData.getAll("skills");
 
-if(!fname ||fname.trim() ===""){
-    output.innerText="Enter Name"
+  if (!fname || fname.trim() === "") {
+    output.innerText = "Enter Name";
     return;
-}
-if(!age ||age.trim() ===""){
-    output.innerText="Enter Age"
+  }
+  if (!age) {
+    output.innerText = "Enter Age";
     return;
-}
-if(!gender){
-    output.innerText="Enter gender"
+  }
+  if (!gender) {
+    output.innerText = "Enter gender";
     return;
-}
-if(skills.length==0){
-    output.innerText="Enter  skills"
+  }
+  if (skills.length == 0) {
+    output.innerText = "Enter  skills";
     return;
-}
+  }
+  const objform = Object.fromEntries(formData.entries());
+  objform.skills = formData.getAll("skills");
+  console.log(objform, "object form data");
 
-for(let [key,value] of formData.entries()){
-    result.push(`${key}:${value}`)
-}
+  fetch("https://jsonplaceholder.typicode.com/posts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(objform),
+  })
+    .then((res) => res.json())
+    .then((data) => (output.innerText = JSON.stringify(data)))
+    .catch((err) => {
+      console.log("error:", err);
+    });
 
-console.log(result)
-output.innerText=`Output:${result.join(", ")}`
-}
+  console.log(objform, "object form data");
 
+  //   output.innerText = `Output:${result.join(", ")}`;
+};
