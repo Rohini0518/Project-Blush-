@@ -2,7 +2,10 @@ import express from "express";
 import cors from 'cors';
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+
 const app=express();
+dotenv.config();
 
 //cookie parseris a middleware that translates browser cookies into redable javascript objects
 //cors is a middleware that controls who can talk to our api
@@ -24,7 +27,7 @@ app.get("/",(req,res)=>{
 app.listen(5000,()=>{
     console.log("server running on port 5000");
 })
-mongoose.connect(` mongodb+srv://rohinipolina0518_db_user:rY2yNvs8NPeVQ7IO@clusterblush.1axaliw.mongodb.net/`)
+mongoose.connect(process.env.MONGO_URI)
 .then(()=>console.log('momgodb connected'))
 .catch(error=>console.log("error-",error))
 
