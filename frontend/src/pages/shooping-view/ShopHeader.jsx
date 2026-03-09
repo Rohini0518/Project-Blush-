@@ -1,7 +1,10 @@
+import { Outlet } from "react-router-dom"
 
 const ShopingHeader = () => {
   return (
-    <div>ShopingHeader</div>
+    <div>ShopingHeader
+
+    </div>
   )
 }
 

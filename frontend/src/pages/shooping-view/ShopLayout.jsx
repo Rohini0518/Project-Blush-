@@ -1,7 +1,10 @@
+import { Outlet } from "react-router-dom"
 
 const ShopLayout = () => {
   return (
-    <div>ShopLayout</div>
+    <div>ShopLayout
+      <Outlet/>
+    </div>
   )
 }
 

@@ -8,25 +8,64 @@ import AdminDashboard from "./pages/admin-view/AdminDashboard";
 import AdminProducts from "./pages/admin-view/AdminProducts";
 import ShopLayout from "./pages/shooping-view/ShopLayout";
 import Home from "./components/Home";
+import NotFound from "./components/NotFound";
+import ShopingDashboard from "./pages/shooping-view/ShopDashboard";
+import ShopCheckout from "./pages/shooping-view/ShopCheckout";
+import ShopAccount from "./pages/shooping-view/ShopAccount";
+import ShopingHeader from "./pages/shooping-view/ShopHeader";
+import CheckAuth from "./components/common/CheckAuth";
+import UnAuthPage from "./pages/unAuthPage/UnAuthPage";
 
 function App() {
   useTabTitleChange(
     ["Come back 👀", "Miss you 💖", "Cart is waiting 🛒"],
     2000,
   );
+
+  const isAuthenticated = false;
+  const user = null;
+
   return (
     <div style={{ padding: "2px", margin: "2px" }}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Layout />}>
+        <Route
+          path="/auth"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <Layout />
+            </CheckAuth>
+          }
+        >
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
+          }
+        >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
         </Route>
-        <Route path="/shop" element={<ShopLayout />}></Route>
+        <Route
+          path="/shop"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <ShopLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="dashboard" element={<ShopingDashboard />} />
+          <Route path="checkout" element={<ShopCheckout />} />
+          <Route path="account" element={<ShopAccount />} />
+          <Route path="header" element={<ShopingHeader />} />
+        </Route>
+        <Route path="unauth-page" element={<UnAuthPage/>}/>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </div>
   );
