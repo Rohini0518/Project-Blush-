@@ -1,5 +1,55 @@
 import { Box, Button, MenuItem, TextField } from "@mui/material";
 
+const styledTextField = {
+  "& .MuiInputLabel-root": {
+    position: "static",
+    transform: "none",
+    fontSize: "14px",
+    fontWeight: 600,
+    color: "#1a1a2e",
+    mb: "6px",
+    fontFamily: "'DM Sans', sans-serif",
+  },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: "#1a1a2e",
+  },
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "10px",
+    backgroundColor: "#f0f4ff",
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: "15px",
+    "& fieldset": {
+      border: "1.5px solid transparent",
+    },
+    "&:hover fieldset": {
+      border: "1.5px solid #1a1a2e",
+    },
+    "&.Mui-focused fieldset": {
+      border: "1.5px solid #1a1a2e",
+    },
+  },
+  "& .MuiOutlinedInput-input": {
+    padding: "14px 16px",
+  },
+};
+
+const emptyTextField = {
+  ...styledTextField,
+  "& .MuiOutlinedInput-root": {
+    ...styledTextField["& .MuiOutlinedInput-root"],
+    backgroundColor: "#ffffff",
+    "& fieldset": {
+      border: "1.5px solid #e2e8f0",
+    },
+    "&:hover fieldset": {
+      border: "1.5px solid #1a1a2e",
+    },
+    "&.Mui-focused fieldset": {
+      border: "1.5px solid #1a1a2e",
+    },
+  },
+};
+
 const CommonForm = ({
   formControls,
   formData,
@@ -9,6 +59,8 @@ const CommonForm = ({
 }) => {
   function renderInputsByComponentType(controlItem) {
     const value = formData[controlItem.name] || "";
+    const sx = value ? styledTextField : emptyTextField;
+
     switch (controlItem.componentType) {
       case "input":
         return (
@@ -16,16 +68,15 @@ const CommonForm = ({
             fullWidth
             label={controlItem.label}
             name={controlItem.name}
-            type={controlItem.type}
+            type={controlItem.type || "text"}
             placeholder={controlItem.placeholder}
             id={controlItem.name}
-            onChange={(event) =>
-              setFormData({
-                ...formData,
-                [controlItem.name]: event.target.value,
-              })
-            }
             value={value}
+            onChange={(e) =>
+              setFormData({ ...formData, [controlItem.name]: e.target.value })
+            }
+            InputLabelProps={{ shrink: true }}
+            sx={sx}
           />
         );
 
@@ -33,16 +84,19 @@ const CommonForm = ({
         return (
           <TextField
             select
-            fullWidth
             label={controlItem.label}
             name={controlItem.name}
-            placeholder={controlItem.placeholder}
             id={controlItem.name}
             value={value}
-            onChange={(value) =>
-              setFormData({ ...formData, [controlItem.name]: value })
+            onChange={(e) =>
+              setFormData({ ...formData, [controlItem.name]: e.target.value })
             }
+            InputLabelProps={{ shrink: true }}
+            sx={sx}
           >
+            <MenuItem value="" disabled>
+              {controlItem.placeholder || `Select ${controlItem.label}`}
+            </MenuItem>
             {controlItem.options?.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
@@ -50,54 +104,87 @@ const CommonForm = ({
             ))}
           </TextField>
         );
+
       case "textarea":
         return (
           <TextField
             multiline
             rows={4}
-            fullWidth
             label={controlItem.label}
             name={controlItem.name}
             placeholder={controlItem.placeholder}
             id={controlItem.name}
             value={value}
-            onChange={(event) =>
-              setFormData({
-                ...formData,
-                [controlItem.name]: event.target.value,
-              })
+            onChange={(e) =>
+              setFormData({ ...formData, [controlItem.name]: e.target.value })
             }
+            InputLabelProps={{ shrink: true }}
+            sx={{
+              ...sx,
+              "& .MuiOutlinedInput-input": {
+                padding: "12px 16px",
+              },
+            }}
           />
         );
+
       default:
-        <TextField
-          fullWidth
-          label={controlItem.label}
-          name={controlItem.name}
-          type={controlItem.type || "text"}
-          placeholder={controlItem.placeholder}
-          id={controlItem.name}
-          value={value}
-          onChange={(event) =>
-            setFormData({
-              ...formData,
-              [controlItem.name]: event.target.value,
-            })
-          }
-        />;
+        return (
+          <TextField
+            
+            label={controlItem.label}
+            name={controlItem.name}
+            type={controlItem.type || "text"}
+            placeholder={controlItem.placeholder}
+            id={controlItem.name}
+            value={value}
+            onChange={(e) =>
+              setFormData({ ...formData, [controlItem.name]: e.target.value })
+            }
+            InputLabelProps={{ shrink: true }}
+            sx={sx}
+          />
+        );
     }
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <Box display="flex" flexDirection="column" gap={2}>
+    <form onSubmit={onSubmit} style={{ width: "100%" }}>
+      <Box display="flex" flexDirection="column" gap="18px">
         {formControls?.map((controlItem) => (
           <div key={controlItem.name}>
             {renderInputsByComponentType(controlItem)}
           </div>
         ))}
       </Box>
-      <Button type="submit">{buttonText || "Submit"}</Button>
+
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{
+          mt: "24px",
+          py: "14px",
+          fontSize: "15px",
+          fontWeight: 700,
+          color:'#fff',
+          fontFamily: "'DM Sans', sans-serif",
+          backgroundColor: "#1a1a2e",
+          borderRadius: "10px",
+          textTransform: "none",
+          letterSpacing: "0.3px",
+          boxShadow: "none",
+          "&:hover": {
+            backgroundColor: "#2d2d50",
+            boxShadow: "none",
+          },
+          "&:active": {
+            transform: "scale(0.99)",
+          },
+        }}
+      >
+        {buttonText || "Submit"}
+      </Button>
     </form>
   );
 };

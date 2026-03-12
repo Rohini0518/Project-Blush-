@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { useTabTitleChange } from "./hooks/useTabTitleChange";
 import Layout from "./components/auth/Layout";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
+import Login from "./components/auth/AuthLogin";
+import Register from "./components/auth/AuthRegister";
 import AdminLayout from "./pages/admin-view/AdminLayout";
 import AdminDashboard from "./pages/admin-view/AdminDashboard";
 import AdminProducts from "./pages/admin-view/AdminProducts";
