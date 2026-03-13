@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import authRouter from "./routes/auth/authRoute.js";
 
+
 const app = express();
 dotenv.config();
 
@@ -12,7 +13,7 @@ dotenv.config();
 //cors is a middleware that controls who can talk to our api
 app.use(
   cors({
-    origin: "http://localhost:5173/",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "content-Type",
@@ -37,7 +38,9 @@ app.listen(5000, () => {
 });
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("momgodb connected"))
-  .catch((error) => console.log("error-", error));
+  .then(() =>
+ console.log("mongodb connected"))
+  .catch((error) => 
+    console.log("error-", error));
 
 //  mongodb+srv://rohinipolina0518_db_user:<db_password>@clusterblush.1axaliw.mongodb.net/

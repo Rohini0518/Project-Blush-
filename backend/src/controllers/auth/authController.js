@@ -1,9 +1,9 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User from "../../models/UserModel";
+import User from "../../models/UserModel.js";
 
 //register
-const registerUser = async (req, res) => {
+ const registerUser = async (req, res) => {
   const { userName, email, password } = req.body;
 
   try {
@@ -29,7 +29,7 @@ const registerUser = async (req, res) => {
 };
 
 //login
-const login = async (req, res) => {
+export const login = async (req, res) => {
   const { userName, email, password } = req.body;
   try {
   } catch (error) {
