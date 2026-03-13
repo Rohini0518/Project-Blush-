@@ -1,8 +1,10 @@
 import { Box, Paper, Typography } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CommonForm from "../common/CommonForm";
 import { registerFormControls } from "../../config/formConfig";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../store/authSlice";
 
 const initialState = {
   userName: "",
@@ -12,9 +14,14 @@ const initialState = {
 
 const AuthRegister = () => {
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (event) => {
+    event.preventDefault();
+    dispatch(registerUser(formData)).then((data) =>{ 
+      console.log(data)
+    if(data?.payload?.success)  navigate("/auth/login")});
     console.log("handlesubmit", formData);
   };
 
@@ -36,8 +43,7 @@ const AuthRegister = () => {
           maxWidth: "440px",
           borderRadius: "20px",
           p: "40px 36px 36px",
-          boxShadow:
-            "0 4px 6px rgba(0,0,0,0.04), 0 10px 40px rgba(0,0,0,0.08)",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.04), 0 10px 40px rgba(0,0,0,0.08)",
         }}
       >
         {/* Header */}
