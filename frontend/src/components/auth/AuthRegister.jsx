@@ -21,7 +21,14 @@ const AuthRegister = () => {
     event.preventDefault();
     dispatch(registerUser(formData)).then((data) =>{ 
       console.log(data)
-    if(data?.payload?.success)  navigate("/auth/login")});
+    if(data?.payload?.success)  navigate("/auth/login");
+    else {
+      console.log("email already Exists")
+      alert("email already exists")
+    }
+    });
+
+
     console.log("handlesubmit", formData);
   };
 
