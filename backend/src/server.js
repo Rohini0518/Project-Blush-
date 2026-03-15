@@ -15,17 +15,18 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     methods: ["GET", "POST", "DELETE", "PUT"],
-    allowedHeaders: [
-      "content-Type",
-      "Authorization",
-      "Cache-Control",
-      "Expires",
-      "Pragma",
-    ],
+    // allowedHeaders: [
+    //   "content-Type",
+    //   "Authorization",
+    //   "Cache-Control",
+    //   "Expires",
+    //   "Pragma",
+    // ],
     credentials: true,
   }),
 );
 app.use(express.json());
+//incoming data parser,This middleware runs before your controller.
 app.use(cookieParser());
 app.use("/api/auth", authRouter);
 

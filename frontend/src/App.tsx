@@ -15,6 +15,7 @@ import ShopAccount from "./pages/shooping-view/ShopAccount";
 import ShopingHeader from "./pages/shooping-view/ShopHeader";
 import CheckAuth from "./components/common/CheckAuth";
 import UnAuthPage from "./pages/unAuthPage/UnAuthPage";
+import { useSelector } from "react-redux";
 
 function App() {
   useTabTitleChange(
@@ -22,8 +23,8 @@ function App() {
     2000,
   );
 
-  const isAuthenticated = false;
-  const user = null;
+  
+const{isAuthenticated,user}=useSelector(state=>(state.auth))
 
   return (
     <div style={{ padding: "2px", margin: "2px" }}>

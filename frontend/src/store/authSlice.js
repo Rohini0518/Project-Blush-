@@ -48,9 +48,10 @@ const authSlice=createSlice({
         }).addCase(loginUser.pending,(state)=>{
             state.isLoading =true
         }).addCase(loginUser.fulfilled,(state,action)=>{
+            console.log(action,"action.payload authcheck")
             state.isLoading=false;
-            state.user=action.payload;
-            state.isAuthenticated=true;
+            state.user=action.payload.success ?  action.payload.user:null;
+            state.isAuthenticated=action.payload.success ? true :false;
         }).addCase(loginUser.rejected,(state)=>{
             state.isLoading=false;
             state.user=null;

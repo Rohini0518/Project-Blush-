@@ -18,14 +18,21 @@ const AuthLogin = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    try{
     console.log("handlesubmit-formdata", formData);
   const result=  await dispatch(loginUser(formData)).unwrap()
 
   console.log(result?.success,"resultsucces")
-  try{
+  console.log(result,"just complete result")
+  
   if(result?.success){
       navigate("/");
-  }  }
+      console.log("success login")
+  } 
+  else{
+    console.log("auth failed")
+  }
+ }
   catch(error){
     alert("Login Failed")
     console.log("login Failed")

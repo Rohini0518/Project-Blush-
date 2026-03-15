@@ -32,11 +32,11 @@ const registerUser = async (req, res) => {
 };
 
 //login
- const loginUser = async (req, res) => {
+const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
     const checkUser = await User.findOne({ email });
-    console.log(checkUser);
+    console.log(checkUser, "checkuser findone-email");
     if (!checkUser)
       return res.json({
         success: false,
@@ -64,19 +64,15 @@ const registerUser = async (req, res) => {
       { expiresIn: "15m" },
     );
 
-    res.cookie('token',token,{httpOnly:true,secure:false}).json({
-      success:true,
-      message:'logged in successfull',
-      user:{
-        email:checkUser.email,
-        role:checkUser.role,
-        id:checkUser._id
-      }
-    })
-
-
-
-
+    res.cookie("token", token, { httpOnly: true, secure: false }).json({
+      success: true,
+      message: "logged in successfull",
+      user: {
+        email: checkUser.email,
+        role: checkUser.role,
+        id: checkUser._id,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -88,6 +84,27 @@ const registerUser = async (req, res) => {
 
 //logout
 
+const logoutUser = async (req, res) => {
+  res.clearCookie("token").json({
+    success: true,
+    message: "logged out successfully",
+  });
+};
 //auth-middleware
 
-export { registerUser,loginUser };
+const authMiddleware = async (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token)
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized User",
+    });
+    try{
+
+    }
+    catch(error){
+      
+    }
+};
+
+export { registerUser, loginUser, logoutUser };
