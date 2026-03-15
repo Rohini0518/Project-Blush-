@@ -32,7 +32,7 @@ const registerUser = async (req, res) => {
 };
 
 //login
-export const login = async (req, res) => {
+ const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
     const checkUser = await User.findOne({ email });
@@ -54,9 +54,28 @@ export const login = async (req, res) => {
       });
     }
 
-const token=jwt.sign({
-  id:checkUser._id,role:checkUser.role,email:checkUser.email
-},'CLIENT_SECRET_KEY',{expiresIn:'15m'})
+    const token = jwt.sign(
+      {
+        id: checkUser._id,
+        role: checkUser.role,
+        email: checkUser.email,
+      },
+      "CLIENT_SECRET_KEY",
+      { expiresIn: "15m" },
+    );
+
+    res.cookie('token',token,{httpOnly:true,secure:false}).json({
+      success:true,
+      message:'logged in successfull',
+      user:{
+        email:checkUser.email,
+        role:checkUser.role,
+        id:checkUser._id
+      }
+    })
+
+
+
 
   } catch (error) {
     console.log(error);
@@ -71,4 +90,4 @@ const token=jwt.sign({
 
 //auth-middleware
 
-export { registerUser };
+export { registerUser,loginUser };

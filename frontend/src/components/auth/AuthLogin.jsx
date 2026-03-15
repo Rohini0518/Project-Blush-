@@ -1,21 +1,35 @@
 import { Box, Paper, Typography } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CommonForm from "../common/CommonForm";
 import { loginFormControls } from "../../config/formConfig";
+import { loginUser } from "../../store/authSlice";
+import { useDispatch } from "react-redux";
 
 const initialState = {
-  userName: "",
   email: "",
   password: "",
 };
 
-const AuthRegister = () => {
+const AuthLogin = () => {
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+ const navigate=useNavigate()
 
-  const onSubmit = () => {
-    // e.preventDefault();
-    console.log("handlesubmit", formData);
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log("handlesubmit-formdata", formData);
+  const result=  await dispatch(loginUser(formData)).unwrap()
+
+  console.log(result?.success,"resultsucces")
+  try{
+  if(result?.success){
+      navigate("/");
+  }  }
+  catch(error){
+    alert("Login Failed")
+    console.log("login Failed")
+  }
   };
 
   return (
@@ -36,8 +50,7 @@ const AuthRegister = () => {
           maxWidth: "440px",
           borderRadius: "20px",
           p: "40px 36px 36px",
-          boxShadow:
-            "0 4px 6px rgba(0,0,0,0.04), 0 10px 40px rgba(0,0,0,0.08)",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.04), 0 10px 40px rgba(0,0,0,0.08)",
         }}
       >
         <Box textAlign="center" mb={3.5}>
@@ -80,7 +93,7 @@ const AuthRegister = () => {
         {/* Form */}
         <CommonForm
           formControls={loginFormControls}
-          buttonText="Sign Up"
+          buttonText="Log In"
           formData={formData}
           setFormData={setFormData}
           onSubmit={onSubmit}
@@ -90,4 +103,4 @@ const AuthRegister = () => {
   );
 };
 
-export default AuthRegister;
+export default AuthLogin;
