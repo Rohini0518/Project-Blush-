@@ -99,12 +99,16 @@ const authMiddleware = async (req, res, next) => {
       success: false,
       message: "Unauthorized User",
     });
-    try{
-
-    }
-    catch(error){
-      
-    }
+  try {
+    const decoded = jwt.verify(token, "CLIENT_SECRET_KEY");
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: "Unauthorized User",
+    });
+  }
 };
 
-export { registerUser, loginUser, logoutUser };
+export { registerUser, loginUser, logoutUser, authMiddleware };

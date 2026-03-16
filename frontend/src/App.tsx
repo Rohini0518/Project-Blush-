@@ -15,16 +15,26 @@ import ShopAccount from "./pages/shooping-view/ShopAccount";
 import ShopingHeader from "./pages/shooping-view/ShopHeader";
 import CheckAuth from "./components/common/CheckAuth";
 import UnAuthPage from "./pages/unAuthPage/UnAuthPage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "./store/authSlice";
+import { useEffect } from "react";
 
 function App() {
+  
   useTabTitleChange(
     ["Come back 👀", "Miss you 💖", "Cart is waiting 🛒"],
     2000,
   );
 
   
-const{isAuthenticated,user}=useSelector(state=>(state.auth))
+const{isAuthenticated,user, isLoading}=useSelector(state=>(state.auth))
+const dispatch=useDispatch();
+
+useEffect(()=>{
+  dispatch(checkAuth())
+},[dispatch])
+
+if(isLoading) return <div>Loading....</div>
 
   return (
     <div style={{ padding: "2px", margin: "2px" }}>
