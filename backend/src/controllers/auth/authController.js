@@ -4,6 +4,7 @@ import User from "../../models/UserModel.js";
 
 //register
 const registerUser = async (req, res) => {
+  
   const { userName, email, password } = req.body;
 
   try {
@@ -25,7 +26,7 @@ const registerUser = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      succes: false,
+      success: false,
       message: "Something went wrong",
     });
   }

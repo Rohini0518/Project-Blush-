@@ -17,20 +17,24 @@ const AuthRegister = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
-    dispatch(registerUser(formData)).then((data) => {
-      console.log(data);
-      if (data?.payload?.success) {
-        console.log("registration done");
-        navigate("/auth/login");
-      } else {
-        console.log("email already Exists");
-        // alert("email already exists")
-      }
-    });
+    try {
+  const data = await dispatch(registerUser(formData)).unwrap();
 
-    console.log("handlesubmit", formData);
+  console.log(data);
+
+  if (data?.success) {
+    console.log("registration done");
+    navigate("/auth/login");
+  } else {
+    console.log("Not registered,Something went wrong");
+  }
+
+} catch (error) {
+  console.log(error, "server error");
+}
+
   };
 
   return (

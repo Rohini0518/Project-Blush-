@@ -16,7 +16,7 @@ app.use(
     origin: "http://localhost:5173",
     methods: ["GET", "POST", "DELETE", "PUT"],
     // allowedHeaders: [
-    //   "content-Type",
+    //   "Content-Type",
     //   "Authorization",
     //   "Cache-Control",
     //   "Expires",
@@ -25,6 +25,7 @@ app.use(
     credentials: true,
   }),
 );
+
 app.use(express.json());
 //incoming data parser,This middleware runs before your controller.
 app.use(cookieParser());
