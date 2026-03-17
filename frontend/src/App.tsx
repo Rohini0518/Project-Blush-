@@ -18,6 +18,7 @@ import UnAuthPage from "./pages/unAuthPage/UnAuthPage";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./store/authSlice";
 import { useEffect } from "react";
+import AdminOrders from "./pages/admin-view/AdminOrders";
 
 function App() {
   
@@ -61,6 +62,8 @@ if(isLoading) return <div>Loading....</div>
         >
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
+          <Route path="orders" element={<AdminOrders/>} />
+
         </Route>
         <Route
           path="/shop"

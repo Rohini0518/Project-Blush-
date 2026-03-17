@@ -12,7 +12,6 @@ const registerUser = async (req, res) => {
     if (checkUser)
       return res.json({ success: false, message: "Email already exists" });
     const hashPassword = await bcrypt.hash(password, 12);
-
     const newUser = new User({
       userName,
       email,
@@ -62,7 +61,7 @@ const loginUser = async (req, res) => {
         email: checkUser.email,
       },
       "CLIENT_SECRET_KEY",
-      { expiresIn: "15m" },
+      { expiresIn: "45m" },
     );
 
     res.cookie("token", token, { httpOnly: true, secure: false }).json({

@@ -14,29 +14,27 @@ const initialState = {
 const AuthLogin = () => {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
- const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    try{
-    console.log("handlesubmit-formdata", formData);
-  const result=  await dispatch(loginUser(formData)).unwrap()
+    try {
+      console.log("entered-formdata", formData);
+      const result = await dispatch(loginUser(formData)).unwrap();
 
-  console.log(result?.success,"resultsucces")
-  console.log(result,"just complete result")
-  
-  if(result?.success){
-      navigate("/");
-      console.log("success login")
-  } 
-  else{
-    console.log("auth failed")
-  }
- }
-  catch(error){
-    alert("Login Failed")
-    console.log("login Failed")
-  }
+      console.log(result?.success, "resultsucces");
+      console.log(result, "just complete result");
+
+      if (result?.success) {
+        navigate("/");
+        console.log("success login");
+      } else {
+        console.log("auth failed");
+      }
+    } catch (error) {
+      alert("Login Failed");
+      console.log("login Failed-error",error);
+    }
   };
 
   return (
@@ -97,7 +95,6 @@ const AuthLogin = () => {
           </Typography>
         </Box>
 
-        {/* Form */}
         <CommonForm
           formControls={loginFormControls}
           buttonText="Log In"
