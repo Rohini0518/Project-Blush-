@@ -6,15 +6,15 @@ import { Box } from "@mui/material";
 
 const AdminLayout = () => {
     const [open, setOpen] = useState(false);
-    const handleToggle = () => {
+    const handleSideBarToggle = () => {
     setOpen((prev) => !prev);
   };
   return (
     <Box>
-      <AdminHeader onToggle={handleToggle} />
+      <AdminHeader onSideBarToggle={handleSideBarToggle} />
 
       <Box sx={{ display: "flex" }}>
-        <AdminSideBar open={open} />
+        <AdminSideBar open={open} onSideBarToggle={handleSideBarToggle}  setOpen={setOpen}/>
         <Box sx={{ flexGrow: 1, p: 2 }}>
           <Outlet />
         </Box>

@@ -32,7 +32,7 @@ export const adminSideBarMenuItems = [
   },
 ];
 
-const AdminSideMenuItems = () => {
+const AdminSideMenuItems = ({setOpen}) => {
   const navigate = useNavigate();
 
   return (
@@ -55,7 +55,9 @@ const AdminSideMenuItems = () => {
             }}
           >
             <ListItemButton
-              onClick={() => navigate(menuItem.path)}
+              onClick={() => {navigate(menuItem.path)
+                setOpen(false)
+              }}
               sx={{
                 borderRadius: "10px",
                 "&:hover": {

@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { logoutUser } from "../../store/authSlice";
 import { useNavigate } from "react-router-dom";
 
-const AdminHeader = ({ onToggle }) => {
+const AdminHeader = ({ onSideBarToggle }) => {
   const dispatch = useDispatch();
   const navigate=useNavigate()
   const handleLogout = async () => {
@@ -60,7 +60,7 @@ const AdminHeader = ({ onToggle }) => {
                 borderRadius: 2,
                 "&:hover": { background: "#a5e69e" },
               }}
-              onClick={onToggle}
+              onClick={onSideBarToggle}
             >
               <MenuIcon />
             </IconButton>
