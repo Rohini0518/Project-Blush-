@@ -75,40 +75,55 @@ const CommonForm = ({
             onChange={(e) =>
               setFormData({ ...formData, [controlItem.name]: e.target.value })
             }
-            InputLabelProps={{ shrink: true }}
             sx={sx}
           />
         );
-
-      case "select":
-        return (
-          <TextField
-            select
-            label={controlItem.label}
-            name={controlItem.name}
-            id={controlItem.name}
-            value={value}
-            onChange={(e) =>
-              setFormData({ ...formData, [controlItem.name]: e.target.value })
+case "select":
+  return (
+    <TextField
+      select
+      fullWidth
+      label={controlItem.label}
+      name={controlItem.name}
+      value={value}
+      onChange={(e) =>
+        setFormData({ ...formData, [controlItem.name]: e.target.value })
+      }
+      slotProps={{
+        select: {
+          displayEmpty: true,
+          renderValue: (selected) => {
+            if (!selected) {
+              return (
+                <span style={{ color: "#9e9e9e" }}>
+                  {controlItem.placeholder || `Select ${controlItem.label}`}
+                </span>
+              );
             }
-            InputLabelProps={{ shrink: true }}
-            sx={sx}
-          >
-            <MenuItem value="" disabled>
-              {controlItem.placeholder || `Select ${controlItem.label}`}
-            </MenuItem>
-            {controlItem.options?.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        );
+
+            const selectedOption = controlItem.options.find(
+              (opt) => opt.id === selected
+            );
+
+            return selectedOption?.label || selected;
+          },
+        },
+      }}
+      sx={sx}
+    >
+      {controlItem.options?.map((option) => (
+        <MenuItem key={option.id} value={option.id}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
+  );
 
       case "textarea":
         return (
           <TextField
             multiline
+            fullWidth
             rows={4}
             label={controlItem.label}
             name={controlItem.name}
@@ -118,7 +133,6 @@ const CommonForm = ({
             onChange={(e) =>
               setFormData({ ...formData, [controlItem.name]: e.target.value })
             }
-            InputLabelProps={{ shrink: true }}
             sx={{
               ...sx,
               "& .MuiOutlinedInput-input": {
@@ -131,7 +145,6 @@ const CommonForm = ({
       default:
         return (
           <TextField
-            
             label={controlItem.label}
             name={controlItem.name}
             type={controlItem.type || "text"}
@@ -141,7 +154,6 @@ const CommonForm = ({
             onChange={(e) =>
               setFormData({ ...formData, [controlItem.name]: e.target.value })
             }
-            InputLabelProps={{ shrink: true }}
             sx={sx}
           />
         );

@@ -3,11 +3,13 @@ import { Box, Button, Drawer, Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CommonForm from "../../components/common/CommonForm";
 import { addAdminProductFormElements } from "../../config/formConfig";
+import AdminProductImageUpload from "./adminProductImageUpload";
 
 const initialFormData = {
   image: null,
   title: "",
   description: "",
+  category:"",
   brand: "",
   price: "",
   salePrice: "",
@@ -19,6 +21,9 @@ const AdminProducts = () => {
   const [openCreatePrdDialog, setOpenCreatePrdDialog] = useState(false);
 
   const [formData, setFormData] = useState(initialFormData);
+
+  const [imageFile,setImageFile]=useState("");
+  const [uploadedImage,setUploadedImage]=useState("")
 
   const handleSubmit=()=>{
     console.log("submitted data is")
@@ -36,7 +41,7 @@ const AdminProducts = () => {
       >
         <Box
           sx={{
-            width: 350,
+            width: 450,
             p: 2,
             overflow: "auto",
           }}
@@ -55,16 +60,14 @@ const AdminProducts = () => {
               <CloseIcon />
             </IconButton>
           </Box>
-
-          <Typography variant="body2">
+<AdminProductImageUpload imageFile={imageFile} setImageFile={setImageFile} uploadedImage={uploadedImage} setUploadedImage={setUploadedImage} />
             <CommonForm
               formData={formData}
               setFormData={setFormData}
               formControls={addAdminProductFormElements}
-              buttonText="add"
+              buttonText="Add"
              onSubmit={handleSubmit}
             />
-          </Typography>
         </Box>
       </Drawer>
     </>
