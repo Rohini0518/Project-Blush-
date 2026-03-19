@@ -4,7 +4,7 @@ import multer from "multer";
 cloudinary.config({
   cloud_name: "dow6qprq8",
   api_key: "976946189218995",
-  api_secret: "api_secret",
+  api_secret: process.env.API_CLOUDINARY,
 });
 
 const storage = new multer.memoryStorage();
@@ -22,6 +22,6 @@ async function handleImageUploadUtil(file) {
   return uploadResult;
 }
 
-const upload = multer({ storage });
+const cloudinaryUpload = multer({ storage });
 
-export { upload, handleImageUploadUtil };
+export { cloudinaryUpload, handleImageUploadUtil };

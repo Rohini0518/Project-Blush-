@@ -50,7 +50,7 @@ const AdminProducts = () => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "cen ter",
               mb: 2,
             }}
           >

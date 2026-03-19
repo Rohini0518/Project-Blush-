@@ -1,13 +1,14 @@
 import { Box, Typography, Button, IconButton } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import CloseIcon from "@mui/icons-material/Close";
+import { axiosInstance } from "../../api/axiosInstance";
 
 const AdminProductImageUpload = (props) => {
   const { imageFile, setImageFile, uploadedImage, setUploadedImage } = props;
   const inputref = useRef(null);
-  
+
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) setImageFile(file);
@@ -33,12 +34,31 @@ const AdminProductImageUpload = (props) => {
     }
   };
 
+  const uploadImageToCloudinary = async () => {
+    const data = new FormData();
+    data.append("img-file", imageFile);
+    const response = await axiosInstance.post(
+      "/api/admin/products/upload-image",
+      data,
+    );
+    console.log(response.data, "imageupload response-data");
+    if (response) setUploadedImage(response.data);
+  };
+
+  useEffect(() => {
+    if (imageFile !== null) uploadImageToCloudinary();
+  }, []);
+
   return (
     <Box display="flex" flexDirection="column" gap={1.5} sx={{ mb: "20px" }}>
       <Typography variant="subtitle2" fontWeight={700}>
         Upload Image
       </Typography>
-      <Box onDragOver={handleDragOver} onDrop={handleDrop} sx={{minHeight: "100px"}}>
+      <Box
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        sx={{ minHeight: "100px" }}
+      >
         <input
           id="image-upload"
           type="file"

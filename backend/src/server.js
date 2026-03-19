@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import authRouter from "./routes/auth/authRoute.js";
-
+import adminproductsrouter from './routes/admin/admin-products-routes.js'
 
 const app = express();
 dotenv.config();
@@ -32,7 +32,7 @@ app.use(express.json());
 //incoming data parser,This middleware runs before your controller.
 app.use(cookieParser());
 app.use("/api/auth", authRouter);
-
+app.use("/api/admin/products",adminproductsrouter)
 app.get("/", (req, res) => {
   res.send("Blush backedn running 🚀🚀");
 });

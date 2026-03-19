@@ -53,7 +53,6 @@ export default function HomeProductSection({ search }: propsType) {
           minHeight: "100vh",
         }}
       >
-        {/* Header */}
         <Box
           sx={{
             display: "flex",
@@ -91,7 +90,6 @@ export default function HomeProductSection({ search }: propsType) {
             sectionSubtitle
           </Typography>
 
-          {/* Decorative divider */}
           <Box
             sx={{
               display: "flex",
@@ -108,7 +106,6 @@ export default function HomeProductSection({ search }: propsType) {
           </Box>
         </Box>
 
-        {/* Error */}
         {errorMsz && (
           <Typography
             sx={{
@@ -126,7 +123,6 @@ export default function HomeProductSection({ search }: propsType) {
           </Typography>
         )}
 
-        {/* Loading */}
         {!filteredSearchProducts.length && !errorMsz && data.length === 0 && (
           <Box
             sx={{
@@ -145,7 +141,6 @@ export default function HomeProductSection({ search }: propsType) {
           </Box>
         )}
 
-        {/* Products Grid */}
         <Box
           sx={{
             width: "100%",
@@ -171,7 +166,6 @@ export default function HomeProductSection({ search }: propsType) {
           ))}
         </Box>
 
-        {/* No results */}
         {filteredSearchProducts.length === 0 && data.length > 0 && (
           <Box
             sx={{
