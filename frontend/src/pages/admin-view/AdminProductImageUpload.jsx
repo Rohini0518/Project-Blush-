@@ -12,6 +12,7 @@ const AdminProductImageUpload = (props) => {
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) setImageFile(file);
+    else alert("no file uploaded")
     console.log(file, "uploaded file");
   };
 
@@ -35,19 +36,30 @@ const AdminProductImageUpload = (props) => {
   };
 
   const uploadImageToCloudinary = async () => {
+        console.log(axiosInstance,"axios Instance")
+
+    try{
     const data = new FormData();
     data.append("img-file", imageFile);
+    console.log(axiosInstance,"axios Instance")
     const response = await axiosInstance.post(
       "/api/admin/products/upload-image",
       data,
     );
     console.log(response.data, "imageupload response-data");
     if (response) setUploadedImage(response.data);
-  };
+  }
+  catch(error){
+console.log(error,error.message,"uploadimage error")
+  }
+}
 
   useEffect(() => {
-    if (imageFile !== null) uploadImageToCloudinary();
-  }, []);
+    console.log(import.meta.env.VITE_API_BASE_URL,"baseurl")
+    console.log("useeffect, uploadimagetocloudinary")
+    console.log("imageFIle-",imageFile)
+    if (imageFile) uploadImageToCloudinary();
+  }, [imageFile]);
 
   return (
     <Box display="flex" flexDirection="column" gap={1.5} sx={{ mb: "20px" }}>
@@ -108,7 +120,6 @@ const AdminProductImageUpload = (props) => {
               </Box>
             ) : (
               <>
-                <label htmlFor="image-upload" style={{ cursor: "pointer" }}>
                   <Box
                     display="flex"
                     flexDirection="column"
@@ -119,7 +130,6 @@ const AdminProductImageUpload = (props) => {
                       Drag and drop or click to upload files
                     </Typography>
                   </Box>
-                </label>
               </>
             )}
           </Box>

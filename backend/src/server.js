@@ -1,13 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
 import authRouter from "./routes/auth/authRoute.js";
 import adminproductsrouter from './routes/admin/admin-products-routes.js'
+import { configureCloudinary } from "./helpers/cloudinaryConfig.js";
 
+configureCloudinary(); 
 const app = express();
-dotenv.config();
 
 //cookie parseris a middleware that translates browser cookies into redable javascript objects
 //cors is a middleware that controls who can talk to our api

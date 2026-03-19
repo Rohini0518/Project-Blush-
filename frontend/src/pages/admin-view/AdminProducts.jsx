@@ -22,7 +22,7 @@ const AdminProducts = () => {
 
   const [formData, setFormData] = useState(initialFormData);
 
-  const [imageFile,setImageFile]=useState("");
+  const [imageFile,setImageFile]=useState(null);
   const [uploadedImage,setUploadedImage]=useState("")
 
   const handleSubmit=()=>{

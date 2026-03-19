@@ -14,7 +14,7 @@ const handleImageUpload = async (req, res) => {
     console.log(error);
     res.json({
       success: false,
-      message: "Error Occured",
+      message: "Image Upload Error Occured",
     });
   }
 };

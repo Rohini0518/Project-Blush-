@@ -4,6 +4,6 @@ import { cloudinaryUpload } from '../../helpers/cloudinary.js';
 
 const adminproductsrouter=express.Router();
 
-adminproductsrouter.post('/upload-image',cloudinaryUpload.single('img-file',handleImageUpload))
+adminproductsrouter.post('/upload-image',cloudinaryUpload.single('img-file'),handleImageUpload)
 
 export default adminproductsrouter;

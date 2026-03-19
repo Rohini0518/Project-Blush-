@@ -1,13 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 
-cloudinary.config({
-  cloud_name: "dow6qprq8",
-  api_key: "976946189218995",
-  api_secret: process.env.API_CLOUDINARY,
-});
-
-const storage = new multer.memoryStorage();
+const storage =  multer.memoryStorage();
 
 async function handleImageUploadUtil(file) {
   const uploadResult = await cloudinary.uploader
@@ -16,6 +10,12 @@ async function handleImageUploadUtil(file) {
     })
     .catch((error) => {
       console.log(error, "cloudinary upload error");
+      res.json({
+      success: false,
+      message: "Error Occured",
+    });
+        throw error; 
+
     });
 
   console.log(uploadResult);
