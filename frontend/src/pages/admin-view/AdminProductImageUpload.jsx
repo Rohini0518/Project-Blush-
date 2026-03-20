@@ -6,13 +6,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import { axiosInstance } from "../../api/axiosInstance";
 
 const AdminProductImageUpload = (props) => {
-  const { imageFile, setImageFile, uploadedImage, setUploadedImage } = props;
+  const { imageFile, setImageFile, uploadedImage, setUploadedImage, imageLoading, setimageLoading } = props;
   const inputref = useRef(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) setImageFile(file);
-    else alert("no file uploaded")
+    else alert("no file uploaded");
     console.log(file, "uploaded file");
   };
 
@@ -36,28 +36,35 @@ const AdminProductImageUpload = (props) => {
   };
 
   const uploadImageToCloudinary = async () => {
-        console.log(axiosInstance,"axios Instance")
+    console.log(axiosInstance, "axios Instance");
 
-    try{
-    const data = new FormData();
-    data.append("img-file", imageFile);
-    console.log(axiosInstance,"axios Instance")
-    const response = await axiosInstance.post(
-      "/api/admin/products/upload-image",
-      data,
-    );
-    console.log(response.data, "imageupload response-data");
-    if (response) setUploadedImage(response.data);
-  }
-  catch(error){
-console.log(error,error.message,"uploadimage error")
-  }
-}
+    try {
+      const data = new FormData();
+      data.append("img-file", imageFile);
+      console.log(axiosInstance, "axios Instance");
+      const response = await axiosInstance.post(
+        "/api/admin/products/upload-image",
+        data,
+      );
+      console.log(
+        response.data,
+        response.data.result.url,
+        "imageupload response-data",
+      );
+      if (response) {
+        setUploadedImage(response.data.result.url);
+        setimageLoading(false)
+      }
+      console.log(uploadedImage,"uploadedImageUrl")
+    } catch (error) {
+      console.log(error, error.message, "uploadimage error");
+    }
+  };
 
   useEffect(() => {
-    console.log(import.meta.env.VITE_API_BASE_URL,"baseurl")
-    console.log("useeffect, uploadimagetocloudinary")
-    console.log("imageFIle-",imageFile)
+    console.log(import.meta.env.VITE_API_BASE_URL, "baseurl");
+    console.log("useeffect, uploadimagetocloudinary");
+    console.log("imageFIle-", imageFile);
     if (imageFile) uploadImageToCloudinary();
   }, [imageFile]);
 
@@ -120,16 +127,12 @@ console.log(error,error.message,"uploadimage error")
               </Box>
             ) : (
               <>
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                  >
-                    <CloudUploadIcon fontSize="large" color="primary" />
-                    <Typography>
-                      Drag and drop or click to upload files
-                    </Typography>
-                  </Box>
+                <Box display="flex" flexDirection="column" alignItems="center">
+                  <CloudUploadIcon fontSize="large" color="primary" />
+                  <Typography>
+                    Drag and drop or click to upload files
+                  </Typography>
+                </Box>
               </>
             )}
           </Box>

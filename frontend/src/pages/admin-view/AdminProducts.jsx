@@ -9,25 +9,25 @@ const initialFormData = {
   image: null,
   title: "",
   description: "",
-  category:"",
+  category: "",
   brand: "",
   price: "",
   salePrice: "",
   totalStock: "",
 };
 
-
 const AdminProducts = () => {
   const [openCreatePrdDialog, setOpenCreatePrdDialog] = useState(false);
 
   const [formData, setFormData] = useState(initialFormData);
 
-  const [imageFile,setImageFile]=useState(null);
-  const [uploadedImage,setUploadedImage]=useState("")
+  const [imageFile, setImageFile] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState("");
+  const [imageLoading, setImageLoading] = useState(false);
 
-  const handleSubmit=()=>{
-    console.log("submitted data is")
-  }
+  const handleSubmit = () => {
+    console.log("submitted data is");
+  };
   return (
     <>
       <Button variant="contained" onClick={() => setOpenCreatePrdDialog(true)}>
@@ -60,14 +60,21 @@ const AdminProducts = () => {
               <CloseIcon />
             </IconButton>
           </Box>
-<AdminProductImageUpload imageFile={imageFile} setImageFile={setImageFile} uploadedImage={uploadedImage} setUploadedImage={setUploadedImage} />
-            <CommonForm
-              formData={formData}
-              setFormData={setFormData}
-              formControls={addAdminProductFormElements}
-              buttonText="Add"
-             onSubmit={handleSubmit}
-            />
+          <AdminProductImageUpload
+            imageFile={imageFile}
+            setImageFile={setImageFile}
+            uploadedImage={uploadedImage}
+            setUploadedImage={setUploadedImage}
+            imageLoading={imageLoading}
+            setImageLoading={setImageLoading}
+          />
+          <CommonForm
+            formData={formData}
+            setFormData={setFormData}
+            formControls={addAdminProductFormElements}
+            buttonText="Add"
+            onSubmit={handleSubmit}
+          />
         </Box>
       </Drawer>
     </>
