@@ -3,7 +3,9 @@ import { Box, Button, Drawer, Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CommonForm from "../../components/common/CommonForm";
 import { addAdminProductFormElements } from "../../config/formConfig";
-import AdminProductImageUpload from "./adminProductImageUpload";
+import AdminProductImageUpload from "./AdminProductImageUpload";
+import { useDispatch } from "react-redux";
+import { addNewProduct } from "../../store/admin/adminProductSlice";
 
 const initialFormData = {
   image: null,
@@ -25,8 +27,19 @@ const AdminProducts = () => {
   const [uploadedImage, setUploadedImage] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
 
-  const handleSubmit = () => {
-    console.log("submitted data is");
+  const dispatch=useDispatch();
+
+  const handleSubmit =async (e) => {
+e.preventDefault();
+try{
+const result= await dispatch(addNewProduct(formData)).unwrap();
+      console.log("submitted data is",result);
+
+}
+catch(error){
+        console.log("addProduct Failed-error",error);
+
+}
   };
   return (
     <>
