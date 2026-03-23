@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Drawer, Typography, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CommonForm from "../../components/common/CommonForm";
 import { addAdminProductFormElements } from "../../config/formConfig";
 import AdminProductImageUpload from "./AdminProductImageUpload";
-import { useDispatch } from "react-redux";
-import { addNewProduct } from "../../store/admin/adminProductSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addNewProduct,
+  getAllAdminProducts,
+} from "../../store/admin/adminProductSlice";
 
 const initialFormData = {
   image: null,
@@ -26,21 +29,34 @@ const AdminProducts = () => {
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImage, setUploadedImage] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
+  const { productList } = useSelector((state) => state.adminProducts);
 
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
-  const handleSubmit =async (e) => {
-e.preventDefault();
-try{
-const result= await dispatch(addNewProduct(formData)).unwrap();
-      console.log("submitted data is",result);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const finalData = {
+      ...formData,
+      image: uploadedImage,
+    };
 
-}
-catch(error){
-        console.log("addProduct Failed-error",error);
-
-}
+    try {
+      const result = await dispatch(addNewProduct(finalData)).unwrap();
+      console.log("submitted data is", result);
+      setFormData(initialFormData);
+      setUploadedImage("");
+      setOpenCreatePrdDialog(false);
+    } catch (error) {
+      console.log("addProduct Failed-error", error);
+    }
   };
+
+  useEffect(() => {
+    dispatch(getAllAdminProducts());
+  }, [dispatch]);
+
+  console.log(productList, "formData-productList");
+
   return (
     <>
       <Button variant="contained" onClick={() => setOpenCreatePrdDialog(true)}>

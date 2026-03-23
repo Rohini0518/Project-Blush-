@@ -11,18 +11,17 @@ export const addNewProduct = createAsyncThunk(
   async (formData) => {
     const result = await axiosInstance.post(
       "/api/admin/products/addProduct",
-      formData,
+      formData
     );
-
     return result?.data;
   },
 );
 
 export const updateNewProduct = createAsyncThunk(
   "/products/updateProduct",
-  async (formData) => {
+  async ({id,formData}) => {
     const result = await axiosInstance.put(
-      "/api/admin/products/editProduct/:id",
+     `/api/admin/products/editProduct/${id}`,
       formData,
     );
     return result?.data;
@@ -39,15 +38,31 @@ export const getAllAdminProducts = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
   "/products/deleteProduct",
-  async () => {
+  async (id) => {
     const result = await axiosInstance.delete(
-      "/api/admin/product/delteProduct/:id",
+     `/api/admin/product/delteProduct/${id}`,
     );
     return result.data;
   },
 );
 
-const AdminProductsSlice = createSlice({
+//  Frontend dispatch →
+// createAsyncThunk →
+// Redux sends pending →
+// API call via axios →
+// success → fulfilled →
+// data → reducer →
+// store updated →
+// UI updates
+// 🔥 Important: Why push works (Immer magic)
+
+// Redux Toolkit uses Immer, so this is safe:
+
+// state.productList.push(...)
+
+// 👉 Internally it’s still immutable ✅
+
+const adminProductsSlice = createSlice({
   name: "adminProducts",
   initialState,
   reducers: {
@@ -55,17 +70,20 @@ const AdminProductsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(addNewProduct.pending, (state) => {
+      .addCase(getAllAdminProducts.pending, (state) => {
         state.isLoading = true;
-        state.productList = [];
       })
-      .addCase(addNewProduct.fulfilled, (state, action) => {
+      .addCase(getAllAdminProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.productList = action.payload;
+        console.log(action.payload,"action.payload in")
       })
-      .addCase(addNewProduct.rejected, (state) => {
+      .addCase(getAllAdminProducts.rejected, (state) => {
         state.isLoading = false;
         state.productList= [];
       });
   },
 });
+
+
+export default adminProductsSlice.reducer;
