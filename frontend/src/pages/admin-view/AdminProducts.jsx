@@ -36,13 +36,14 @@ const AdminProducts = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const finalData = {
-      ...formData,
+      ...formData, 
       image: uploadedImage,
     };
 
     try {
       const result = await dispatch(addNewProduct(finalData)).unwrap();
       console.log("submitted data is", result);
+      alert("New Product Added SuccessFully")
       setFormData(initialFormData);
       setUploadedImage("");
       setOpenCreatePrdDialog(false);
@@ -54,7 +55,7 @@ const AdminProducts = () => {
   useEffect(() => {
     dispatch(getAllAdminProducts());
   }, [dispatch]);
-
+ 
   console.log(productList, "formData-productList");
 
   return (
