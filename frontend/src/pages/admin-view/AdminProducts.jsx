@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Drawer, Typography, IconButton } from "@mui/material";
+import { Box, Button, Drawer, Typography, IconButton, Grid } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CommonForm from "../../components/common/CommonForm";
 import { addAdminProductFormElements } from "../../config/formConfig";
@@ -10,6 +10,7 @@ import {
   getAllAdminProducts,
 } from "../../store/admin/adminProductSlice";
 import { useToast } from "../../hooks/useToast";
+import AdminProductCard from "./AdminProductCard";
 
 const initialFormData = {
   image: null,
@@ -113,6 +114,18 @@ const AdminProducts = () => {
           />
         </Box>
       </Drawer>
+
+      <Grid container spacing={3} sx={{ mt: 2 }}>
+  {productList.map((product) => (
+    <Grid item key={product.title} xs={12} sm={6} md={4} lg={3}>
+      <AdminProductCard
+        product={product}
+        onEdit={(p) => handleEdit(p)}
+        onDelete={(p) => handleDelete(p)}
+      />
+    </Grid>
+  ))}
+</Grid>
     </>
   );
 };
