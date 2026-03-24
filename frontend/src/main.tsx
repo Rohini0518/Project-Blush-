@@ -7,6 +7,7 @@ import {theme} from "./theme/theme.ts"
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store/store.js'
+import { ToastProvider } from './context/ToastContext.jsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
     <ThemeProvider theme={theme}>
     <CssBaseline />
-    <App />
+    <ToastProvider>
+      <App />
+    </ToastProvider>   
     </ThemeProvider>
     </BrowserRouter>
     </Provider>

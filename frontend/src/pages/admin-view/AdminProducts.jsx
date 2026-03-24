@@ -9,6 +9,7 @@ import {
   addNewProduct,
   getAllAdminProducts,
 } from "../../store/admin/adminProductSlice";
+import { useToast } from "../../hooks/useToast";
 
 const initialFormData = {
   image: null,
@@ -32,30 +33,35 @@ const AdminProducts = () => {
   const { productList } = useSelector((state) => state.adminProducts);
 
   const dispatch = useDispatch();
-
+  const { showToast } = useToast();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const finalData = {
-      ...formData, 
+      ...formData,
       image: uploadedImage,
     };
 
     try {
       const result = await dispatch(addNewProduct(finalData)).unwrap();
       console.log("submitted data is", result);
-      alert("New Product Added SuccessFully")
+      if(result.success){
+      dispatch(getAllAdminProducts())
       setFormData(initialFormData);
       setUploadedImage("");
       setOpenCreatePrdDialog(false);
+       showToast("New Product Added Successfully!", "success");
+
+    }
     } catch (error) {
       console.log("addProduct Failed-error", error);
+      showToast("Failed to add product!", "error");
     }
   };
 
   useEffect(() => {
     dispatch(getAllAdminProducts());
   }, [dispatch]);
- 
+
   console.log(productList, "formData-productList");
 
   return (

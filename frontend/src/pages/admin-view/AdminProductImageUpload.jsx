@@ -4,14 +4,19 @@ import { useEffect, useRef } from "react";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import CloseIcon from "@mui/icons-material/Close";
 import { axiosInstance } from "../../api/axiosInstance";
+import { useToast } from "../../hooks/useToast";
 
 const AdminProductImageUpload = (props) => {
   const { imageFile, setImageFile, uploadedImage, setUploadedImage, imageLoading, setimageLoading } = props;
   const inputref = useRef(null);
+  const { showToast } = useToast();
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
-    if (file) setImageFile(file);
+    if (file) {
+      setImageFile(file)
+      showToast("File Added","success")
+    }
     else alert("no file uploaded");
     console.log(file, "uploaded file");
   };
@@ -55,16 +60,14 @@ const AdminProductImageUpload = (props) => {
         setUploadedImage(response.data.result.url);
         setimageLoading(false)
       }
-      console.log(uploadedImage,"uploadedImageUrl")
+      console.log(uploadedImage,"uploadedImageUrl -done")
     } catch (error) {
-      console.log(error, error.message, "uploadimage error");
+      console.log(error, "uploadimage error");
     }
   };
 
   useEffect(() => {
-    console.log(import.meta.env.VITE_API_BASE_URL, "baseurl");
-    console.log("useeffect, uploadimagetocloudinary");
-    console.log("imageFIle-", imageFile);
+    console.log("uploadimagetocloudinary,imageFIle-", imageFile);
     if (imageFile) uploadImageToCloudinary();
   }, [imageFile]);
 
