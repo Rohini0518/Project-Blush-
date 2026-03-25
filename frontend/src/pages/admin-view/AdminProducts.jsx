@@ -14,6 +14,7 @@ import AdminProductImageUpload from "./AdminProductImageUpload";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addNewProduct,
+  deleteProduct,
   getAllAdminProducts,
   updateProduct,
 } from "../../store/admin/adminProductSlice";
@@ -56,7 +57,8 @@ const AdminProducts = () => {
       let result;
       if (editId) {
         result = await dispatch(
-        updateProduct({ id: editId, formData: finalData })).unwrap();
+          updateProduct({ id: editId, formData: finalData }),
+        ).unwrap();
         console.log("edited done-result", result);
       } else {
         result = await dispatch(addNewProduct(finalData)).unwrap();
@@ -81,6 +83,28 @@ const AdminProducts = () => {
       showToast("product Operation Failed", "error");
     }
   };
+  const isFormFilled = () => {
+    return Object.values(formData).every((value) => value !== "");
+  };
+
+  const handleDelete= async (productId)=>{
+console.log( "card product", productId);
+    try {
+      const response = await dispatch(deleteProduct(productId)).unwrap();
+      console.log(response);
+      dispatch(getAllAdminProducts());
+    } catch (error) {
+      
+    }  }
+
+ const handleEdit = (product) => {
+    setOpenCreatePrdDialog(true);
+    setEditId(product._id);
+    setFormData(product);
+    setUploadedImage(product.image);
+  };
+
+
 
   useEffect(() => {
     dispatch(getAllAdminProducts());
@@ -138,8 +162,9 @@ const AdminProducts = () => {
             formData={formData}
             setFormData={setFormData}
             formControls={addAdminProductFormElements}
-            buttonText="Add"
+            buttonText={editId ? "Update Product" : "Add Product"}
             onSubmit={handleSubmit}
+            isBtnDisabled={!isFormFilled()}
           />
         </Box>
       </Drawer>
@@ -153,7 +178,8 @@ const AdminProducts = () => {
               setOpenCreatePrdDialog={setOpenCreatePrdDialog}
               setFormData={setFormData}
               setUploadedImage={setUploadedImage}
-              onDelete={(p) => handleDelete(p)}
+              handleDelete={ handleDelete}
+              handleEdit={handleEdit}
             />
           </Grid>
         ))}

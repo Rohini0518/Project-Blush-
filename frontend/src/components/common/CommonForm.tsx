@@ -56,6 +56,7 @@ const CommonForm = ({
   setFormData,
   onSubmit,
   buttonText,
+  isBtnDisabled
 }) => {
   function renderInputsByComponentType(controlItem) {
     const value = formData[controlItem.name] || "";
@@ -173,6 +174,7 @@ case "select":
       <Button
         type="submit"
         fullWidth
+         disabled={isBtnDisabled} 
         variant="contained"
         sx={{
           mt: "24px",

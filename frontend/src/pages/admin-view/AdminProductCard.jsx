@@ -19,10 +19,8 @@ import {
 
 const AdminProductCard = ({
   product,
-  setFormData,
-  setEditId,
-  setOpenCreatePrdDialog,
-  setUploadedImage,
+  handleEdit,
+  handleDelete
 }) => {
   const { image, title, price, salePrice, totalStock, _id } = product;
   const dispatch = useDispatch();
@@ -47,21 +45,9 @@ const AdminProductCard = ({
       ? Math.round(((price - salePrice) / price) * 100)
       : null;
 
-  const onEdit = () => {
-    setOpenCreatePrdDialog(true);
-    setEditId(product._id);
-    setFormData(product);
-    setUploadedImage(product.image);
-  };
+ 
 
-  const onDelete = async () => {
-    console.log(product, "card product", product._id);
-    try {
-      const response = await dispatch(deleteProduct(product._id)).unwrap();
-      console.log(response);
-      dispatch(getAllAdminProducts());
-    } catch (error) {}
-  };
+  
 
   return (
     <Card
@@ -174,7 +160,7 @@ const AdminProductCard = ({
           variant="outlined"
           size="small"
           startIcon={<EditIcon />}
-          onClick={onEdit}
+          onClick={()=>handleEdit(product)}
           sx={{
             backgroundColor: "success.main",
             "&:hover": { backgroundColor: "success.dark" },
@@ -187,7 +173,7 @@ const AdminProductCard = ({
           variant="outlined"
           size="small"
           startIcon={<DeleteIcon />}
-          onClick={onDelete}
+          onClick={()=>handleDelete(product._id)}
           sx={{
             backgroundColor: "error.main",
             "&:hover": { backgroundColor: "error.dark" },
