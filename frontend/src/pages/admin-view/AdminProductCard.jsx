@@ -12,8 +12,15 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const AdminProductCard = ({ product, onEdit, onDelete }) => {
-  const { image, title, price, salePrice, totalStock } = product;
+const AdminProductCard = ({
+  product,
+  onDelete,
+  setFormData,
+  setEditId,
+  setOpenCreatePrdDialog,
+  setUploadedImage
+}) => {
+  const { image, title, price, salePrice, totalStock, _id } = product;
 
   const isOutOfStock = totalStock === 0;
   const isLowStock = totalStock > 0 && totalStock <= 10;
@@ -21,16 +28,26 @@ const AdminProductCard = ({ product, onEdit, onDelete }) => {
   const stockLabel = isOutOfStock
     ? "Out of Stock"
     : isLowStock
-    ? `Low Stock: ${totalStock}`
-    : `In Stock: ${totalStock}`;
+      ? `Low Stock: ${totalStock}`
+      : `In Stock: ${totalStock}`;
 
-  const stockColor = isOutOfStock ? "error" : isLowStock ? "warning" : "success";
+  const stockColor = isOutOfStock
+    ? "error"
+    : isLowStock
+      ? "warning"
+      : "success";
 
   const discount =
     salePrice && salePrice < price
       ? Math.round(((price - salePrice) / price) * 100)
       : null;
 
+  const onEdit = () => {
+    setOpenCreatePrdDialog(true);
+    setEditId(product._id);
+    setFormData(product);
+    setUploadedImage(product.image)
+  };
   return (
     <Card
       sx={{
@@ -43,7 +60,9 @@ const AdminProductCard = ({ product, onEdit, onDelete }) => {
         height: "100%",
       }}
     >
-      <Box sx={{ position: "relative", width: 320, height: 340, flexShrink: 0 }}>
+      <Box
+        sx={{ position: "relative", width: 320, height: 340, flexShrink: 0 }}
+      >
         <CardMedia
           component="img"
           image={image}
@@ -86,14 +105,21 @@ const AdminProductCard = ({ product, onEdit, onDelete }) => {
 
         <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Typography variant="body2" color="text.secondary" sx={{ minWidth: 75 }}>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ minWidth: 75 }}
+            >
               Price:
             </Typography>
             <Typography
               variant="body2"
               fontWeight={600}
               color="text.primary"
-              sx={{ textDecoration: salePrice && salePrice < price ? "line-through" : "none" }}
+              sx={{
+                textDecoration:
+                  salePrice && salePrice < price ? "line-through" : "none",
+              }}
             >
               ₹{price}
             </Typography>
@@ -101,7 +127,11 @@ const AdminProductCard = ({ product, onEdit, onDelete }) => {
 
           {salePrice && salePrice < price && (
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Typography variant="body2" color="text.secondary" sx={{ minWidth: 75 }}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ minWidth: 75 }}
+              >
                 Sale Price:
               </Typography>
               <Typography variant="body2" fontWeight={700} color="success.main">
@@ -126,10 +156,10 @@ const AdminProductCard = ({ product, onEdit, onDelete }) => {
       <CardActions sx={{ px: 2, py: 1.5, gap: 1 }}>
         <Button
           fullWidth
-    variant="outlined"
+          variant="outlined"
           size="small"
           startIcon={<EditIcon />}
-          onClick={() => onEdit?.(product)}
+          onClick={ onEdit}
           sx={{
             backgroundColor: "success.main",
             "&:hover": { backgroundColor: "success.dark" },
@@ -139,7 +169,7 @@ const AdminProductCard = ({ product, onEdit, onDelete }) => {
         </Button>
         <Button
           fullWidth
-    variant="outlined"
+          variant="outlined"
           size="small"
           startIcon={<DeleteIcon />}
           onClick={() => onDelete?.(product)}

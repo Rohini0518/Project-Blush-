@@ -7,17 +7,23 @@ import { axiosInstance } from "../../api/axiosInstance";
 import { useToast } from "../../hooks/useToast";
 
 const AdminProductImageUpload = (props) => {
-  const { imageFile, setImageFile, uploadedImage, setUploadedImage, imageLoading, setimageLoading } = props;
+  const {
+    imageFile,
+    setImageFile,
+    uploadedImage,
+    setUploadedImage,
+    imageLoading,
+    setimageLoading,
+  } = props;
   const inputref = useRef(null);
   const { showToast } = useToast();
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImageFile(file)
-      showToast("File Added","success")
-    }
-    else alert("no file uploaded");
+      setImageFile(file);
+      showToast("File Added", "success");
+    } else alert("no file uploaded");
     console.log(file, "uploaded file");
   };
 
@@ -58,9 +64,9 @@ const AdminProductImageUpload = (props) => {
       );
       if (response) {
         setUploadedImage(response.data.result.url);
-        setimageLoading(false)
+        setimageLoading(false);
       }
-      console.log(uploadedImage,"uploadedImageUrl -done")
+      console.log(uploadedImage, "uploadedImageUrl -done");
     } catch (error) {
       console.log(error, "uploadimage error");
     }
@@ -125,6 +131,38 @@ const AdminProductImageUpload = (props) => {
                 </Box>
 
                 <IconButton size="small" onClick={handleRemoveImage}>
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            ) : uploadedImage ? (
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                width="100%"
+              >
+                <Box display="flex" alignItems="center" gap={1}>
+                  <img
+                    src={uploadedImage}
+                    alt="current"
+                    style={{
+                      width: 50,
+                      height: 50,
+                      objectFit: "cover",
+                      borderRadius: 4,
+                    }}
+                  />
+                  <Typography variant="body2">
+                    Current Image (click to replace)
+                  </Typography>
+                </Box>
+                <IconButton
+                  size="small"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setUploadedImage("");
+                  }}
+                >
                   <CloseIcon fontSize="small" />
                 </IconButton>
               </Box>

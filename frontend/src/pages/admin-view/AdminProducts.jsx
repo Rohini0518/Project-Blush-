@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Drawer, Typography, IconButton, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  Drawer,
+  Typography,
+  IconButton,
+  Grid,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CommonForm from "../../components/common/CommonForm";
 import { addAdminProductFormElements } from "../../config/formConfig";
@@ -8,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addNewProduct,
   getAllAdminProducts,
+  updateProduct
 } from "../../store/admin/adminProductSlice";
 import { useToast } from "../../hooks/useToast";
 import AdminProductCard from "./AdminProductCard";
@@ -32,9 +40,11 @@ const AdminProducts = () => {
   const [uploadedImage, setUploadedImage] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
   const { productList } = useSelector((state) => state.adminProducts);
+  const [editId, setEditId] = useState(null);
 
   const dispatch = useDispatch();
   const { showToast } = useToast();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const finalData = {
@@ -43,19 +53,31 @@ const AdminProducts = () => {
     };
 
     try {
-      const result = await dispatch(addNewProduct(finalData)).unwrap();
+      let result;
+      if (editId) {
+        result = await dispatch(
+          updateProduct({ id: editId, formData: finalData }),
+        );
+      } else {
+        result = await dispatch(addNewProduct(finalData)).unwrap();
+      }
       console.log("submitted data is", result);
-      if(result.success){
-      dispatch(getAllAdminProducts())
-      setFormData(initialFormData);
-      setUploadedImage("");
-      setOpenCreatePrdDialog(false);
-       showToast("New Product Added Successfully!", "success");
-
-    }
+      if (result.success) {
+        dispatch(getAllAdminProducts());
+        setFormData(initialFormData);
+        setUploadedImage("");
+        setEditId(null);
+        setOpenCreatePrdDialog(false);
+        showToast(
+          editId
+            ? "Product Updated SuccesssFully"
+            : "New Product Added Successfully!",
+          "success",
+        );
+      }
     } catch (error) {
       console.log("addProduct Failed-error", error);
-      showToast("Failed to add product!", "error");
+      showToast("product Operation Failed", "error");
     }
   };
 
@@ -74,7 +96,13 @@ const AdminProducts = () => {
       <Drawer
         anchor="right"
         open={openCreatePrdDialog}
-        onClose={() => setOpenCreatePrdDialog(false)}
+        onClose={() => {
+          setOpenCreatePrdDialog(false);
+          setEditId(null);
+          setFormData(initialFormData);
+          setUploadedImage("");
+          setImageFile(null);
+        }}
       >
         <Box
           sx={{
@@ -116,16 +144,19 @@ const AdminProducts = () => {
       </Drawer>
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
-  {productList.map((product) => (
-    <Grid item key={product.title} xs={12} sm={6} md={4} lg={3}>
-      <AdminProductCard
-        product={product}
-        onEdit={(p) => handleEdit(p)}
-        onDelete={(p) => handleDelete(p)}
-      />
-    </Grid>
-  ))}
-</Grid>
+        {productList.map((product) => (
+          <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
+            <AdminProductCard
+              product={product}
+              setEditId={setEditId}
+              setOpenCreatePrdDialog={setOpenCreatePrdDialog}
+              setFormData={setFormData}
+              setUploadedImage={setUploadedImage}
+              onDelete={(p) => handleDelete(p)}
+            />
+          </Grid>
+        ))}
+      </Grid>
     </>
   );
 };

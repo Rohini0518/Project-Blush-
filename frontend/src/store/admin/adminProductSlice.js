@@ -17,7 +17,7 @@ export const addNewProduct = createAsyncThunk(
   },
 );
 
-export const updateNewProduct = createAsyncThunk(
+export const updateProduct = createAsyncThunk(
   "/products/updateProduct",
   async ({id,formData}) => {
     const result = await axiosInstance.put(
