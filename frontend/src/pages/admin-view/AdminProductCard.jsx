@@ -11,16 +11,21 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useDispatch } from "react-redux";
+import {
+  deleteProduct,
+  getAllAdminProducts,
+} from "../../store/admin/adminProductSlice";
 
 const AdminProductCard = ({
   product,
-  onDelete,
   setFormData,
   setEditId,
   setOpenCreatePrdDialog,
-  setUploadedImage
+  setUploadedImage,
 }) => {
   const { image, title, price, salePrice, totalStock, _id } = product;
+  const dispatch = useDispatch();
 
   const isOutOfStock = totalStock === 0;
   const isLowStock = totalStock > 0 && totalStock <= 10;
@@ -46,8 +51,18 @@ const AdminProductCard = ({
     setOpenCreatePrdDialog(true);
     setEditId(product._id);
     setFormData(product);
-    setUploadedImage(product.image)
+    setUploadedImage(product.image);
   };
+
+  const onDelete = async () => {
+    console.log(product, "card product", product._id);
+    try {
+      const response = await dispatch(deleteProduct(product._id)).unwrap();
+      console.log(response);
+      dispatch(getAllAdminProducts());
+    } catch (error) {}
+  };
+
   return (
     <Card
       sx={{
@@ -159,7 +174,7 @@ const AdminProductCard = ({
           variant="outlined"
           size="small"
           startIcon={<EditIcon />}
-          onClick={ onEdit}
+          onClick={onEdit}
           sx={{
             backgroundColor: "success.main",
             "&:hover": { backgroundColor: "success.dark" },
@@ -172,7 +187,7 @@ const AdminProductCard = ({
           variant="outlined"
           size="small"
           startIcon={<DeleteIcon />}
-          onClick={() => onDelete?.(product)}
+          onClick={onDelete}
           sx={{
             backgroundColor: "error.main",
             "&:hover": { backgroundColor: "error.dark" },

@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addNewProduct,
   getAllAdminProducts,
-  updateProduct
+  updateProduct,
 } from "../../store/admin/adminProductSlice";
 import { useToast } from "../../hooks/useToast";
 import AdminProductCard from "./AdminProductCard";
@@ -56,13 +56,14 @@ const AdminProducts = () => {
       let result;
       if (editId) {
         result = await dispatch(
-          updateProduct({ id: editId, formData: finalData }),
-        );
+        updateProduct({ id: editId, formData: finalData })).unwrap();
+        console.log("edited done-result", result);
       } else {
         result = await dispatch(addNewProduct(finalData)).unwrap();
       }
       console.log("submitted data is", result);
       if (result.success) {
+        console.log("in result.payload.success");
         dispatch(getAllAdminProducts());
         setFormData(initialFormData);
         setUploadedImage("");
@@ -145,7 +146,7 @@ const AdminProducts = () => {
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
         {productList.map((product) => (
-          <Grid item key={product._id} xs={12} sm={6} md={4} lg={3}>
+          <Grid key={product._id} xs={12} sm={6} md={4} lg={3}>
             <AdminProductCard
               product={product}
               setEditId={setEditId}

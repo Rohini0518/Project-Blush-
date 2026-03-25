@@ -8,6 +8,6 @@ adminproductsrouter.post('/upload-image',cloudinaryUpload.single('img-file'),han
 adminproductsrouter.get('/getProducts',getAllAdminProducts);
 adminproductsrouter.post('/addProduct',addAdminProduct);
 adminproductsrouter.put('/editProduct/:id',editAdminProduct);
-adminproductsrouter.delete('/deleteProducts/:id',deleteAdminProduct);
+adminproductsrouter.delete('/deleteProduct/:id',deleteAdminProduct);
 
 export default adminproductsrouter;
