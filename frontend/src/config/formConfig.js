@@ -31,6 +31,8 @@ export const loginFormControls = [
     placeholder: "Enter your Email",
     componentType: "input",
     type: "text",
+    autoComplete: "username"
+
   },
   {
     name: "password",
@@ -38,6 +40,8 @@ export const loginFormControls = [
     placeholder: "Enter your password",
     componentType: "input",
     type: "password",
+    autoComplete: "current-password"
+
   },
 ];
 

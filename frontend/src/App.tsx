@@ -74,9 +74,9 @@ if(isLoading) return <div>Loading....</div>
           }
         >
           <Route path="dashboard" element={<ShopingDashboard />} />
+          <Route path="header" element={<ShopingHeader />} />
           <Route path="checkout" element={<ShopCheckout />} />
           <Route path="account" element={<ShopAccount />} />
-          <Route path="header" element={<ShopingHeader />} />
         </Route>
         <Route path="unauth-page" element={<UnAuthPage/>}/>
         <Route path="*" element={<NotFound />}></Route>

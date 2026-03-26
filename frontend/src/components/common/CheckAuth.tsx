@@ -29,11 +29,15 @@ const CheckAuth = ({ isAuthenticated, user, children }: CheckAuthProps) => {
     (location.pathname.includes("/login") ||
       location.pathname.includes("/register"))
   ) {
-    if (user?.role === "admin") {
-      return <Navigate to="/admin/dashboard" />;
-    }
-    return <Navigate to="/shop/home" />;
+     return user?.role === "admin"
+    ? <Navigate to="/admin/dashboard" replace />
+    : <Navigate to="/shop" replace />;
   }
+// Simple analogy
+// without replace → add new page to history
+// with replace → overwrite current page
+//👉 replace = “don’t let user go back to this page”
+// 👉 Back button WON’T go to login again ✔️
 
   if (
     isAuthenticated &&

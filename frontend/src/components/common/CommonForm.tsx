@@ -73,6 +73,7 @@ const CommonForm = ({
             placeholder={controlItem.placeholder}
             id={controlItem.name}
             value={value}
+            autoComplete={controlItem.autoComplete || "off"}
             onChange={(e) =>
               setFormData({ ...formData, [controlItem.name]: e.target.value })
             }

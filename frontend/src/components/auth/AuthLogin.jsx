@@ -101,6 +101,7 @@ const AuthLogin = () => {
           formData={formData}
           setFormData={setFormData}
           onSubmit={onSubmit}
+          isBtnDisabled={false}
         />
       </Paper>
     </Box>
