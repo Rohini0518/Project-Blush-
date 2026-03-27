@@ -64,24 +64,24 @@ export const addAdminProductFormElements = [
     name: "category",
     componentType: "select",
     options: [
-      { id: "men", label: "Men" },
-      { id: "women", label: "Women" },
-      { id: "kids", label: "Kids" },
-      { id: "accessories", label: "Accessories" },
-      { id: "footwear", label: "Footwear" },
+      { id: "newarrivals", label: "New Arrivals" },
+      { id: "coordsets", label: "Co-Ord-Sets" },
+      { id: "partywear", label: "Partywear" },
+      { id: "kurthies", label: "Kurthies" },
+      { id: "jeantops", label: "JeanTops" },
     ],
   },
   {
-    label: "Brand",
-    name: "brand",
+    label: "Size",
+    name: "size",
     componentType: "select",
     options: [
-      { id: "nike", label: "Nike" },
-      { id: "adidas", label: "Adidas" },
-      { id: "puma", label: "Puma" },
-      { id: "levi", label: "Levi's" },
-      { id: "zara", label: "Zara" },
-      { id: "h&m", label: "H&M" },
+      { id: "xs", label: "XS" },
+      { id: "small", label: "Small" },
+      { id: "medium", label: "Medium" },
+      { id: "large", label: "Large" },
+      { id: "xl", label: "XL" },
+      { id: "xxl", label: "XXL" },
     ],
   },
   {
@@ -106,3 +106,32 @@ export const addAdminProductFormElements = [
     placeholder: "Enter total stock",
   },
 ];
+
+export const shoppingViewHeaderMenuItems=[
+{
+  id:'home',
+  label:'Home',
+  path:'/shop/home'
+},
+{
+  id:'newarrivals',
+  label:'New Arrivals',
+  path:'/shop/listing'
+},
+{
+  id:'coordsets',
+  label:'Co-Ord-Sets',
+  path:'/shop/listing'
+},
+{
+  id:'partywear',
+  label:'Party Wear',
+  path:'/shop/listing'
+},
+{
+  id:'kurthies',
+  label:'Kurthies',
+  path:'/shop/listing'
+},
+
+]

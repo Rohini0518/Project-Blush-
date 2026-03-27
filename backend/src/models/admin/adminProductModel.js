@@ -16,7 +16,7 @@ const AdminProductSchema = new mongoose.Schema(
     category: {
       type: String,
     },
-    brand: {
+    size: {
       type: String,
     },
     price: {

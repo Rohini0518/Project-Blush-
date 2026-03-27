@@ -27,13 +27,13 @@ const addAdminProduct = async (req, res) => {
     const {
       image, title,
       description,
-      category, brand, price,
+      category, size, price,
       salePrice, totalStock,
     } = req.body;
 
     const createProduct = new AdminProducts({
       image,title,description,
-      category,brand, price,
+      category,size, price,
       salePrice, totalStock,
     })
 
@@ -76,7 +76,7 @@ const editAdminProduct = async (req, res) => {
    const {
       image, title,
       description,
-      category, brand, price,
+      category, size, price,
       salePrice, totalStock,
     } = req.body;
   
@@ -93,7 +93,7 @@ const editAdminProduct = async (req, res) => {
    findProduct.title = title || findProduct.title;
    findProduct.description = description===""?"NA":description || findProduct.description;
    findProduct.category = category || findProduct.category;
-   findProduct.brand = brand || findProduct.brand;
+   findProduct.size = size || findProduct.size;
    findProduct.price = price===""?0:price || findProduct.price;
    findProduct.salePrice = salePrice===""?0:salePrice|| findProduct.salePrice;
    findProduct.totalStock = totalStock===""?0:totalStock || findProduct.totalStock;

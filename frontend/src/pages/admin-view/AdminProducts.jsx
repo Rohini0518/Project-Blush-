@@ -26,7 +26,7 @@ const initialFormData = {
   title: "",
   description: "",
   category: "",
-  brand: "",
+  size: "",
   price: "",
   salePrice: "",
   totalStock: "",
