@@ -1,4 +1,3 @@
-
 export const registerFormControls = [
   {
     name: "userName",
@@ -24,15 +23,13 @@ export const registerFormControls = [
 ];
 
 export const loginFormControls = [
-
   {
     name: "email",
     label: "Email",
     placeholder: "Enter your Email",
     componentType: "input",
     type: "text",
-    autoComplete: "username"
-
+    autoComplete: "username",
   },
   {
     name: "password",
@@ -40,8 +37,7 @@ export const loginFormControls = [
     placeholder: "Enter your password",
     componentType: "input",
     type: "password",
-    autoComplete: "current-password"
-
+    autoComplete: "current-password",
   },
 ];
 
@@ -107,31 +103,35 @@ export const addAdminProductFormElements = [
   },
 ];
 
-export const shoppingViewHeaderMenuItems=[
-{
-  id:'home',
-  label:'Home',
-  path:'/shop/home'
-},
-{
-  id:'newarrivals',
-  label:'New Arrivals',
-  path:'/shop/listing'
-},
-{
-  id:'coordsets',
-  label:'Co-Ord-Sets',
-  path:'/shop/listing'
-},
-{
-  id:'partywear',
-  label:'Party Wear',
-  path:'/shop/listing'
-},
-{
-  id:'kurthies',
-  label:'Kurthies',
-  path:'/shop/listing'
-},
-
-]
+export const shoppingViewHeaderItems = [
+  {
+    id: "home",
+    label: "HOME",
+    path: "/shop/home",
+  },
+  {
+    id: "newarrivals",
+    label: "NEW ARRIVALS",
+    path: "/shop/products/new",
+  },
+  {
+    id: "coordsets",
+    label: "CO-ORD SETS",
+    path: "/shop/products/co-ord",
+  },
+  {
+    id: "partywear",
+    label: "PARTY WEAR",
+    path: "/shop/listing",
+  },
+  {
+    id: "kurthies",
+    label: "KURTHIES",
+    path: "/shop/products/kurthies",
+  },
+  {
+    id: "trendytops",
+    label: "TRENDY TOPS",
+    path: "/shop/products/tops",
+  },
+];

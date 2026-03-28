@@ -1,22 +1,10 @@
 import { Box, Typography } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
+import {shoppingViewHeaderItems} from '../config/formConfig';
 
-type NavLinkItem = {
-  label: string;
-  path: string;
-};
 
 export default function AllLinksNavbar() {
-  const navLinks: NavLinkItem[] = [
-    { label: "HOME", path: "/" },
-    { label: "NEW ARRIVALS", path: "/products/new" },
-    { label: "FULL SETS", path: "/products/full-sets" },
-    { label: "KURTHIES", path: "/products/kurthies" },
-    { label: "KURTHA PANT", path: "/products/kurtha-pant" },
-    { label: "CO-ORD SETS", path: "/products/co-ord" },
-    { label: "TOPS", path: "/products/tops" },
-  ];
-
+  
   const location = useLocation();
 
   return (
@@ -33,7 +21,7 @@ export default function AllLinksNavbar() {
         background: "#fff",
       }}
     >
-      {navLinks.map((nav) => {
+      {shoppingViewHeaderItems.map((nav) => {
         const isActive = location.pathname === nav.path;
         return (
           <Link key={nav.path} to={nav.path} style={{ textDecoration: "none" }}>

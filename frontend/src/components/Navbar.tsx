@@ -12,6 +12,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import MenuIcon from "@mui/icons-material/Menu";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 type NavbarProps = {
   search: string;
@@ -39,7 +40,6 @@ export default function Navbar({ search, setSearch }: NavbarProps) {
         zIndex: 100,
       }}
     >
-      {/* Left: menu / fire icon */}
       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flex: 1 }}>
         {(isMobile || isTablet) ? (
           <>
@@ -57,7 +57,6 @@ export default function Navbar({ search, setSearch }: NavbarProps) {
         )}
       </Box>
 
-      {/* Center: Logo */}
       <Box sx={{ display: "flex", justifyContent: "center", flex: 1 }}>
         <Box
           component="img"
@@ -76,7 +75,6 @@ export default function Navbar({ search, setSearch }: NavbarProps) {
         />
       </Box>
 
-      {/* Right: search + icons */}
       <Box
         sx={{ display: "flex", alignItems: "center", gap: 0.5, flex: 1, justifyContent: "flex-end" }}
       >
@@ -113,7 +111,7 @@ export default function Navbar({ search, setSearch }: NavbarProps) {
           sx={{
             color: "#555",
             transition: "color 0.2s ease, transform 0.2s ease",
-            "&:hover": { color: "#e05c7a", transform: "scale(1.1)" },
+            "&:hover": { color: "#c0efbb", transform: "scale(1.1)" },
           }}
         >
           <FavoriteBorderIcon sx={{ fontSize: isMobile ? 24 : 22 }} />
@@ -123,11 +121,20 @@ export default function Navbar({ search, setSearch }: NavbarProps) {
           sx={{
             color: "#555",
             transition: "color 0.2s ease, transform 0.2s ease",
-            "&:hover": { color: "#c5a882", transform: "scale(1.1)" },
+            "&:hover": { color: "#c0efbb", transform: "scale(1.1)" },
           }}
         >
           <ShoppingCartIcon sx={{ fontSize: isMobile ? 24 : 22 }} />
         </IconButton>
+        <IconButton
+                  sx={{
+                    color: "#171616",
+                    transition: "color 0.2s ease, transform 0.2s ease",
+                    "&:hover": { color: "#c0efbb", transform: "scale(1.1)" },
+                  }}
+                >
+                  <LogoutIcon sx={{ fontSize: isMobile ? 24 : 22 }} />
+                </IconButton>
       </Box>
     </Box>
   );
