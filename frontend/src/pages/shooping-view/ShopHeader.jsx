@@ -5,6 +5,12 @@ import {
   InputAdornment,
   useMediaQuery,
   useTheme,
+  ListItemIcon,
+  Typography,
+  MenuItem,
+  Divider,
+  Menu,
+  Avatar,
 } from "@mui/material";
 import blushLogo from "../../assets/blushlogo.jpg";
 import SearchIcon from "@mui/icons-material/Search";
@@ -13,12 +19,32 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useSelector } from "react-redux";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 export default function ShopHeader({ search, setSearch }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const [menuAnchor, setMenuAnchor] = useState(null);
+  const menuOpen = Boolean(menuAnchor);
+const navigate=useNavigate();
 
+  const handleAvatarClick = (e) => setMenuAnchor(e.currentTarget);
+  const handleMenuClose = () => setMenuAnchor(null);
+
+  const handleLogout = () => {
+    handleMenuClose();
+  };
+
+  const handleAccount = () => {
+    handleMenuClose();
+    navigate("/shop/account")
+  };
   return (
     <Box
       sx={{
@@ -74,7 +100,7 @@ export default function ShopHeader({ search, setSearch }) {
         sx={{
           display: "flex",
           alignItems: "center",
-          gap: 0.5,
+          gap: 1,
           flex: 1,
           justifyContent: "flex-end",
         }}
@@ -120,25 +146,6 @@ export default function ShopHeader({ search, setSearch }) {
         >
           <FavoriteBorderIcon sx={{ fontSize: isMobile ? 24 : 22 }} />
         </IconButton>
-
-        <IconButton
-          sx={{
-            color: "#555",
-            transition: "color 0.2s ease, transform 0.2s ease",
-            "&:hover": { color: "#c5a882", transform: "scale(1.1)" },
-          }}
-        >
-          <ShoppingCartIcon sx={{ fontSize: isMobile ? 24 : 22 }} />
-        </IconButton>
-        <IconButton
-          sx={{
-            color: "#555",
-            transition: "color 0.2s ease, transform 0.2s ease",
-            "&:hover": { color: "#c5a882", transform: "scale(1.1)" },
-          }}
-        >
-          <ShoppingCartIcon sx={{ fontSize: isMobile ? 24 : 22 }} />
-        </IconButton>
         <IconButton
           sx={{
             color: "#555",
@@ -146,8 +153,116 @@ export default function ShopHeader({ search, setSearch }) {
             "&:hover": { color: "#c0efbb", transform: "scale(1.1)" },
           }}
         >
-          <LogoutIcon sx={{ fontSize: isMobile ? 24 : 22 }} />
+          <ShoppingCartIcon sx={{ fontSize: isMobile ? 24 : 22 }} />
         </IconButton>
+        {isAuthenticated && (
+          <>
+            <Avatar
+              onClick={handleAvatarClick}
+              sx={{
+                width: 36,
+                height: 36,
+                bgcolor: "#c5a882",
+                fontSize: "0.9rem",
+                cursor: "pointer",
+                border: "2px solid #f0ece6",
+                transition: "box-shadow 0.2s ease, transform 0.2s ease",
+                "&:hover": {
+                  boxShadow: "0 0 0 3px #c0efbb",
+                  transform: "scale(1.08)",
+                },
+              }}
+            >
+              U
+            </Avatar>
+
+            <Menu
+              anchorEl={menuAnchor}   
+              open={menuOpen}
+              onClose={handleMenuClose}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              PaperProps={{
+                elevation: 3,
+                sx: {
+                  mt: 1,
+                  minWidth: 180,
+                  borderRadius: "12px",
+                  border: "1px solid #f0ece6",
+                  overflow: "visible",
+                  "&::before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: -6,
+                    right: 14,
+                    width: 12,
+                    height: 12,
+                    bgcolor: "background.paper",
+                    border: "1px solid #f0ece6",
+                    borderBottom: "none",
+                    borderRight: "none",
+                    transform: "rotate(45deg)",
+                  },
+                },
+              }}
+            >
+              <Box sx={{ px: 2, pt: 1.5, pb: 0.5 }}>
+                <Typography
+                  variant="caption"
+                  sx={{ color: "#aaa", fontWeight: 600, letterSpacing: 0.5 }}
+                >
+                  MY ACCOUNT
+                </Typography>
+              </Box>
+
+              <MenuItem
+                onClick={handleAccount}
+                sx={{
+                  gap: 1.5,
+                  py: 1.2,
+                  mx: 1,
+                  borderRadius: "8px",
+                  "&:hover": { backgroundColor: "#faf6f1" },
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: "unset" }}>
+                  <AccountCircleIcon sx={{ fontSize: 20, color: "#c5a882" }} />
+                </ListItemIcon>
+                <Typography sx={{ fontSize: "0.88rem", color: "#444" }}>
+                  Account
+                </Typography>
+              </MenuItem>
+
+              <Divider sx={{ my: 0.5, borderColor: "#f0ece6" }} />
+
+              <MenuItem
+                onClick={handleLogout}
+                sx={{
+                  gap: 1.5,
+                  py: 1.2,
+                  mx: 1,
+                  mb: 0.5,
+                  borderRadius: "8px",
+                  "&:hover": { backgroundColor: "#fff0f3" },
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: "unset" }}>
+                  <LogoutIcon sx={{ fontSize: 20, color: "#e05c7a" }} />
+                </ListItemIcon>
+                <Typography
+                  sx={{
+                    fontSize: "0.88rem",
+                    color: "#e05c7a",
+                    fontWeight: 500,
+                  }}
+                >
+                  Logout
+                </Typography>
+              </MenuItem>
+            </Menu>
+          </>
+        )}
       </Box>
     </Box>
   );

@@ -13,7 +13,7 @@ export default function AllLinksNavbar() {
         display: { xs: "none", sm: "none", md: "flex" },
         justifyContent: "center",
         alignItems: "center",
-        gap: 0.5,
+        gap: 1,
         py: 0,
         flexWrap: "wrap",
         borderTop: "1px solid #f0ece6",
