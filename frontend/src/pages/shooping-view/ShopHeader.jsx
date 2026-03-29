@@ -19,32 +19,43 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { logoutUser } from "../../store/authSlice";
+import { useToast } from "../../hooks/useToast";
 
 export default function ShopHeader({ search, setSearch }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const [menuAnchor, setMenuAnchor] = useState(null);
   const menuOpen = Boolean(menuAnchor);
-const navigate=useNavigate();
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleAvatarClick = (e) => setMenuAnchor(e.currentTarget);
   const handleMenuClose = () => setMenuAnchor(null);
+  const { showToast } = useToast();
 
-  const handleLogout = () => {
-    handleMenuClose();
+  const handleLogout = async () => {
+    try {
+      const logout = await dispatch(logoutUser()).unwrap();
+      if (logout.success) showToast("logout success", "success");
+
+      handleMenuClose();
+    } catch (error) {
+      console.log("error in logout", error.message);
+      showToast("product Operation Failed", "error");
+    }
   };
 
   const handleAccount = () => {
     handleMenuClose();
-    navigate("/shop/account")
+    navigate("/shop/account");
   };
+  console.log(user, user.userName);
   return (
     <Box
       sx={{
@@ -160,8 +171,8 @@ const navigate=useNavigate();
             <Avatar
               onClick={handleAvatarClick}
               sx={{
-                width: 36,
-                height: 36,
+                width: 38,
+                height: 38,
                 bgcolor: "#c5a882",
                 fontSize: "0.9rem",
                 cursor: "pointer",
@@ -173,11 +184,11 @@ const navigate=useNavigate();
                 },
               }}
             >
-              U
+              {user.userName.slice(0, 2).toUpperCase()}
             </Avatar>
 
             <Menu
-              anchorEl={menuAnchor}   
+              anchorEl={menuAnchor}
               open={menuOpen}
               onClose={handleMenuClose}
               transformOrigin={{ horizontal: "right", vertical: "top" }}
