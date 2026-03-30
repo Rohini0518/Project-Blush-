@@ -184,7 +184,7 @@ export default function ShopHeader({ search, setSearch }) {
                 },
               }}
             >
-              {user.userName.slice(0, 2).toUpperCase()}
+              {user?.userName?.slice(0, 2).toUpperCase()}
             </Avatar>
 
             <Menu

@@ -135,3 +135,38 @@ export const shoppingViewHeaderItems = [
     path: "/shop/products/tops",
   },
 ];
+
+export const filterProducts = [
+  {
+    label: "Category",
+    name: "category",
+    componentType: "checkbox",
+    options: [
+      { id: "men", label: "Men" },
+      { id: "women", label: "Women" },
+      { id: "kids", label: "Kids" },
+      { id: "accessories", label: "Accessories" },
+      { id: "footwear", label: "Footwear" },
+    ],
+  },
+  {
+    label: "Size",
+    name: "size",
+    componentType: "checkbox",
+    options: [
+      { id: "xs", label: "XS" },
+      { id: "s", label: "S" },
+      { id: "m", label: "M" },
+      { id: "l", label: "L" },
+      { id: "xl", label: "XL" },
+      { id: "xxl", label: "XXL" },
+    ],
+  },
+];
+
+export const sortOptions = [
+  { id: "price-lowtohigh", label: "Price: Low to High" },
+  { id: "price-hightolow", label: "Price: High to Low" },
+  { id: "title-atoz", label: "Title: A to Z" },
+  { id: "title-ztoa", label: "Title: Z to A" },
+];

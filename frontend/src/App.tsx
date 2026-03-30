@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./store/authSlice";
 import { useEffect } from "react";
 import AdminOrders from "./pages/admin-view/AdminOrders";
+import ShoppingListing from "./pages/shooping-view/ShopListing";
 
 function App() {
   
@@ -77,6 +78,8 @@ if(isLoading) return <div>Loading....</div>
           <Route path="header" element={<ShopingHeader />} />
           <Route path="checkout" element={<ShopCheckout />} />
           <Route path="account" element={<ShopAccount />} />
+                    <Route path="listing" element={<ShoppingListing />} />
+
         </Route>
         <Route path="unauth-page" element={<UnAuthPage/>}/>
         <Route path="*" element={<NotFound />}></Route>
