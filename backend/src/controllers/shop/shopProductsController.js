@@ -1,8 +1,8 @@
-import { AdminProduct } from "../../models/admin/adminProductModel";
+import  AdminProducts  from "../../models/admin/adminProductModel.js";
 
-const getfilterProducts = async (req, res) => {
+ const getfilterProducts = async (req, res) => {
   try {
-    const products = await AdminProduct.find({});
+    const products = await AdminProducts.find({});
     if (!products) {
       res.status(400).json({
         success: false,
@@ -22,4 +22,4 @@ const getfilterProducts = async (req, res) => {
   }
 };
 
-export { getfilterProducts };
+export {getfilterProducts}

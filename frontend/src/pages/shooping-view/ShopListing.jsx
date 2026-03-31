@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -10,6 +10,9 @@ import {
 import ProductFilter from "./ProductFilter";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { sortOptions } from "../../config/formConfig";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllShopProducts } from "../../store/shop/shopProductsSlice";
+import ShopProductCard from "./ShopProductCard";
 
 const ShoppingListing = () => {
   const [selectedSort, setSelectedSort] = useState(null);
@@ -22,7 +25,13 @@ const ShoppingListing = () => {
     handleSortClose();
   };
     const totalProducts = 10;
+const dispatch=useDispatch();
+const {shopProductList}=useSelector((state)=>state.shopProducts)
 
+useEffect(()=>{
+dispatch(getAllShopProducts())
+
+},[dispatch])
   return (
     <Box sx={{ display: "flex", gap: 0, minHeight: "100vh", bgcolor: "#fff" }}>
       <Box
@@ -135,6 +144,36 @@ const ShoppingListing = () => {
           }}
         ></Box>
       </Box>
+<Box
+          sx={{
+            flex: 1,
+            p: 4,
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "repeat(1, 1fr)",
+              sm: "repeat(2, 1fr)",
+              md: "repeat(3, 1fr)",
+              lg: "repeat(4, 1fr)",
+            },
+            gap: 3,
+            alignContent: "start",
+          }}
+        >
+          {shopProductList && shopProductList.length > 0 ? (
+            shopProductList.map((product) => (
+              <ShopProductCard key={product._id} product={product} />  
+            ))
+          ) : (
+            <Typography
+              sx={{ gridColumn: "1/-1", textAlign: "center", color: "text.secondary", mt: 8 }}
+            >
+              No products found.
+            </Typography>
+          )}
+        </Box>
+
+
+
     </Box>
   );
 };

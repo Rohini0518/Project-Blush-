@@ -9,7 +9,8 @@ const initialState = {
 export const getAllShopProducts = createAsyncThunk(
   "/shopproducts/getShopProducts",
   async () => {
-    const result = await axiosInstance.get("/api/shop/products");
+    const result = await axiosInstance.get("/api/shop/products/get");
+    console.log("shopProducts result.data",result?.data)
     return result?.data;
   },
 );

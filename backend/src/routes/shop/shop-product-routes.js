@@ -1,5 +1,5 @@
 import express from 'express';
-import  getFilterProducts, { getfilterProducts } from '../../controllers/shop/shopProductsController';
+import  {getfilterProducts} from '../../controllers/shop/shopProductsController.js';
 
 
 
