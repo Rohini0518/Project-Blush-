@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth/authRoute.js";
 import adminproductsrouter from './routes/admin/admin-products-routes.js'
 import { configureCloudinary } from "./helpers/cloudinaryConfig.js";
+import shoprouter from "./routes/shop/shop-product-routes.js";
 
 configureCloudinary(); 
 const app = express();
@@ -38,6 +39,7 @@ app.use("/api/admin/products",adminproductsrouter)
 app.get("/", (req, res) => {
   res.send("Blush backedn running 🚀🚀");
 });
+app.use("/api/shop/products",shoprouter)
 
 app.listen(5000, () => {
   console.log("server running on port 5000");

@@ -32,7 +32,7 @@ export const getAllAdminProducts = createAsyncThunk(
   "/products/getProducts",
   async () => {
     const result = await axiosInstance.get("/api/admin/products/getProducts");
-    return result.data;
+    return result?.data;
   },
 );
 
@@ -42,7 +42,7 @@ export const deleteProduct = createAsyncThunk(
     const result = await axiosInstance.delete(
      `/api/admin/products/deleteProduct/${id}`,
     );
-    return result.data;
+    return result?.data;
   },
 );
 
