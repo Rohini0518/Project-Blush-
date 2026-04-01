@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  Menu,
-  MenuItem,
-  Divider,
-} from "@mui/material";
+import { Box, Typography, Button, Menu, MenuItem } from "@mui/material";
 import ProductFilter from "./ProductFilter";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { sortOptions } from "../../config/formConfig";
@@ -17,6 +10,9 @@ import ShopProductCard from "./ShopProductCard";
 const ShoppingListing = () => {
   const [selectedSort, setSelectedSort] = useState(null);
   const [sortAnchor, setSortAnchor] = useState(null);
+  const [filters, setFilters] = useState(null);
+  const [sort, setSort] = useState(null);
+
 
   const handleSortOpen = (e) => setSortAnchor(e.currentTarget);
   const handleSortClose = () => setSortAnchor(null);
@@ -24,14 +20,15 @@ const ShoppingListing = () => {
     setSelectedSort(id);
     handleSortClose();
   };
-    const totalProducts = 10;
-const dispatch=useDispatch();
-const {shopProductList}=useSelector((state)=>state.shopProducts)
 
-useEffect(()=>{
-dispatch(getAllShopProducts())
+  const dispatch = useDispatch();
+  const { shopProductList } = useSelector((state) => state.shopProducts);
+  const totalProducts = shopProductList?.length;
 
-},[dispatch])
+  useEffect(() => {
+    dispatch(getAllShopProducts());
+  }, [dispatch]);
+
   return (
     <Box sx={{ display: "flex", gap: 0, minHeight: "100vh", bgcolor: "#fff" }}>
       <Box
@@ -80,7 +77,7 @@ dispatch(getAllShopProducts())
               variant="outlined"
               size="small"
               startIcon={<SwapVertIcon fontSize="small" />}
-               onClick={handleSortOpen}
+              onClick={handleSortOpen}
               sx={{
                 textTransform: "none",
                 fontWeight: 600,
@@ -100,11 +97,8 @@ dispatch(getAllShopProducts())
             <Menu
               anchorEl={sortAnchor}
               open={Boolean(sortAnchor)}
-              // onClose={handleSortClose}
-              PaperProps={{
-                elevation: 2,
-                sx: { mt: 1, minWidth: 200, borderRadius: 2 },
-              }}
+              onClose={handleSortClose}
+                sx= {{ mt: 1, minWidth: 200, borderRadius: 2 }}
             >
               {sortOptions.map((opt) => (
                 <MenuItem
@@ -142,38 +136,25 @@ dispatch(getAllShopProducts())
             gap: 3,
             alignContent: "start",
           }}
-        ></Box>
-      </Box>
-<Box
-          sx={{
-            flex: 1,
-            p: 4,
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "repeat(1, 1fr)",
-              sm: "repeat(2, 1fr)",
-              md: "repeat(3, 1fr)",
-              lg: "repeat(4, 1fr)",
-            },
-            gap: 3,
-            alignContent: "start",
-          }}
         >
           {shopProductList && shopProductList.length > 0 ? (
             shopProductList.map((product) => (
-              <ShopProductCard key={product._id} product={product} />  
+              <ShopProductCard key={product._id} product={product} />
             ))
           ) : (
             <Typography
-              sx={{ gridColumn: "1/-1", textAlign: "center", color: "text.secondary", mt: 8 }}
+              sx={{
+                gridColumn: "1/-1",
+                textAlign: "center",
+                color: "text.secondary",
+                mt: 8,
+              }}
             >
               No products found.
             </Typography>
           )}
         </Box>
-
-
-
+      </Box>
     </Box>
   );
 };

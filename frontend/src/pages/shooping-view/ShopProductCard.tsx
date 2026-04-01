@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Button, Chip, Typography } from "@mui/material";
 
 interface Product {
@@ -6,14 +7,19 @@ interface Product {
   title: string;
   price: number;
   salePrice: number;
+  sizes?: string[];
 }
 interface ProductCardProps {
   product: Product;
 }
 
-export default function ShopProductCard({ product }: ProductCardProps) {
-  const { image, title, price, salePrice } = product;
+const DEFAULT_SIZES = ["S", "M", "L", "XL", "XXL"];
 
+export default function ShopProductCard({ product }: ProductCardProps) {
+  const { image, title, price, salePrice, sizes } = product;
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
+  const availableSizes = sizes && sizes.length > 0 ? sizes : DEFAULT_SIZES;
   const hasSale = salePrice && salePrice < price;
   const discountPct = hasSale
     ? Math.round(((price - salePrice) / price) * 100)
@@ -36,7 +42,15 @@ export default function ShopProductCard({ product }: ProductCardProps) {
         },
       }}
     >
-      <Box sx={{ position: "relative", width: "100%", height: "14rem", overflow: "hidden", background: "#f7f7f5" }}>
+      <Box
+        sx={{
+          position: "relative",
+          width: "100%",
+          height: "14rem",
+          overflow: "hidden",
+          background: "#f7f7f5",
+        }}
+      >
         <Box
           component="img"
           src={image}
@@ -70,12 +84,22 @@ export default function ShopProductCard({ product }: ProductCardProps) {
         )}
       </Box>
 
-      <Box sx={{ px: 2, pt: 1.5, pb: 2, display: "flex", flexDirection: "column", gap: 0.5 }}>
+      <Box
+        sx={{
+          px: 2,
+          pt: 1.5,
+          pb: 2,
+          display: "flex",
+          flexDirection: "column",
+          gap: 0.5,
+        }}
+      >
         <Typography
           sx={{
             fontFamily: "'Georgia', serif",
-            fontSize: "0.82rem",
-            color: "#555",
+            fontSize: "1.2rem",
+            fontWeight:"bold",
+            color: "#000",
             lineHeight: 1.5,
             wordBreak: "break-word",
             display: "-webkit-box",
@@ -92,7 +116,7 @@ export default function ShopProductCard({ product }: ProductCardProps) {
             sx={{
               fontFamily: "'Georgia', serif",
               fontSize: "1rem",
-              fontWeight: 700,
+              fontWeight: 500,
               color: "#1a1a1a",
             }}
           >
@@ -111,6 +135,56 @@ export default function ShopProductCard({ product }: ProductCardProps) {
               Rs.{price.toLocaleString()}
             </Typography>
           )}
+        </Box>
+
+        <Box sx={{ mt: 1 }}>
+          <Typography
+            sx={{
+              fontFamily: "'Georgia', serif",
+              fontSize: "0.7rem",
+              color: "#000",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              mb: 0.6,
+            }}
+          >
+            Size
+          </Typography>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+            {availableSizes.map((size) => (
+              <Box
+                key={size}
+                onClick={() =>
+                  setSelectedSize(selectedSize === size ? null : size)
+                }
+                sx={{
+                  width: 32,
+                  height: 32,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: "6px",
+                  border: "1.5px solid",
+                  borderColor: selectedSize === size ? "#1a1a1a" : "#ddd",
+                  bgcolor: selectedSize === size ? "#1a1a1a" : "transparent",
+                  color: selectedSize === size ? "#fff" : "#555",
+                  fontSize: "0.68rem",
+                  fontWeight: 600,
+                  fontFamily: "'Georgia', serif",
+                  letterSpacing: "0.04em",
+                  cursor: "pointer",
+                  transition: "all 0.18s ease",
+                  userSelect: "none",
+                  "&:hover": {
+                    borderColor: "#1a1a1a",
+                    color: selectedSize === size ? "#fff" : "#1a1a1a",
+                  },
+                }}
+              >
+                {size}
+              </Box>
+            ))}
+          </Box>
         </Box>
 
         <Button

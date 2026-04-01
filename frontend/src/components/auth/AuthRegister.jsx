@@ -5,6 +5,7 @@ import CommonForm from "../common/CommonForm";
 import { registerFormControls } from "../../config/formConfig";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../store/authSlice";
+import { useToast } from "../../hooks/useToast";
 
 const initialState = {
   userName: "",
@@ -16,10 +17,15 @@ const AuthRegister = () => {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {showToast}=useToast();
 
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
+       if(formData?.email==="" || formData?.password==="" ||formData?.userName==="") {
+              showToast("All fields required", "error");
+              return;
+      }
   const data = await dispatch(registerUser(formData)).unwrap();
 
   console.log(data);
