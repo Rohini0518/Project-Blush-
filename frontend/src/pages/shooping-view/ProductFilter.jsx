@@ -7,11 +7,9 @@ import {
   Typography,
   Paper,
 } from "@mui/material";
-import {filterProducts} from '../../config/formConfig'
+import { filterProducts } from "../../config/formConfig";
 
-export default function ProductFilter() {
- 
-
+export default function ProductFilter({ filters, handleFilter }) {
   return (
     <Paper
       elevation={0}
@@ -24,8 +22,8 @@ export default function ProductFilter() {
         p: 2.5,
         height: "fit-content",
         position: "sticky",
-       marginTop:"50px" ,
-       paddingLeft:"60px",
+        marginTop: "50px",
+        paddingLeft: "60px",
       }}
     >
       <Typography
@@ -55,8 +53,7 @@ export default function ProductFilter() {
           {section.componentType === "checkbox" && (
             <FormGroup>
               {section.options.map((opt) => {
-                const checked =false
-                
+                const checked = (filters[section.name] || []).includes(opt.id);
 
                 return (
                   <FormControlLabel
@@ -65,7 +62,9 @@ export default function ProductFilter() {
                       <Checkbox
                         size="small"
                         checked={checked}
-                        // onChange={handleChange(section.name, opt.id)}
+                        onChange={(e) =>
+                          handleFilter(section.name, opt.id, e.target.checked)
+                        }
                         sx={{
                           color: "text.disabled",
                           "&.Mui-checked": { color: "primary.main" },
@@ -85,9 +84,7 @@ export default function ProductFilter() {
             </FormGroup>
           )}
 
-          {idx < filterProducts.length - 1 && (
-            <Divider sx={{ mt: 2 }} />
-          )}
+          {idx < filterProducts.length - 1 && <Divider sx={{ mt: 2 }} />}
         </Box>
       ))}
     </Paper>

@@ -10,20 +10,35 @@ import ShopProductCard from "./ShopProductCard";
 const ShoppingListing = () => {
   const [selectedSort, setSelectedSort] = useState(null);
   const [sortAnchor, setSortAnchor] = useState(null);
-  const [filters, setFilters] = useState(null);
-  const [sort, setSort] = useState(null);
-
+  const [filters, setFilters] = useState({});
+  const dispatch = useDispatch();
+  const { shopProductList } = useSelector((state) => state.shopProducts);
+  const totalProducts = shopProductList?.length;
 
   const handleSortOpen = (e) => setSortAnchor(e.currentTarget);
   const handleSortClose = () => setSortAnchor(null);
   const handleSortSelect = (id) => {
+    console.log("sort-", id);
     setSelectedSort(id);
     handleSortClose();
   };
+  const selectedLabel =
+    sortOptions.find((opt) => opt.id === selectedSort)?.label || "Sort by";
 
-  const dispatch = useDispatch();
-  const { shopProductList } = useSelector((state) => state.shopProducts);
-  const totalProducts = shopProductList?.length;
+  const handleFilter = (sectionName, optionId, isChecked) => {
+    setFilters((prev) => {
+      const current = prev[sectionName] || [];
+      const updated = isChecked
+        ? [...current, optionId]
+        : current.filter((id) => id !== optionId);
+
+      return {
+        ...prev,
+        [sectionName]: updated,
+      };
+    });
+  };
+  console.log(filters, "all selected filters");
 
   useEffect(() => {
     dispatch(getAllShopProducts());
@@ -45,7 +60,7 @@ const ShoppingListing = () => {
           overflowY: "auto",
         }}
       >
-        <ProductFilter />
+        <ProductFilter filters={filters} handleFilter={handleFilter} />
       </Box>
 
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
@@ -91,14 +106,14 @@ const ShoppingListing = () => {
                 },
               }}
             >
-              Sort by
+              {selectedLabel}
             </Button>
 
             <Menu
               anchorEl={sortAnchor}
               open={Boolean(sortAnchor)}
               onClose={handleSortClose}
-                sx= {{ mt: 1, minWidth: 200, borderRadius: 2 }}
+              sx={{ mt: 1, minWidth: 200, borderRadius: 2 }}
             >
               {sortOptions.map((opt) => (
                 <MenuItem
