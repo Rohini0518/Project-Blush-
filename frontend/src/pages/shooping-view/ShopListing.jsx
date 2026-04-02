@@ -10,8 +10,10 @@ import ShopProductCard from "./ShopProductCard";
 const ShoppingListing = () => {
   const [selectedSort, setSelectedSort] = useState(null);
   const [sortAnchor, setSortAnchor] = useState(null);
-  const [filters, setFilters] = useState({});
-  const dispatch = useDispatch();
+const [filters, setFilters] = useState(() => {
+  const stored = sessionStorage.getItem('filters');
+  return stored ? JSON.parse(stored) : {};
+});  const dispatch = useDispatch();
   const { shopProductList } = useSelector((state) => state.shopProducts);
   const totalProducts = shopProductList?.length;
 
@@ -38,9 +40,15 @@ const ShoppingListing = () => {
       };
     });
   };
+useEffect(()=>{
+      sessionStorage.setItem('filters',JSON.stringify(filters))
+},[filters]);
+
   console.log(filters, "all selected filters");
 
-  useEffect(() => {
+
+
+useEffect(() => {
     dispatch(getAllShopProducts());
   }, [dispatch]);
 
