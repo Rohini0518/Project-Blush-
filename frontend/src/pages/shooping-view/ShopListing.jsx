@@ -6,14 +6,14 @@ import { sortOptions } from "../../config/formConfig";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllShopProducts } from "../../store/shop/shopProductsSlice";
 import ShopProductCard from "./ShopProductCard";
+import { useSearchParams } from "react-router-dom";
 
 const ShoppingListing = () => {
   const [selectedSort, setSelectedSort] = useState(null);
   const [sortAnchor, setSortAnchor] = useState(null);
-const [filters, setFilters] = useState(() => {
-  const stored = sessionStorage.getItem('filters');
-  return stored ? JSON.parse(stored) : {};
-});  const dispatch = useDispatch();
+const [filters, setFilters] = useState({});  
+const [searchParams,setSearchParams]=useSearchParams()
+const dispatch = useDispatch();
   const { shopProductList } = useSelector((state) => state.shopProducts);
   const totalProducts = shopProductList?.length;
 
@@ -40,13 +40,31 @@ const [filters, setFilters] = useState(() => {
       };
     });
   };
-useEffect(()=>{
-      sessionStorage.setItem('filters',JSON.stringify(filters))
-},[filters]);
 
+  
+useEffect(() => {
+  const params = new URLSearchParams();
+
+  Object.keys(filters).forEach((key) => {
+    if (filters[key].length > 0) {
+      params.set(key, filters[key].join(",")); 
+    }
+  });
+
+  setSearchParams(params);
+}, [filters]);
+
+//reversing url to filters for refesh safe
+useEffect(() => {
+  const newFilters = {};
+
+  for (let [key, value] of searchParams.entries()) {
+    newFilters[key] = value.split(","); 
+  }
+
+  setFilters(newFilters);
+}, []);
   console.log(filters, "all selected filters");
-
-
 
 useEffect(() => {
     dispatch(getAllShopProducts());
