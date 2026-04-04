@@ -10,15 +10,15 @@ import { useSearchParams } from "react-router-dom";
 
 const ShoppingListing = () => {
   const [selectedSort, setSelectedSort] = useState(null);
-  const [sortAnchor, setSortAnchor] = useState(null);
-const [filters, setFilters] = useState({});  
-const [searchParams,setSearchParams]=useSearchParams()
-const dispatch = useDispatch();
+  const [sort, setSort] = useState(null);
+  const [filters, setFilters] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch();
   const { shopProductList } = useSelector((state) => state.shopProducts);
   const totalProducts = shopProductList?.length;
 
-  const handleSortOpen = (e) => setSortAnchor(e.currentTarget);
-  const handleSortClose = () => setSortAnchor(null);
+  const handleSortOpen = (e) => setSort(e.currentTarget);
+  const handleSortClose = () => setSort(null);
   const handleSortSelect = (id) => {
     console.log("sort-", id);
     setSelectedSort(id);
@@ -41,34 +41,38 @@ const dispatch = useDispatch();
     });
   };
 
-  
-useEffect(() => {
-  const params = new URLSearchParams();
+  useEffect(() => {
+    const params = new URLSearchParams();
 
-  Object.keys(filters).forEach((key) => {
-    if (filters[key].length > 0) {
-      params.set(key, filters[key].join(",")); 
+    Object.keys(filters).forEach((key) => {
+      if (filters[key].length > 0) {
+        params.set(key, filters[key].join(","));
+      }
+    });
+
+    setSearchParams(params);
+  }, [filters]);
+
+  //reversing url to filters for refesh safe
+  useEffect(() => {
+    const newFilters = {};
+
+    for (let [key, value] of searchParams.entries()) {
+      newFilters[key] = value.split(",");
     }
-  });
 
-  setSearchParams(params);
-}, [filters]);
-
-//reversing url to filters for refesh safe
-useEffect(() => {
-  const newFilters = {};
-
-  for (let [key, value] of searchParams.entries()) {
-    newFilters[key] = value.split(","); 
-  }
-
-  setFilters(newFilters);
-}, []);
+    setFilters(newFilters);
+  }, []);
   console.log(filters, "all selected filters");
 
-useEffect(() => {
-    dispatch(getAllShopProducts());
-  }, [dispatch]);
+  useEffect(() => {
+    dispatch(
+      getAllShopProducts({
+        filterParams: filters,
+        sortParams: sort,
+      }),
+    );
+  }, [dispatch, sort, filters]);
 
   return (
     <Box sx={{ display: "flex", gap: 0, minHeight: "100vh", bgcolor: "#fff" }}>
@@ -136,8 +140,8 @@ useEffect(() => {
             </Button>
 
             <Menu
-              anchorEl={sortAnchor}
-              open={Boolean(sortAnchor)}
+              anchorEl={sort}
+              open={Boolean(sort)}
               onClose={handleSortClose}
               sx={{ mt: 1, minWidth: 200, borderRadius: 2 }}
             >
