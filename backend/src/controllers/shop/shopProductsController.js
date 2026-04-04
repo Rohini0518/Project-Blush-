@@ -17,9 +17,13 @@ const getfilterProducts = async (req, res) => {
       "title-atoz": { title: 1 },
       "title-ztoa": { title: -1 },
     };
+    let query =  AdminProducts.find(filters);
+     if (sortBy && sortOption[sortBy]) {
+      query = query.sort(sortOption[sortBy]);
+    }
 
-    const products = (await AdminProducts.find(filters)).sort(sortOption[sortBy] || { price: 1 });
-    if (!products) {
+    const products = await query;
+    if (!products.length) {
       res.status(400).json({
         success: false,
         message: "No Products FOund",
@@ -32,7 +36,7 @@ const getfilterProducts = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Error Occured server side",
+      message: error.message,
     });
   }
 };
