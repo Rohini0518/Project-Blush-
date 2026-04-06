@@ -2,34 +2,41 @@ import AdminProducts from "../../models/admin/adminProductModel.js";
 
 const getfilterProducts = async (req, res) => {
   try {
-    const { category = [], brand = [], sortBy = "price-lowtohigh" } = req.query;
+    const { category = "", size = "", sortBy = "price-lowtohigh" } = req.query;
     let filters = {};
     if (category.length) {
       filters.category = { $in: category.split(",") };
     }
-    if (brand.length) {
-      filters.brand = { $in: brand.split(",") };
+    if (size.length) {
+      filters.size = { $in: size.split(",") };
     }
-    
-     let sortOption = {
-      "price-lowtohigh": { price: 1 },
-      "price-hightolow": { price: -1 },
+    // for example from cilent we get if both category and size there..
+    // --- >   filters = {
+    //   category: { $in: ["electronics", "clothing"] },
+    //   size: { $in: ["nike", "puma"] }
+    // };
+    let sortOption = {
+      "price-lowtohigh": { salePrice: 1 },
+      "price-hightolow": { salePrice: -1 },
       "title-atoz": { title: 1 },
       "title-ztoa": { title: -1 },
     };
-    let query =  AdminProducts.find(filters);
-     if (sortBy && sortOption[sortBy]) {
+    console.log(sortOption[sortBy], sortBy, size, "cate", category);
+
+    let query = AdminProducts.find(filters);
+    if (sortBy && sortOption[sortBy]) {
       query = query.sort(sortOption[sortBy]);
+      console.log(query);
     }
 
     const products = await query;
     if (!products.length) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "No Products FOund",
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: products,
     });
@@ -41,4 +48,26 @@ const getfilterProducts = async (req, res) => {
   }
 };
 
-export { getfilterProducts };
+const getProductDetails=async(req,res)=>{
+const{id}=req.body
+  try{
+const product=await AdminProducts.findById(id)
+ if (!product) {
+      return res.status(400).json({
+        success: false,
+        message: "No Product ",
+      });
+    }
+    return res.status(200).json({
+      success:true,
+      data:product
+    })
+  }
+ catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+export { getfilterProducts ,getProductDetails};

@@ -69,10 +69,10 @@ const ShoppingListing = () => {
     dispatch(
       getAllShopProducts({
         filterParams: filters,
-        sortParams: sort,
+        sortParams: selectedSort,
       }),
     );
-  }, [dispatch, sort, filters]);
+  }, [dispatch, selectedSort, filters]);
 
   return (
     <Box sx={{ display: "flex", gap: 0, minHeight: "100vh", bgcolor: "#fff" }}>

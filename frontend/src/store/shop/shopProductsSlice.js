@@ -4,6 +4,7 @@ import { axiosInstance } from "../../api/axiosInstance";
 const initialState = {
   isLoading: false,
   shopProductList: [],
+  productDetails:null
 };
 
 export const getAllShopProducts = createAsyncThunk(
@@ -16,6 +17,19 @@ export const getAllShopProducts = createAsyncThunk(
     return result?.data;
   },
 );
+
+export const getProductDetails=createAsyncThunk("/shopproducts/getProductDetails",
+  async (productId, { rejectWithValue })=>{
+  try {
+      const res = await axiosInstance.get(`/api/products/${productId}`);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data);
+    }
+  }
+);
+
+
 const shopProductsSlice = createSlice({
   name: "shopProducts",
   initialState,

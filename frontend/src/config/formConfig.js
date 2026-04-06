@@ -73,9 +73,9 @@ export const addAdminProductFormElements = [
     componentType: "select",
     options: [
       { id: "xs", label: "XS" },
-      { id: "small", label: "Small" },
-      { id: "medium", label: "Medium" },
-      { id: "large", label: "Large" },
+      { id: "s", label: "S" },
+      { id: "m", label: "M" },
+      { id: "l", label: "L" },
       { id: "xl", label: "XL" },
       { id: "xxl", label: "XXL" },
     ],
