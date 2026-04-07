@@ -6,6 +6,6 @@ import  {getfilterProducts, getProductDetails} from '../../controllers/shop/shop
 const shoprouter=express.Router();
 
 shoprouter.get("/get",getfilterProducts);
-shoprouter.get("/get/:id",getProductDetails)
+shoprouter.get("/getproduct/:id",getProductDetails)
 
 export default shoprouter;

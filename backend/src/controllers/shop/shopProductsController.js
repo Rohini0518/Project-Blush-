@@ -49,7 +49,7 @@ const getfilterProducts = async (req, res) => {
 };
 
 const getProductDetails=async(req,res)=>{
-const{id}=req.body
+const { id } = req.params;
   try{
 const product=await AdminProducts.findById(id)
  if (!product) {

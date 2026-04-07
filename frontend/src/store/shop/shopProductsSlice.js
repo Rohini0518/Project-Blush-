@@ -20,9 +20,12 @@ export const getAllShopProducts = createAsyncThunk(
 
 export const getProductDetails=createAsyncThunk("/shopproducts/getProductDetails",
   async (productId, { rejectWithValue })=>{
+          console.log("product id slice")
+
   try {
-      const res = await axiosInstance.get(`/api/products/${productId}`);
-      return res.data;
+      const res = await axiosInstance.get(`/api/shop/products/getproduct/${productId}`);
+      console.log(res?.data,"product id details")
+      return res?.data;
     } catch (err) {
       return rejectWithValue(err.response?.data);
     }
@@ -48,7 +51,18 @@ const shopProductsSlice = createSlice({
       .addCase(getAllShopProducts.rejected, (state) => {
         state.isLoading = false;
         state.shopProductList = [];
-      });
+      })
+         .addCase(getProductDetails.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getProductDetails.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.productDetails = action.payload.data; 
+    })
+    .addCase(getProductDetails.rejected, (state) => {
+      state.isLoading = false;
+      state.productDetails = null;
+    });
   },
 });
 

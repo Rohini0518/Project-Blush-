@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Box, Button, Chip, Typography } from "@mui/material";
+import ShopProductDetails from "./ShopProductDetails";
 
 interface Product {
   _id: string;
@@ -18,13 +19,20 @@ const DEFAULT_SIZES = ["S", "M", "L", "XL", "XXL"];
 export default function ShopProductCard({ product }: ProductCardProps) {
   const { image, title, price, salePrice, sizes } = product;
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-
+  const [open,setOpen]=useState(false)
   const availableSizes = sizes && sizes.length > 0 ? sizes : DEFAULT_SIZES;
   const hasSale = salePrice && salePrice < price;
   const discountPct = hasSale
     ? Math.round(((price - salePrice) / price) * 100)
     : 0;
+const handleClose=()=>{
+setOpen(false)
+}
 
+const handleOpen=()=>{
+  setOpen(true);
+ 
+}
   return (
     <Box
       sx={{
@@ -41,7 +49,9 @@ export default function ShopProductCard({ product }: ProductCardProps) {
           "& .product-img": { transform: "scale(1.05)" },
         },
       }}
+      onClick={handleOpen}
     >
+      {open?<ShopProductDetails productId={product._id} open={open} onClose={handleClose}/> :null}
       <Box
         sx={{
           position: "relative",
