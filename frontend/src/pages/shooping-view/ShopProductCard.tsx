@@ -25,13 +25,15 @@ export default function ShopProductCard({ product }: ProductCardProps) {
   const discountPct = hasSale
     ? Math.round(((price - salePrice) / price) * 100)
     : 0;
-const handleClose=()=>{
+const handleClose=(e)=>{
+e.stopPropagation();
+  console.log("onclose",)
+
 setOpen(false)
 }
 
 const handleOpen=()=>{
   setOpen(true);
- 
 }
   return (
     <Box
@@ -51,7 +53,7 @@ const handleOpen=()=>{
       }}
       onClick={handleOpen}
     >
-      {open?<ShopProductDetails productId={product._id} open={open} onClose={handleClose}/> :null}
+      <ShopProductDetails productId={product._id} open={open} onClose={handleClose}/> 
       <Box
         sx={{
           position: "relative",

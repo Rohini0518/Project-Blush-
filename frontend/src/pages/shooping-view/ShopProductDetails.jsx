@@ -17,24 +17,22 @@ import RemoveIcon from "@mui/icons-material/Remove";
 
 const ShopProductDetails = ({ productId, open, onClose }) => {
   const dispatch = useDispatch();
-  console.log(productId,open,onClose,"pdetailsprops")
   const { productDetails, isLoading } = useSelector(
-    (state) => state.shopProducts
+    (state) => state.shopProducts,
   );
-  console.log(productDetails,isLoading,"productDetails,islaoding")
-  const [quantity, setQuantity] = useState(1);
+  console.log(productDetails, isLoading, "productDetails,islaoding");
+  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
-    if (productId && open) {dispatch(getProductDetails(productId))};
-
+    if (productId && open) {
+      dispatch(getProductDetails(productId));
+    }
   }, [dispatch, productId, open]);
 
-  useEffect(() => {
-    if (!open) setQuantity(1);
-  }, [open]);
-
   const displayPrice = productDetails?.salePrice || productDetails?.price;
-  const originalPrice = productDetails?.salePrice ? productDetails?.price : null;
+  const originalPrice = productDetails?.salePrice
+    ? productDetails?.price
+    : null;
   const discount = originalPrice
     ? Math.round(((originalPrice - displayPrice) / originalPrice) * 100)
     : null;
@@ -46,7 +44,7 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
         size="small"
         sx={{ position: "absolute", top: 12, right: 12, zIndex: 1 }}
       >
-        <CloseIcon fontSize="small" />
+        {/* <CloseIcon fontSize="small" /> */}@
       </IconButton>
 
       <DialogContent sx={{ p: 0 }}>
@@ -123,7 +121,11 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
                   </Typography>
                 )}
                 {discount && (
-                  <Typography variant="body2" fontWeight={600} color="success.main">
+                  <Typography
+                    variant="body2"
+                    fontWeight={600}
+                    color="success.main"
+                  >
                     {discount}% off
                   </Typography>
                 )}
@@ -131,7 +133,11 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
 
               <Divider />
 
-              <Typography variant="body2" color="text.secondary" lineHeight={1.7}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                lineHeight={1.7}
+              >
                 {productDetails.description}
               </Typography>
 
@@ -222,7 +228,9 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
                     "&:hover": { bgcolor: "text.secondary" },
                   }}
                 >
-                  {productDetails.totalStock === 0 ? "Out of Stock" : "Add to Cart"}
+                  {productDetails.totalStock === 0
+                    ? "Out of Stock"
+                    : "Add to Cart"}
                 </Button>
               </Box>
             </Box>

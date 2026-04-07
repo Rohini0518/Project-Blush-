@@ -29,8 +29,8 @@ const AuthLogin = () => {
       }
       const result = await dispatch(loginUser(formData)).unwrap();
 
-      console.log(result?.success, "resultsucces");
-      console.log(result, "just complete result");
+      // console.log(result?.success, "resultsucces");
+      // console.log(result, "just complete result");
 
       if (result?.success) {
         navigate("/");
