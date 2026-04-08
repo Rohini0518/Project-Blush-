@@ -37,6 +37,23 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
     ? Math.round(((originalPrice - displayPrice) / originalPrice) * 100)
     : null;
 
+  const handleIncrease = () => {
+    if (quantity >= 0 && quantity < 10) {
+      console.log("quantity increase", quantity);
+      setQuantity((prev) => prev + 1);
+    } else {
+      setQuantity((prev) => prev);
+    }
+  };
+  const handleDecrease = () => {
+    if (quantity >= 1) {
+      console.log("quantity decrease", quantity);
+
+      setQuantity((prev) => prev - 1);
+    } else {
+      setQuantity((prev) => prev);
+    }
+  };
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <IconButton
@@ -44,7 +61,7 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
         size="small"
         sx={{ position: "absolute", top: 12, right: 12, zIndex: 1 }}
       >
-        {/* <CloseIcon fontSize="small" /> */}@
+        <CloseIcon fontSize="small" />
       </IconButton>
 
       <DialogContent sx={{ p: 0 }}>
@@ -187,7 +204,7 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
                 >
                   <IconButton
                     size="small"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    onClick={handleDecrease}
                     sx={{ borderRadius: 0 }}
                   >
                     <RemoveIcon sx={{ fontSize: 16 }} />
@@ -207,17 +224,16 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
                   </Typography>
                   <IconButton
                     size="small"
-                    onClick={() => setQuantity((q) => q + 1)}
+                    onClick={handleIncrease}
                     sx={{ borderRadius: 0 }}
                   >
-                    <AddIcon sx={{ fontSize: 16 }} />
+                  <AddIcon sx={{ fontSize: 16 }} />
                   </IconButton>
                 </Box>
 
                 <Button
                   variant="contained"
                   disableElevation
-                  fullWidth
                   disabled={productDetails.totalStock === 0}
                   sx={{
                     textTransform: "none",

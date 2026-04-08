@@ -217,6 +217,7 @@ const handleOpen=()=>{
             transition: "all 0.22s ease",
             "&:hover": { background: "#1a1a1a", color: "#fff" },
           }}
+          // onClick={}
         >
           Add To Cart
         </Button>
