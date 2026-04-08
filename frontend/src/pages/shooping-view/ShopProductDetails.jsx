@@ -58,6 +58,7 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
       dispatch(getProductDetails(productId));
     }
   }, [dispatch, productId, open]);
+const stock = productDetails.totalStock;
 
   const displayPrice = productDetails?.salePrice || productDetails?.price;
   const originalPrice = productDetails?.salePrice
@@ -198,9 +199,11 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
                   {
                     label: "Stock",
                     value:
-                      productDetails.totalStock > 0
-                        ? `${productDetails.totalStock} available`
-                        : "Out of Stock",
+                            stock > 5
+                              ? "In Stock"
+                              : stock > 0
+                              ? ` Hurry Up only ${stock} available`
+                              : "Out of Stock",
                   },
                 ]
                   .filter((r) => r.value)

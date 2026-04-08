@@ -51,9 +51,7 @@ const handleOpen=()=>{
           "& .product-img": { transform: "scale(1.05)" },
         },
       }}
-      onClick={handleOpen}
     >
-      <ShopProductDetails productId={product._id} open={open} onClose={handleClose}/> 
       <Box
         sx={{
           position: "relative",
@@ -75,7 +73,10 @@ const handleOpen=()=>{
             display: "block",
             transition: "transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
           }}
+                onClick={handleOpen}
+
         />
+      <ShopProductDetails productId={product._id} open={open} onClose={handleClose}/> 
 
         {hasSale && (
           <Chip
@@ -166,8 +167,9 @@ const handleOpen=()=>{
             {availableSizes.map((size) => (
               <Box
                 key={size}
-                onClick={() =>
-                  setSelectedSize(selectedSize === size ? null : size)
+                onClick={(e) =>{
+                  e.stopPropagation()
+                  setSelectedSize(selectedSize === size ? null : size)}
                 }
                 sx={{
                   width: 32,
