@@ -58,7 +58,7 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
       dispatch(getProductDetails(productId));
     }
   }, [dispatch, productId, open]);
-const stock = productDetails.totalStock;
+  const stock = productDetails?.totalStock;
 
   const displayPrice = productDetails?.salePrice || productDetails?.price;
   const originalPrice = productDetails?.salePrice
@@ -67,7 +67,8 @@ const stock = productDetails.totalStock;
   const discount = originalPrice
     ? Math.round(((originalPrice - displayPrice) / originalPrice) * 100)
     : null;
-
+    
+  console.log("stock,displayPrice,originalprice,discount",stock,displayPrice,discount);
   const handleIncrease = () => {
     if (quantity < 10) setQuantity((prev) => prev + 1);
   };
@@ -199,11 +200,11 @@ const stock = productDetails.totalStock;
                   {
                     label: "Stock",
                     value:
-                            stock > 5
-                              ? "In Stock"
-                              : stock > 0
-                              ? ` Hurry Up only ${stock} available`
-                              : "Out of Stock",
+                      stock > 5
+                        ? "In Stock"
+                        : stock > 0
+                          ? ` Hurry Up only ${stock} available`
+                          : "Out of Stock",
                   },
                 ]
                   .filter((r) => r.value)
