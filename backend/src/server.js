@@ -8,7 +8,7 @@ import authRouter from "./routes/auth/authRoute.js";
 import adminproductsrouter from './routes/admin/admin-products-routes.js'
 import { configureCloudinary } from "./helpers/cloudinaryConfig.js";
 import shoprouter from "./routes/shop/shop-product-routes.js";
-
+import shopcartrouter from "/"
 configureCloudinary(); 
 const app = express();
 
