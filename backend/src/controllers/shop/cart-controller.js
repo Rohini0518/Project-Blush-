@@ -118,13 +118,13 @@ const updateCartItemQuantity = async (req, res) => {
     const findCurrentProductIndex = cart.items.findIndex(
       (item) => item.productId.toString() === productId,
     );
-    if (!findCurrentProductIndex) {
+    if (findCurrentProductIndex ===-1) {
       return res.status(404).json({
         success: false,
         message: "No product Found",
       });
     }
-    cart.items[findCurrentProductIndex].quantity;
+    cart.items[findCurrentProductIndex].quantity=quantity
     await cart.save();
     await cart.populate({
       path: "items.productId",
