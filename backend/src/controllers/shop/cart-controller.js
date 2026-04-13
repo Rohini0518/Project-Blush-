@@ -98,7 +98,7 @@ const fetchCartItems = async (req, res) => {
   }
 };
 
-const updateCartIteQuantity = async (req, res) => {
+const updateCartItemQuantity = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
     if (!userId || !productId || quantity <= 0) {
@@ -121,7 +121,7 @@ const updateCartIteQuantity = async (req, res) => {
     if (!findCurrentProductIndex) {
       return res.status(404).json({
         success: false,
-        message: "No Cart Found",
+        message: "No product Found",
       });
     }
     cart.items[findCurrentProductIndex].quantity;
@@ -205,4 +205,4 @@ const deleteCartItem = async (req, res) => {
   }
 };
 
-export { addToCart, fetchCartItems, updateCartIteQuantity, deleteCartItem };
+export { addToCart, fetchCartItems, updateCartItemQuantity, deleteCartItem };
