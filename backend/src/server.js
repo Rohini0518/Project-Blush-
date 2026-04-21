@@ -45,6 +45,6 @@ app.listen(5000, () => {
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("mongodb connected"))
-  .catch((error) => console.log("error-", error));
+  .catch((error) => console.log("error-Failed to connect t mongodb", error));
 
 //  mongodb+srv://rohinipolina0518_db_user:<db_password>@clusterblush.1axaliw.mongodb.net/
