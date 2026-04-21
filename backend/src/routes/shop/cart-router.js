@@ -3,11 +3,11 @@ import  { addToCart, fetchCartItems, updateCartItemQuantity, deleteCartItem } fr
 
 
 
-const router= express.Router();
+const cartrouter= express.Router();
 
-router.post('/add',addToCart);
-router.get('/get',fetchCartItems);
-router.put('/update-cart',updateCartItemQuantity);
-router.delete('/:userId/:productId',fetchCartItems);
+cartrouter.post('/add',addToCart);
+cartrouter.get('/get',fetchCartItems);
+cartrouter.put('/update-cart',updateCartItemQuantity);
+cartrouter.delete('/:userId/:productId',fetchCartItems);
 
-export default router;
+export default cartrouter;

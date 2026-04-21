@@ -183,7 +183,7 @@ const deleteCartItem = async (req, res) => {
       select: "image title price salePrice",
     });
     const populateCartItems = cart?.items.map((item) => ({
-      productId: item.productId?._id || null,
+      productId:item.productId ? item.productId?._id : null,
       image: item.productId?.image || null,
       title: item.productId?.title || null,
       price: item.productId?.price || null,
