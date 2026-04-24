@@ -1,9 +1,9 @@
-import express from "express";
+import {Router} from "express";
 import  { addToCart, fetchCartItems, updateCartItemQuantity, deleteCartItem } from "../../routes/shop/cart-controller.js"
 
 
 
-const cartrouter= express.Router();
+const cartrouter= Router();
 
 cartrouter.post('/add',addToCart);
 cartrouter.get('/get',fetchCartItems);
