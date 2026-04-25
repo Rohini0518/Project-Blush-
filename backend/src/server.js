@@ -9,6 +9,9 @@ import adminproductsrouter from "./routes/admin/admin-products-routes.js";
 import cartrouter from "./routes/shop/cart-router.js";
 import { configureCloudinary } from "./helpers/cloudinaryConfig.js";
 import shoprouter from "./routes/shop/shop-product-routes.js";
+import { otpRouter } from "./emailOtpAuth/routes/otpAuth.js";
+
+
 configureCloudinary();
 const app = express();
 
@@ -33,6 +36,7 @@ app.use(express.json());
 //incoming data parser,This middleware runs before your controller.
 app.use(cookieParser());
 app.use("/api/auth", authRouter);
+app.use("/auth",otpRouter);
 app.use("/api/admin/products", adminproductsrouter);
 app.get("/", (req, res) => {
   res.send("Blush backedn running 🚀🚀");

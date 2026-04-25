@@ -1,11 +1,18 @@
 import { Router } from "express";
+import { emailRegex } from "../../utils/regex";
 
-const otprouter=Router();
+const  otpRouter=Router();
 
-otprouter.post("/otp/send",(req,res)=>{})
+otpRouter.post("/otp/send",(req,res)=>{
+    const email=req.body.email;
+    if(!emailRegex.test(email)){
+        return reqstatus(400).json({
+            message:"InValid Email Address"
+        })
+    }
+})
 
 
 
-export {otprouter}
-
+export {otpRouter}
 
