@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { emailRegex } from "../utils/regex";
+import { emailRegex } from "../utils/regex.js";
 
 const USER_ROLES = {
   ADMIN: "ADMIN",

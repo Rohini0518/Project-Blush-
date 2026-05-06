@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
+console.log("EMAIL:", process.env.EMAIL);
+console.log("EMAILPASS:", process.env.EMAILPASS);
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -39,16 +41,16 @@ app.use("/api/auth", authRouter);
 app.use("/auth",otpRouter);
 app.use("/api/admin/products", adminproductsrouter);
 app.get("/", (req, res) => {
-  res.send("Blush backedn running 🚀🚀");
+  res.send("Blush backend running 🚀🚀");
 });
 app.use("/api/shop/products", shoprouter);
 app.use("/api/shop/cart", cartrouter);
 app.listen(5000, () => {
-  console.log("server running on port 5000");
+  console.log("server running on local port 5000");
 });
-mongoose
+mongoose 
   .connect(process.env.MONGO_URI)
   .then(() => console.log("mongodb connected"))
   .catch((error) => console.log("error-Failed to connect t mongodb", error));
-
 //  mongodb+srv://rohinipolina0518_db_user:<db_password>@clusterblush.1axaliw.mongodb.net/
+

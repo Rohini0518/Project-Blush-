@@ -1,5 +1,5 @@
-import Cart from "../../models/cartModel";
-import AdminProducts from "../../models/admin/adminProductModel";
+import Cart from "../../models/cartModel.js";
+import AdminProducts from "../../models/admin/adminProductModel.js";
 
 const addToCart = async (req, res) => {
   try {
@@ -58,7 +58,7 @@ const fetchCartItems = async (req, res) => {
     }
 
     const cart = await Cart.findOne({ userId }).populate({
-      path: "item.productId",
+      path: "items.productId",
       select: "image title price salePrice",
     });
 
@@ -155,7 +155,7 @@ const updateCartItemQuantity = async (req, res) => {
 
 const deleteCartItem = async (req, res) => {
   try {
-    const { userId, productId } = req.paramas;
+    const { userId, productId } = req.params;
     if (!userId || !productId) {
       return res.status(400).json({
         success: false,
@@ -175,10 +175,10 @@ const deleteCartItem = async (req, res) => {
     }
 
     cart.items = cart?.items?.filter(
-      (item) => item.productId._id.toStrig() !== productId,
+      (item) => item.productId._id.toString() !== productId,
     );
     await cart.save();
-    await Cart.populate({
+    await cart.populate({
       path: "items.productId",
       select: "image title price salePrice",
     });

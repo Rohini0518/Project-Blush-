@@ -1,5 +1,5 @@
 import {Router} from "express";
-import  { addToCart, fetchCartItems, updateCartItemQuantity, deleteCartItem } from "../../routes/shop/cart-controller.js"
+import  { addToCart, fetchCartItems, updateCartItemQuantity, deleteCartItem } from "../../controllers/shop/cart-controller.js"
 
 
 
