@@ -1,7 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-console.log("EMAIL:", process.env.EMAIL);
-console.log("EMAILPASS:", process.env.EMAILPASS);
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";

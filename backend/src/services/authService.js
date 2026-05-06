@@ -2,10 +2,9 @@ import UserOtpModel from "../emailOtpAuth/UserOtpModel.js";
 import dotenv from "dotenv";
 dotenv.config();
 import nodemailer from 'nodemailer'
+import UserOtp from "../emailOtpAuth/UserOtpModel.js";
 //sends an otp to the specified email address.
 
-console.log(process.env.EMAIL);
-console.log(process.env.EMAILPASS);
 const transporter=nodemailer.createTransport({
     service:"gmail",
     auth:{
@@ -131,3 +130,30 @@ const otpcreate = Math.floor(1000 + Math.random() * 9000);    const otpExpiry = 
     res.status(500).json({message:error.message})
   }
 };
+
+export const verifyOtp=async (email,ToVerifyotp)=>{
+try{
+const user=await UserOtp.findOne({email});
+if(!user){
+  return {statusCode:404,message:"User Not Found"}
+}
+if(!user.otp) return {statusCode:404,message:"Otp Not Found Please Send An Otp"};
+
+const currentTimeStamp=Math.floor(new Date().getTime()/1000);
+if(user.otpExpiry < currentTimeStamp) return {statusCode:410,message:"Otp Expired Resend Again"}
+
+if(user.otp !== verifyOtp) return {statusCode:400,message:"Invalid Otp Entered Please Check"};
+
+//if it passes all above email and otp are verified
+//1.delete Otp and otpexpiry from database
+//2.generate JWT with users details
+ await UserOtp.updateOne({_id:user._id},{$unset:{"otp":"",otpExpiry:""}})
+ const token=generateToken({id:user._id,role:user.role});
+ return {statusCode:200,message:"Login Success",token}
+}
+
+
+catch(error){
+ return {statusCode:500,message:error.message}
+}
+}
