@@ -1,5 +1,9 @@
  import jwt from 'jsonwebtoken'
- 
- export function generateToken({id,role}){
+ import dotenv from 'dotenv';
+dotenv.config();
 
+
+
+ export function generateToken(claims){
+ return jwt.sign(claims,process.env.JWTSSECRETDUMMY,{expiryin:"4W"})
  }
