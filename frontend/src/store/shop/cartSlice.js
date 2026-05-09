@@ -39,7 +39,7 @@ export const updateCartItem = createAsyncThunk(
 );
 export const deleteCartItem = createAsyncThunk(
   "cart/deleteCart",
-  async (userId, productId) => {
+  async ({userId, productId}) => {
     const response = await axiosInstance.delete(
       `/api/shop/cart/delete/${userId}/${productId}`,
     );
