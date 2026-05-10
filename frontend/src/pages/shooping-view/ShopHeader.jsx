@@ -25,8 +25,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../store/authSlice";
 import { useToast } from "../../hooks/useToast";
+import CartDialog from "../../store/shop/CartDialog";
 
-export default function ShopHeader({ search, setSearch }) {
+export default function ShopHeader({ search="", setSearch }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -39,6 +40,8 @@ export default function ShopHeader({ search, setSearch }) {
   const handleMenuClose = () => setMenuAnchor(null);
   const { showToast } = useToast();
 
+  const [cartOpen, setCartOpen] = useState(false);
+
   const handleLogout = async () => {
     try {
       const logout = await dispatch(logoutUser()).unwrap();
@@ -46,7 +49,6 @@ export default function ShopHeader({ search, setSearch }) {
 
       handleMenuClose();
     } catch (error) {
-      console.log("error in logout", error.message);
       showToast("product Operation Failed", "error");
     }
   };
@@ -158,6 +160,7 @@ export default function ShopHeader({ search, setSearch }) {
           <FavoriteBorderIcon sx={{ fontSize: isMobile ? 24 : 22 }} />
         </IconButton>
         <IconButton
+          onClick={() => setCartOpen(true)}
           sx={{
             color: "#555",
             transition: "color 0.2s ease, transform 0.2s ease",
@@ -275,6 +278,8 @@ export default function ShopHeader({ search, setSearch }) {
           </>
         )}
       </Box>
+            <CartDialog open={cartOpen} onClose={() => setCartOpen(false)} />
+
     </Box>
   );
 }
