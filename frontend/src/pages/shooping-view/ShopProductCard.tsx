@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Box, Button, Chip, Typography } from "@mui/material";
+import { Box, Button, Chip, Typography, IconButton } from "@mui/material";
 import ShopProductDetails from "./ShopProductDetails";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../store/shop/cartSlice";
 
 interface Product {
   _id: string;
@@ -17,9 +19,15 @@ interface ProductCardProps {
 const DEFAULT_SIZES = ["S", "M", "L", "XL", "XXL"];
 
 export default function ShopProductCard({ product }: ProductCardProps) {
-  const { image, title, price, salePrice, sizes } = product;
+  const { image, title, price, salePrice, sizes,_id: productId} = product;
+  // console.log(product,"product info from ahopproductcard")
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [open,setOpen]=useState(false)
+  const [quantity, setQuantity] = useState<number>(0);
+ const dispatch=useDispatch()
+ const { user } = useSelector((state) => state.auth);
+  const userId = user?._id;
+  console.log(userId,"userID")
   const availableSizes = sizes && sizes.length > 0 ? sizes : DEFAULT_SIZES;
   const hasSale = salePrice && salePrice < price;
   const discountPct = hasSale
@@ -35,6 +43,36 @@ setOpen(false)
 const handleOpen=()=>{
   setOpen(true);
 }
+
+
+
+  const handleAddToCart = () => {
+  dispatch(addToCart({ userId, productId, quantity: 1 }));
+  setQuantity(1);
+};
+
+  const handleIncrease = (e) => {
+    e.stopPropagation();
+    const newQty = quantity + 1;
+    setQuantity(newQty);
+  
+  };
+
+  const handleDecrease = (e) => {
+    e.stopPropagation();
+    if (quantity === 1) {
+      // Goes back to "Add To Cart" button when qty hits 0
+      setQuantity(0);
+      // 👇 DISPATCH YOUR REMOVE-FROM-CART ACTION HERE
+      // dispatch(removeFromCart({ productId: product._id }));
+    } else {
+      const newQty = quantity - 1;
+      setQuantity(newQty);
+      // 👇 DISPATCH YOUR DECREMENT ACTION HERE
+      // dispatch(decrementQuantity({ productId: product._id, quantity: newQty }));
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -201,28 +239,90 @@ const handleOpen=()=>{
           </Box>
         </Box>
 
-        <Button
-          sx={{
-            mt: 1,
-            width: "100%",
-            py: 0.8,
-            fontFamily: "'Georgia', serif",
-            fontSize: "0.72rem",
-            fontWeight: 600,
-            letterSpacing: "0.09em",
-            textTransform: "uppercase",
-            color: "#1a1a1a",
-            background: "transparent",
-            border: "1.5px solid #1a1a1a",
-            borderRadius: "6px",
-            minHeight: "unset",
-            transition: "all 0.22s ease",
-            "&:hover": { background: "#1a1a1a", color: "#fff" },
-          }}
-          // onClick={}
-        >
-          Add To Cart
-        </Button>
+         {quantity === 0 ? (
+          // Shows when item is NOT in cart
+          <Button
+           onClick={handleAddToCart}     
+                  sx={{
+              mt: 1,
+              width: "100%",
+              py: 0.8,
+              fontFamily: "'Georgia', serif",
+              fontSize: "0.72rem",
+              fontWeight: 600,
+              letterSpacing: "0.09em",
+              textTransform: "uppercase",
+              color: "#1a1a1a",
+              background: "transparent",
+              border: "1.5px solid #1a1a1a",
+              borderRadius: "6px",
+              minHeight: "unset",
+              transition: "all 0.22s ease",
+              "&:hover": { background: "#1a1a1a", color: "#fff" },
+            }}
+          >
+            Add To Cart
+          </Button>
+        ) : (
+          <Box
+            sx={{
+              mt: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              border: "1.5px solid #1a1a1a",
+              borderRadius: "6px",
+              overflow: "hidden",
+              height: "36px",
+            }}
+          >
+            <IconButton
+              onClick={handleDecrease}
+              size="small"
+              sx={{
+                borderRadius: 0,
+                flex: 1,
+                height: "100%",
+                fontSize: "1rem",
+                fontWeight: 700,
+                color: "#1a1a1a",
+                "&:hover": { background: "#f0f0f0" },
+              }}
+            >
+              −
+            </IconButton>
+
+            <Typography
+              sx={{
+                fontFamily: "'Georgia', serif",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                color: "#1a1a1a",
+                minWidth: "32px",
+                textAlign: "center",
+                userSelect: "none",
+              }}
+            >
+              {quantity}
+            </Typography>
+
+            <IconButton
+              onClick={handleIncrease}
+              size="small"
+              sx={{
+                borderRadius: 0,
+                flex: 1,
+                height: "100%",
+                fontSize: "1rem",
+                fontWeight: 700,
+                color: "#1a1a1a",
+                "&:hover": { background: "#f0f0f0" },
+              }}
+            >
+              +
+            </IconButton>
+          </Box>
+        )}
       </Box>
     </Box>
   );

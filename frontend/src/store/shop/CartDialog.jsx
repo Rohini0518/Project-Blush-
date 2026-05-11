@@ -265,7 +265,7 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
 
 export default function CartDialog({ open, onClose }) {
 
-  // const cartItems = MOCK_CART;
+  // const cartItems = MOCK_CART;s
 
 
   const {cartItems}=useSelector((state)=>state.shoppingCart)

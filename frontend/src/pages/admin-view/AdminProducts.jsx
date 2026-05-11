@@ -34,15 +34,12 @@ const initialFormData = {
 
 const AdminProducts = () => {
   const [openCreatePrdDialog, setOpenCreatePrdDialog] = useState(false);
-
   const [formData, setFormData] = useState(initialFormData);
-
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImage, setUploadedImage] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
   const { productList } = useSelector((state) => state.adminProducts);
   const [editId, setEditId] = useState(null);
-
   const dispatch = useDispatch();
   const { showToast } = useToast();
 
@@ -52,7 +49,6 @@ const AdminProducts = () => {
       ...formData,
       image: uploadedImage,
     };
-
     try {
       let result;
       if (editId) {

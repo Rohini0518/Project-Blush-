@@ -12,7 +12,7 @@ import NotFound from "./components/NotFound";
 import ShopingDashboard from "./pages/shooping-view/ShopDashboard";
 import ShopCheckout from "./pages/shooping-view/ShopCheckout";
 import ShopAccount from "./pages/shooping-view/ShopAccount";
-import ShopingHeader from "./pages/shooping-view/ShopHeader";
+// import ShopingHeader from "./pages/shooping-view/ShopHeader";
 import CheckAuth from "./components/common/CheckAuth";
 import UnAuthPage from "./pages/unAuthPage/UnAuthPage";
 import { useDispatch, useSelector } from "react-redux";
@@ -75,11 +75,10 @@ if(isLoading) return <div>Loading....</div>
           }
         >
           <Route path="dashboard" element={<ShopingDashboard />} />
-          <Route path="header" element={<ShopingHeader />} />
+          {/* <Route path="header" element={<ShopingHeader />} /> */}
           <Route path="checkout" element={<ShopCheckout />} />
           <Route path="account" element={<ShopAccount />} />
-                    <Route path="listing" element={<ShoppingListing />} />
-
+          <Route path="listing" element={<ShoppingListing />} />
         </Route>
         <Route path="unauth-page" element={<UnAuthPage/>}/>
         <Route path="*" element={<NotFound />}></Route>

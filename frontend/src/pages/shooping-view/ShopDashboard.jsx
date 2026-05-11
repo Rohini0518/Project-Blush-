@@ -1,8 +1,13 @@
+import ShopingHeader from "../shooping-view/ShopHeader"
+import ShoppingListing from "./ShopListing"
 
 const ShopingDashboard = () => {
   return (
-    <div>ShopingDashboard</div>
+    <div>
+      <ShopingHeader />
+      <ShoppingListing/>
+    </div>
   )
 }
 
-export default ShopingDashboard
+export default ShopingDashboard;
