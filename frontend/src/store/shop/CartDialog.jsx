@@ -265,20 +265,20 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
 
 export default function CartDialog({ open, onClose }) {
 
-  // const cartItems = MOCK_CART;s
+  // const items = MOCK_CART;s
 
 
-  const {cartItems}=useSelector((state)=>state.shoppingCart)
+  const {items}=useSelector((state)=>state.shoppingCart.cartItems)
 
-  console.log(cartItems,"cartitems-cartdialog")
-  const subtotal = cartItems.reduce((s, i) => s + i.price * i.qty, 0);
-  const savings = cartItems.reduce(
+  console.log(items,"items-cartdialog")
+  const subtotal = (items || [])?.reduce((s, i) => s + i.price * i.qty, 0);
+  const savings = (items || [])?.reduce(
     (s, i) => s + (i.originalPrice ? (i.originalPrice - i.price) * i.qty : 0),
     0
   );
   const delivery = subtotal >= 999 ? 0 : 99;
   const total = subtotal + delivery;
-  const itemCount = cartItems.reduce((s, i) => s + i.qty, 0);
+  const itemCount = items.reduce((s, i) => s + i.qty, 0);
 
   return (
     <Dialog
@@ -436,7 +436,7 @@ export default function CartDialog({ open, onClose }) {
           },
         }}
       >
-        {cartItems.length === 0 ? (
+        {items.length === 0 ? (
           <Box
             sx={{
               display: "flex",
@@ -477,7 +477,7 @@ export default function CartDialog({ open, onClose }) {
             </Button>
           </Box>
         ) : (
-          cartItems.map((item) => (
+          items.map((item) => (
             <CartItem
               key={item.id}
               item={item}
@@ -496,7 +496,7 @@ export default function CartDialog({ open, onClose }) {
       </DialogContent>
 
       {/* ── Order Summary + CTA ── */}
-      {cartItems.length > 0 && (
+      {items.length > 0 && (
         <Box
           sx={{
             flexShrink: 0,

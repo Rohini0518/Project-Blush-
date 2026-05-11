@@ -19,43 +19,49 @@ interface ProductCardProps {
 const DEFAULT_SIZES = ["S", "M", "L", "XL", "XXL"];
 
 export default function ShopProductCard({ product }: ProductCardProps) {
-  const { image, title, price, salePrice, sizes,_id: productId} = product;
+  const { image, title, price, salePrice, sizes, _id: productId } = product;
   // console.log(product,"product info from ahopproductcard")
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [open,setOpen]=useState(false)
+  const [open, setOpen] = useState(false);
   const [quantity, setQuantity] = useState<number>(0);
- const dispatch=useDispatch()
- const { user } = useSelector((state) => state.auth);
-  const userId = user?._id;
-  console.log(userId,"userID")
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: any) => state.auth);
+  const userId = user?.id;
   const availableSizes = sizes && sizes.length > 0 ? sizes : DEFAULT_SIZES;
   const hasSale = salePrice && salePrice < price;
   const discountPct = hasSale
     ? Math.round(((price - salePrice) / price) * 100)
     : 0;
-const handleClose=(e)=>{
-e.stopPropagation();
-  console.log("onclose",)
+  const handleClose = (e) => {
+    e.stopPropagation();
+    console.log("onclose");
 
-setOpen(false)
-}
+    setOpen(false);
+  };
 
-const handleOpen=()=>{
-  setOpen(true);
-}
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
+  const handleAddToCart = async () => {
+     if (!userId) {
+    console.warn("User not logged in");
+    return;
+  }
+ const result= await dispatch(addToCart({ userId, productId, quantity: 1 }));
 
-
-  const handleAddToCart = () => {
-  dispatch(addToCart({ userId, productId, quantity: 1 }));
-  setQuantity(1);
-};
+ if(addToCart.fulfilled.match(result)){
+    setQuantity(1);
+ }
+ else{
+  console.error("failed to add to cart not fulfiled")
+ }
+  };
 
   const handleIncrease = (e) => {
     e.stopPropagation();
     const newQty = quantity + 1;
     setQuantity(newQty);
-  
   };
 
   const handleDecrease = (e) => {
@@ -111,10 +117,13 @@ const handleOpen=()=>{
             display: "block",
             transition: "transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
           }}
-                onClick={handleOpen}
-
+          onClick={handleOpen}
         />
-      <ShopProductDetails productId={product._id} open={open} onClose={handleClose}/> 
+        <ShopProductDetails
+          productId={product._id}
+          open={open}
+          onClose={handleClose}
+        />
 
         {hasSale && (
           <Chip
@@ -149,7 +158,7 @@ const handleOpen=()=>{
           sx={{
             fontFamily: "'Georgia', serif",
             fontSize: "1.2rem",
-            fontWeight:"bold",
+            fontWeight: "bold",
             color: "#000",
             lineHeight: 1.5,
             wordBreak: "break-word",
@@ -205,10 +214,10 @@ const handleOpen=()=>{
             {availableSizes.map((size) => (
               <Box
                 key={size}
-                onClick={(e) =>{
-                  e.stopPropagation()
-                  setSelectedSize(selectedSize === size ? null : size)}
-                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedSize(selectedSize === size ? null : size);
+                }}
                 sx={{
                   width: 32,
                   height: 32,
@@ -239,11 +248,11 @@ const handleOpen=()=>{
           </Box>
         </Box>
 
-         {quantity === 0 ? (
+        {quantity === 0 ? (
           // Shows when item is NOT in cart
           <Button
-           onClick={handleAddToCart}     
-                  sx={{
+            onClick={handleAddToCart}
+            sx={{
               mt: 1,
               width: "100%",
               py: 0.8,
