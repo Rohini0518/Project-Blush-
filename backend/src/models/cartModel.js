@@ -58,7 +58,7 @@ const CartSchema = new mongoose.Schema(
       {
         productId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "AdminProducts",
+          ref: "AdminProduct",
           required: true,
         },
 

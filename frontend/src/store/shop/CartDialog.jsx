@@ -62,7 +62,6 @@ const MOCK_CART = [
   },
 ];
 
-
 function QtyButton({ onClick, children, disabled }) {
   return (
     <IconButton
@@ -142,8 +141,7 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
               fontSize: "0.6rem",
               fontWeight: 700,
               letterSpacing: 0.4,
-              backgroundColor:
-                item.tag === "New" ? "#e8f5e9" : "#fff3e0",
+              backgroundColor: item.tag === "New" ? "#e8f5e9" : "#fff3e0",
               color: item.tag === "New" ? "#2e7d32" : "#e65100",
               border: "none",
               "& .MuiChip-label": { px: 0.8 },
@@ -262,23 +260,28 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
   );
 }
 
-
 export default function CartDialog({ open, onClose }) {
-
   // const items = MOCK_CART;s
 
+  const items = useSelector((state) => state.shoppingCart);
 
-  const {items}=useSelector((state)=>state.shoppingCart.cartItems)
+  console.log(items, "items-cartdialog");
+  const subtotal = Array.isArray(items)
+    ? items.reduce((s, i) => s + i.price * i.qty, 0)
+    : 0; //fall back for savings --?? 0 ,it will fallback to 0 if it is null or undefined--it is optional chaining..
+  const savings = Array.isArray(items)
+    ? items?.reduce(
+        (s, i) =>
+          s + (i.originalPrice ? (i.originalPrice - i.price) * i.qty : 0),
+        0,
+      )
+    : 0;
 
-  console.log(items,"items-cartdialog")
-  const subtotal = (items || [])?.reduce((s, i) => s + i.price * i.qty, 0);
-  const savings = (items || [])?.reduce(
-    (s, i) => s + (i.originalPrice ? (i.originalPrice - i.price) * i.qty : 0),
-    0
-  );
   const delivery = subtotal >= 999 ? 0 : 99;
   const total = subtotal + delivery;
-  const itemCount = items.reduce((s, i) => s + i.qty, 0);
+  const itemCount = Array.isArray(items)
+    ? (items || [])?.reduce((s, i) => s + i.qty, 0)
+    : 0;
 
   return (
     <Dialog
@@ -396,8 +399,7 @@ export default function CartDialog({ open, onClose }) {
         >
           <LocalOfferOutlinedIcon sx={{ fontSize: 15, color: "#c5a882" }} />
           <Typography sx={{ fontSize: "0.78rem", color: "#a07850" }}>
-            Add{" "}
-            <b>₹{(999 - subtotal).toLocaleString("en-IN")}</b> more for{" "}
+            Add <b>₹{(999 - subtotal).toLocaleString("en-IN")}</b> more for{" "}
             <b>FREE delivery</b>
           </Typography>
         </Box>
@@ -415,7 +417,9 @@ export default function CartDialog({ open, onClose }) {
           }}
         >
           <LocalOfferOutlinedIcon sx={{ fontSize: 15, color: "#2e7d32" }} />
-          <Typography sx={{ fontSize: "0.78rem", color: "#2e7d32", fontWeight: 600 }}>
+          <Typography
+            sx={{ fontSize: "0.78rem", color: "#2e7d32", fontWeight: 600 }}
+          >
             🎉 You've unlocked FREE delivery!
           </Typography>
         </Box>
@@ -436,7 +440,7 @@ export default function CartDialog({ open, onClose }) {
           },
         }}
       >
-        {items.length === 0 ? (
+        {(items || [])?.length === 0 ? (
           <Box
             sx={{
               display: "flex",
@@ -448,9 +452,7 @@ export default function CartDialog({ open, onClose }) {
               pb: 4,
             }}
           >
-            <ShoppingBagOutlinedIcon
-              sx={{ fontSize: 64, color: "#e8e0d8" }}
-            />
+            <ShoppingBagOutlinedIcon sx={{ fontSize: 64, color: "#e8e0d8" }} />
             <Typography
               sx={{
                 color: "#bbb",
@@ -470,14 +472,19 @@ export default function CartDialog({ open, onClose }) {
                 px: 3,
                 textTransform: "none",
                 fontWeight: 600,
-                "&:hover": { backgroundColor: "#f5efe6", borderColor: "#c5a882" },
+                "&:hover": {
+                  backgroundColor: "#f5efe6",
+                  borderColor: "#c5a882",
+                },
               }}
             >
               Continue Shopping
             </Button>
           </Box>
+        ) : Array.isArray(items) ? (
+          items
         ) : (
-          items.map((item) => (
+          [].map((item) => (
             <CartItem
               key={item.id}
               item={item}
@@ -495,8 +502,7 @@ export default function CartDialog({ open, onClose }) {
         )}
       </DialogContent>
 
-      {/* ── Order Summary + CTA ── */}
-      {items.length > 0 && (
+      {(items || [])?.length > 0 && (
         <Box
           sx={{
             flexShrink: 0,
@@ -507,13 +513,16 @@ export default function CartDialog({ open, onClose }) {
             pb: 3,
           }}
         >
-          {/* Price breakdown */}
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 0.9, mb: 1.8 }}>
+          <Box
+            sx={{ display: "flex", flexDirection: "column", gap: 0.9, mb: 1.8 }}
+          >
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Typography sx={{ fontSize: "0.82rem", color: "#999" }}>
                 Subtotal ({itemCount} item{itemCount > 1 ? "s" : ""})
               </Typography>
-              <Typography sx={{ fontSize: "0.82rem", color: "#555", fontWeight: 600 }}>
+              <Typography
+                sx={{ fontSize: "0.82rem", color: "#555", fontWeight: 600 }}
+              >
                 ₹{subtotal.toLocaleString("en-IN")}
               </Typography>
             </Box>
@@ -523,7 +532,13 @@ export default function CartDialog({ open, onClose }) {
                 <Typography sx={{ fontSize: "0.82rem", color: "#2e7d32" }}>
                   You save
                 </Typography>
-                <Typography sx={{ fontSize: "0.82rem", color: "#2e7d32", fontWeight: 600 }}>
+                <Typography
+                  sx={{
+                    fontSize: "0.82rem",
+                    color: "#2e7d32",
+                    fontWeight: 600,
+                  }}
+                >
                   − ₹{savings.toLocaleString("en-IN")}
                 </Typography>
               </Box>
@@ -547,7 +562,6 @@ export default function CartDialog({ open, onClose }) {
 
           <Divider sx={{ borderColor: "#f0ece6", mb: 1.8 }} />
 
-          {/* Total */}
           <Box
             sx={{
               display: "flex",
@@ -578,7 +592,6 @@ export default function CartDialog({ open, onClose }) {
             </Typography>
           </Box>
 
-          {/* Checkout button */}
           <Button
             fullWidth
             endIcon={<ArrowForwardIcon />}

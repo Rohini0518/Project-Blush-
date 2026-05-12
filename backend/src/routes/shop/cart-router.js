@@ -6,7 +6,7 @@ import  { addToCart, fetchCartItems, updateCartItemQuantity, deleteCartItem } fr
 const cartrouter= Router();
 
 cartrouter.post('/add',addToCart);
-cartrouter.get('/get',fetchCartItems);
+cartrouter.get('/get/:userId',fetchCartItems);
 cartrouter.put('/update-cart',updateCartItemQuantity);
 cartrouter.delete('/:userId/:productId',deleteCartItem);
 

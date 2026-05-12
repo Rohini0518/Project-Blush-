@@ -11,6 +11,7 @@ import {
   Divider,
   Menu,
   Avatar,
+  Badge,
 } from "@mui/material";
 import blushLogo from "../../assets/blushlogo.jpg";
 import SearchIcon from "@mui/icons-material/Search";
@@ -21,13 +22,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../store/authSlice";
 import { useToast } from "../../hooks/useToast";
 import CartDialog from "../../store/shop/CartDialog";
+import { fetchCartItems } from "../../store/shop/cartSlice";
 
-export default function ShopHeader({ search="", setSearch }) {
+export default function ShopHeader({ search = "", setSearch }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));
@@ -40,8 +42,15 @@ export default function ShopHeader({ search="", setSearch }) {
   const handleMenuClose = () => setMenuAnchor(null);
   const { showToast } = useToast();
 
+  const items = useSelector((state) => state.shoppingCart);
+
   const [cartOpen, setCartOpen] = useState(false);
 
+  const totalQuantity = Array.isArray(items)
+    ? (items || [])?.reduce((sum, item) => item.quantity + sum, 0)
+    : 0;
+
+  console.log(totalQuantity, "totalqunatity cart");
   const handleLogout = async () => {
     try {
       const logout = await dispatch(logoutUser()).unwrap();
@@ -52,6 +61,15 @@ export default function ShopHeader({ search="", setSearch }) {
       showToast("product Operation Failed", "error");
     }
   };
+
+  // useEffect(() => {
+  //   const userId = user.id;
+  //   const getqnty = dispatch(fetchCartItems(userId));
+  //   if (getqnty.success) {
+  //     console.log(getqnty, "complete cart");
+  //     // const totalquntity = "";
+  //   }
+  // }, []);
 
   const handleAccount = () => {
     handleMenuClose();
@@ -167,7 +185,20 @@ export default function ShopHeader({ search="", setSearch }) {
             "&:hover": { color: "#c0efbb", transform: "scale(1.1)" },
           }}
         >
-          <ShoppingCartIcon sx={{ fontSize: isMobile ? 24 : 22 }} />
+          <Badge
+            badgeContent={totalQuantity}
+            color="secondary"
+            overlap="circular"
+            sx={{
+              "& .MuiBadge-badge": {
+                fontSize: "10px",
+                height: 14,
+                minWidth: 8,
+              },
+            }}
+          >
+            <ShoppingCartIcon sx={{ fontSize: isMobile ? 26 : 24 }} />
+          </Badge>
         </IconButton>
         {isAuthenticated && (
           <>
@@ -278,8 +309,7 @@ export default function ShopHeader({ search="", setSearch }) {
           </>
         )}
       </Box>
-            <CartDialog open={cartOpen} onClose={() => setCartOpen(false)} />
-
+      <CartDialog open={cartOpen} onClose={() => setCartOpen(false)} />
     </Box>
   );
 }
