@@ -9,7 +9,7 @@ import {
   Slide,
   Chip,
 } from "@mui/material";
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -90,8 +90,8 @@ function QtyButton({ onClick, children, disabled }) {
 }
 
 function CartItem({ item, onIncrease, onDecrease, onRemove }) {
-  const discount = item.originalPrice
-    ? Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)
+  const discount = item.price
+    ? Math.round(((item.price - item.salePrice) / item.price) * 100)
     : null;
 
   return (
@@ -189,9 +189,9 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
           <Typography
             sx={{ fontWeight: 700, fontSize: "0.95rem", color: "#333" }}
           >
-            ₹{(item.price * item.qty).toLocaleString("en-IN")}
+            ₹{(item.salePrice * item.quantity).toLocaleString("en-IN")}
           </Typography>
-          {item.originalPrice && (
+          {item.price && (
             <>
               <Typography
                 sx={{
@@ -200,7 +200,7 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
                   textDecoration: "line-through",
                 }}
               >
-                ₹{(item.originalPrice * item.qty).toLocaleString("en-IN")}
+                ₹{(item.price * item.quantity).toLocaleString("en-IN")}
               </Typography>
               <Typography
                 sx={{
@@ -221,7 +221,7 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
 
         {/* Qty control */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <QtyButton onClick={onDecrease} disabled={item.qty <= 1}>
+          <QtyButton onClick={onDecrease} disabled={item.quantity <= 1}>
             <RemoveIcon sx={{ fontSize: 14 }} />
           </QtyButton>
           <Typography
@@ -233,7 +233,7 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
               color: "#444",
             }}
           >
-            {item.qty}
+            {item.quantity}
           </Typography>
           <QtyButton onClick={onIncrease}>
             <AddIcon sx={{ fontSize: 14 }} />
@@ -261,27 +261,22 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
 }
 
 export default function CartDialog({ open, onClose }) {
-  // const items = MOCK_CART;s
-
-  const items = useSelector((state) => state.shoppingCart);
-
-  console.log(items, "items-cartdialog");
-  const subtotal = Array.isArray(items)
-    ? items.reduce((s, i) => s + i.price * i.qty, 0)
-    : 0; //fall back for savings --?? 0 ,it will fallback to 0 if it is null or undefined--it is optional chaining..
-  const savings = Array.isArray(items)
-    ? items?.reduce(
-        (s, i) =>
-          s + (i.originalPrice ? (i.originalPrice - i.price) * i.qty : 0),
-        0,
-      )
-    : 0;
+  // const items = MOCK_CART;
+const {user}=useSelector((state)=>state.auth) ;
+const userId=user.id
+  const cartItems = useSelector((state) => state.shoppingCart.cartItems);
+console.log(cartItems,"cartitems cart dialog")
+  console.log(cartItems, "items-cartdialog");
+  const subtotal = cartItems.reduce((s, i) => s + i.salePrice * i.quantity, 0);
+  const savings = cartItems?.reduce(
+    (s, i) =>
+      s + (i.price ? (i.price - i.salePrice) * i.quantity : 0),
+    0,
+  );
 
   const delivery = subtotal >= 999 ? 0 : 99;
   const total = subtotal + delivery;
-  const itemCount = Array.isArray(items)
-    ? (items || [])?.reduce((s, i) => s + i.qty, 0)
-    : 0;
+  const itemCount = cartItems?.reduce((s, i) => s + i.quantity, 0) || 0;
 
   return (
     <Dialog
@@ -440,7 +435,7 @@ export default function CartDialog({ open, onClose }) {
           },
         }}
       >
-        {(items || [])?.length === 0 ? (
+        {(cartItems || [])?.length === 0 ? (
           <Box
             sx={{
               display: "flex",
@@ -481,12 +476,10 @@ export default function CartDialog({ open, onClose }) {
               Continue Shopping
             </Button>
           </Box>
-        ) : Array.isArray(items) ? (
-          items
-        ) : (
-          [].map((item) => (
+        ) : cartItems && cartItems.length > 0 && (
+          cartItems.map((item) => (
             <CartItem
-              key={item.id}
+              key={item._id}
               item={item}
               onIncrease={() => {
                 /* dispatch(increaseQty(item.id)) */
@@ -502,7 +495,7 @@ export default function CartDialog({ open, onClose }) {
         )}
       </DialogContent>
 
-      {(items || [])?.length > 0 && (
+      {(cartItems || [])?.length > 0 && (
         <Box
           sx={{
             flexShrink: 0,

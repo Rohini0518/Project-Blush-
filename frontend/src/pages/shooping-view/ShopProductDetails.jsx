@@ -60,7 +60,7 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
   }, [dispatch, productId, open]);
   const stock = productDetails?.totalStock;
 
-  const displayPrice = productDetails?.salePrice || productDetails?.price;
+  const displayPrice = productDetails?.salePrice || productDetails?.price ;
   const originalPrice = productDetails?.salePrice
     ? productDetails?.price
     : null;

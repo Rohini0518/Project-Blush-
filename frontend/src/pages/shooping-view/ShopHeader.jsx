@@ -42,13 +42,12 @@ export default function ShopHeader({ search = "", setSearch }) {
   const handleMenuClose = () => setMenuAnchor(null);
   const { showToast } = useToast();
 
-  const items = useSelector((state) => state.shoppingCart);
+  const cartItems = useSelector((state) => state.shoppingCart.cartItems);
 
+  console.log("items in shop header", cartItems);
   const [cartOpen, setCartOpen] = useState(false);
 
-  const totalQuantity = Array.isArray(items)
-    ? (items || [])?.reduce((sum, item) => item.quantity + sum, 0)
-    : 0;
+  const totalQuantity = cartItems?.reduce((sum, item) => item.quantity + sum, 0) || 0;
 
   console.log(totalQuantity, "totalqunatity cart");
   const handleLogout = async () => {
@@ -62,14 +61,11 @@ export default function ShopHeader({ search = "", setSearch }) {
     }
   };
 
-  // useEffect(() => {
-  //   const userId = user.id;
-  //   const getqnty = dispatch(fetchCartItems(userId));
-  //   if (getqnty.success) {
-  //     console.log(getqnty, "complete cart");
-  //     // const totalquntity = "";
-  //   }
-  // }, []);
+ useEffect(() => {
+  if (user?.id) {
+    dispatch(fetchCartItems(user.id));
+  }
+}, [user?.id]);
 
   const handleAccount = () => {
     handleMenuClose();
