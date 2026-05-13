@@ -2,7 +2,11 @@ import { useState } from "react";
 import { Box, Button, Chip, Typography, IconButton } from "@mui/material";
 import ShopProductDetails from "./ShopProductDetails";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../store/shop/cartSlice";
+import {
+  addToCart,
+  deleteCartItem,
+  updateCartItem,
+} from "../../store/shop/cartSlice";
 
 interface Product {
   _id: string;
@@ -23,7 +27,9 @@ export default function ShopProductCard({ product }: ProductCardProps) {
   // console.log(product,"product info from ahopproductcard")
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [quantity, setQuantity] = useState<number>(0);
+const { cartItems } = useSelector((state: any) => state.shoppingCart);
+const cartItem = cartItems.find((item) => item.productId === productId);
+const quantity = cartItem?.quantity ?? 0;
   const dispatch = useDispatch();
   const { user } = useSelector((state: any) => state.auth);
   const userId = user?.id;
@@ -34,7 +40,6 @@ export default function ShopProductCard({ product }: ProductCardProps) {
     : 0;
   const handleClose = (e) => {
     e.stopPropagation();
-    console.log("onclose");
 
     setOpen(false);
   };
@@ -42,42 +47,38 @@ export default function ShopProductCard({ product }: ProductCardProps) {
   const handleOpen = () => {
     setOpen(true);
   };
-
   const handleAddToCart = async () => {
-     if (!userId) {
-    console.warn("User not logged in");
-    return;
-  }
- const result= await dispatch(addToCart({ userId, productId, quantity: 1 }));
+    if (!userId) {
+      console.warn("User not found ");
+      return;
+    }
+     await dispatch(
+      addToCart({ userId, productId, quantity: 1 }),
+    );
 
- if(addToCart.fulfilled.match(result)){
-    setQuantity(1);
- }
- else{
-  console.error("failed to add to cart not fulfiled")
- }
+   
   };
 
-  const handleIncrease = (e) => {
+  const handleIncrease = async (e) => {
     e.stopPropagation();
-    const newQty = quantity + 1;
-    setQuantity(newQty);
+    if (!userId || !productId) return;
+   await dispatch(
+      updateCartItem({ userId, productId, quantity: quantity+1 }),
+    );
   };
 
-  const handleDecrease = (e) => {
+  const handleDecrease = async (e) => {
     e.stopPropagation();
+    if (!userId || !productId) return;
     if (quantity === 1) {
-      // Goes back to "Add To Cart" button when qty hits 0
-      setQuantity(0);
-      // 👇 DISPATCH YOUR REMOVE-FROM-CART ACTION HERE
-      // dispatch(removeFromCart({ productId: product._id }));
+       await dispatch(deleteCartItem({ userId, productId }));
     } else {
-      const newQty = quantity - 1;
-      setQuantity(newQty);
-      // 👇 DISPATCH YOUR DECREMENT ACTION HERE
-      // dispatch(decrementQuantity({ productId: product._id, quantity: newQty }));
+      await dispatch(
+        updateCartItem({ userId, productId, quantity: quantity-1 }),
+      );
     }
   };
+console.log(productId,quantity,"productid,quantity shopcard")
 
   return (
     <Box
@@ -249,7 +250,6 @@ export default function ShopProductCard({ product }: ProductCardProps) {
         </Box>
 
         {quantity === 0 ? (
-          // Shows when item is NOT in cart
           <Button
             onClick={handleAddToCart}
             sx={{

@@ -8,6 +8,6 @@ const cartrouter= Router();
 cartrouter.post('/add',addToCart);
 cartrouter.get('/get/:userId',fetchCartItems);
 cartrouter.put('/update-cart',updateCartItemQuantity);
-cartrouter.delete('/:userId/:productId',deleteCartItem);
+cartrouter.delete('/delete/:userId/:productId',deleteCartItem);
 
 export default cartrouter;

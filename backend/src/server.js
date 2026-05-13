@@ -35,6 +35,10 @@ app.use(
 app.use(express.json());
 //incoming data parser,This middleware runs before your controller.
 app.use(cookieParser());
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 app.use("/api/auth", authRouter);
 app.use("/auth",otpRouter);
 app.use("/api/admin/products", adminproductsrouter);

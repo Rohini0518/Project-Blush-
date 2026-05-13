@@ -156,6 +156,7 @@ const updateCartItemQuantity = async (req, res) => {
 const deleteCartItem = async (req, res) => {
   try {
     const { userId, productId } = req.params;
+    console.log(userId,productId,"userID productid deletecart")
     if (!userId || !productId) {
       return res.status(400).json({
         success: false,
@@ -163,19 +164,18 @@ const deleteCartItem = async (req, res) => {
       });
     }
 
-    const cart = await Cart.findOne({ userId }).populate({
-      path: "items.productId",
-      select: "image title price salePrice",
-    });
+    const cart = await Cart.findOne({ userId })
+        console.log("cart found:", cart);  
+
     if (!cart) {
       return res.status(404).json({
         success: false,
-        message: "No Cart Found",
+        message: "No Cart Found ",
       });
     }
 
     cart.items = cart?.items?.filter(
-      (item) => item.productId._id.toString() !== productId,
+      (item) => item.productId.toString() !== productId,
     );
     await cart.save();
     await cart.populate({

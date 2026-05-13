@@ -262,11 +262,8 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
 
 export default function CartDialog({ open, onClose }) {
   // const items = MOCK_CART;
-const {user}=useSelector((state)=>state.auth) ;
-const userId=user.id
+// const {user}=useSelector((state)=>state.auth) ;
   const cartItems = useSelector((state) => state.shoppingCart.cartItems);
-console.log(cartItems,"cartitems cart dialog")
-  console.log(cartItems, "items-cartdialog");
   const subtotal = cartItems.reduce((s, i) => s + i.salePrice * i.quantity, 0);
   const savings = cartItems?.reduce(
     (s, i) =>

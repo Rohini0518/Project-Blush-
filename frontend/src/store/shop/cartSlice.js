@@ -4,7 +4,7 @@ import { axiosInstance } from "../../api/axiosInstance";
 const initialState = {
   cartItems: [],
   isLoading: false,
-     error:null
+  error:null
 };
 
 export const addToCart = createAsyncThunk(
