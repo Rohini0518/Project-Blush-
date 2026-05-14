@@ -9,23 +9,25 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../store/authSlice";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../hooks/useToast";
 
 const AdminHeader = ({ onSideBarToggle }) => {
   const dispatch = useDispatch();
-  const navigate=useNavigate()
+  const navigate=useNavigate();
+    const { showToast } = useToast();
+  
   const handleLogout = async () => {
     try {
     const result=  await dispatch(logoutUser()).unwrap();
-    console.log(result,"logout result")
     if(result.success){
-      console.log("logout successfull")
+      showToast("logout successfull","success")
       navigate("/auth/login")
     }
     else{
-      console.log("logout not done")
+              showToast("LogOut NotDone", "error");
     }
     } catch (error) {
-      console.log("logout error", error);
+      showToast("server issue", "error");
     }
   };
 

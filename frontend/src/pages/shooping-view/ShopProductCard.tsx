@@ -24,7 +24,6 @@ const DEFAULT_SIZES = ["S", "M", "L", "XL", "XXL"];
 
 export default function ShopProductCard({ product }: ProductCardProps) {
   const { image, title, price, salePrice, sizes, _id: productId } = product;
-  // console.log(product,"product info from ahopproductcard")
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 const { cartItems } = useSelector((state: any) => state.shoppingCart);
@@ -78,7 +77,6 @@ const quantity = cartItem?.quantity ?? 0;
       );
     }
   };
-console.log(productId,quantity,"productid,quantity shopcard")
 
   return (
     <Box

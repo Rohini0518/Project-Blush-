@@ -17,30 +17,30 @@ const AuthRegister = () => {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {showToast}=useToast();
+  const { showToast } = useToast();
 
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
-       if(formData?.email==="" || formData?.password==="" ||formData?.userName==="") {
-              showToast("All fields required", "error");
-              return;
+      if (
+        formData?.email === "" ||
+        formData?.password === "" ||
+        formData?.userName === ""
+      ) {
+        showToast("All fields required", "error");
+        return;
       }
-  const data = await dispatch(registerUser(formData)).unwrap();
+      const data = await dispatch(registerUser(formData)).unwrap();
 
-  console.log(data);
-
-  if (data?.success) {
-    console.log("registration done");
-    navigate("/auth/login");
-  } else {
-    console.log("Not registered,Something went wrong");
-  }
-
-} catch (error) {
-  console.log(error, "server error");
-}
-
+      if (data?.success) {
+        showToast("Registration Done", "success");
+        navigate("/auth/login");
+      } else {
+        showToast("Not registered,Something went wrong", "error");
+      }
+    } catch (error) {
+              showToast("Server Issue", "error");
+    }
   };
 
   return (

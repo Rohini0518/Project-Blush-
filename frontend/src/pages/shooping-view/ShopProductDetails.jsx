@@ -68,7 +68,6 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
     ? Math.round(((originalPrice - displayPrice) / originalPrice) * 100)
     : null;
     
-  console.log("stock,displayPrice,originalprice,discount",stock,displayPrice,discount);
   const handleIncrease = () => {
     if (quantity < 10) setQuantity((prev) => prev + 1);
   };

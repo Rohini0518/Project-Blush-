@@ -55,13 +55,10 @@ const AdminProducts = () => {
         result = await dispatch(
           updateProduct({ id: editId, formData: finalData }),
         ).unwrap();
-        console.log("edited done-result", result);
       } else {
         result = await dispatch(addNewProduct(finalData)).unwrap();
       }
-      console.log("submitted data is", result);
       if (result.success) {
-        console.log("in result.payload.success");
         dispatch(getAllAdminProducts());
         setFormData(initialFormData);
         setUploadedImage("");
@@ -75,7 +72,6 @@ const AdminProducts = () => {
         );
       }
     } catch (error) {
-      console.log("addProduct Failed-error", error);
       showToast("product Operation Failed", "error");
     }
   };
@@ -84,10 +80,8 @@ const AdminProducts = () => {
   };
 
   const handleDelete= async (productId)=>{
-console.log( "card product", productId);
     try {
       const response = await dispatch(deleteProduct(productId)).unwrap();
-      console.log(response);
       dispatch(getAllAdminProducts());
     } catch (error) {
       
@@ -106,7 +100,6 @@ console.log( "card product", productId);
     dispatch(getAllAdminProducts());
   }, [dispatch]);
 
-  console.log(productList, "formData-productList");
 
   return (
     <>

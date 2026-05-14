@@ -7,7 +7,6 @@ import {
   Divider,
   Button,
   Slide,
-  Chip,
 } from "@mui/material";
 import { forwardRef, useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
@@ -17,50 +16,12 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCartItem, updateCartItem } from "./cartSlice";
 
 const SlideTransition = forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
 });
-
-const MOCK_CART = [
-  {
-    id: 1,
-    name: "Rose Glow Serum",
-    brand: "Blush Botanics",
-    variant: "30ml · Hydrating",
-    price: 1299,
-    originalPrice: 1799,
-    qty: 2,
-    image:
-      "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=120&q=80",
-    tag: "Bestseller",
-  },
-  {
-    id: 2,
-    name: "Velvet Matte Lipstick",
-    brand: "Blush Botanics",
-    variant: "Shade #07 – Dusty Rose",
-    price: 649,
-    originalPrice: null,
-    qty: 1,
-    image:
-      "https://images.unsplash.com/photo-1586495777744-4e6232bf2661?w=120&q=80",
-    tag: null,
-  },
-  {
-    id: 3,
-    name: "Satin Finish Foundation",
-    brand: "Blush Botanics",
-    variant: "Shade 03 · SPF 25",
-    price: 1549,
-    originalPrice: 1899,
-    qty: 1,
-    image:
-      "https://images.unsplash.com/photo-1631214524020-3c69f73c7a10?w=120&q=80",
-    tag: "New",
-  },
-];
 
 function QtyButton({ onClick, children, disabled }) {
   return (
@@ -129,39 +90,9 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
             boxShadow: "0 3px 12px rgba(197,168,130,0.18)",
           }}
         />
-        {item.tag && (
-          <Chip
-            label={item.tag}
-            size="small"
-            sx={{
-              position: "absolute",
-              top: -8,
-              left: -8,
-              height: 18,
-              fontSize: "0.6rem",
-              fontWeight: 700,
-              letterSpacing: 0.4,
-              backgroundColor: item.tag === "New" ? "#e8f5e9" : "#fff3e0",
-              color: item.tag === "New" ? "#2e7d32" : "#e65100",
-              border: "none",
-              "& .MuiChip-label": { px: 0.8 },
-            }}
-          />
-        )}
       </Box>
 
       <Box sx={{ flex: 1, minWidth: 0 }}>
-        <Typography
-          sx={{
-            fontSize: "0.82rem",
-            color: "#bbb",
-            fontWeight: 500,
-            letterSpacing: 0.3,
-            mb: 0.2,
-          }}
-        >
-          {item.brand}
-        </Typography>
         <Typography
           sx={{
             fontSize: "0.95rem",
@@ -172,19 +103,9 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
             fontFamily: "'Georgia', serif",
           }}
         >
-          {item.name}
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: "0.75rem",
-            color: "#aaa",
-            mb: 1.2,
-          }}
-        >
-          {item.variant}
+          {item.title}
         </Typography>
 
-        {/* Price row */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
           <Typography
             sx={{ fontWeight: 700, fontSize: "0.95rem", color: "#333" }}
@@ -219,7 +140,6 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
           )}
         </Box>
 
-        {/* Qty control */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <QtyButton onClick={onDecrease} disabled={item.quantity <= 1}>
             <RemoveIcon sx={{ fontSize: 14 }} />
@@ -241,7 +161,6 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
         </Box>
       </Box>
 
-      {/* Remove */}
       <IconButton
         onClick={onRemove}
         size="small"
@@ -262,18 +181,44 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
 
 export default function CartDialog({ open, onClose }) {
   // const items = MOCK_CART;
-// const {user}=useSelector((state)=>state.auth) ;
+  const { user } = useSelector((state) => state.auth);
   const cartItems = useSelector((state) => state.shoppingCart.cartItems);
   const subtotal = cartItems.reduce((s, i) => s + i.salePrice * i.quantity, 0);
   const savings = cartItems?.reduce(
-    (s, i) =>
-      s + (i.price ? (i.price - i.salePrice) * i.quantity : 0),
+    (s, i) => s + (i.price ? (i.price - i.salePrice) * i.quantity : 0),
     0,
   );
 
   const delivery = subtotal >= 999 ? 0 : 99;
   const total = subtotal + delivery;
   const itemCount = cartItems?.reduce((s, i) => s + i.quantity, 0) || 0;
+  const dispatch = useDispatch();
+
+  const handleQuantityIncrease  = async (productId, quantity) => {
+    const userId = user.id;
+    if (!userId) return;
+    await dispatch(
+      updateCartItem({ userId, productId, quantity: quantity + 1 }),
+    );
+  };
+
+  const handleQuantityDecrease = async (productId, quantity) => {
+    const userId = user.id;
+    if (!userId) return;
+    if (quantity == 1) {
+      await dispatch(deleteCartItem({ userId, productId }));
+    } else {
+      await dispatch(
+        updateCartItem({ userId, productId, quantity: quantity - 1 }),
+      );
+    }
+  };
+
+  const handleDelete = async (productId) => {
+    const userId = user.id;
+    if (!userId) return;
+    await dispatch(deleteCartItem({ userId, productId }));
+  };
 
   return (
     <Dialog
@@ -311,7 +256,6 @@ export default function CartDialog({ open, onClose }) {
         },
       }}
     >
-      {/* ── Header ── */}
       <Box
         sx={{
           px: 3,
@@ -376,7 +320,6 @@ export default function CartDialog({ open, onClose }) {
         </IconButton>
       </Box>
 
-      {/* ── Free shipping nudge ── */}
       {delivery > 0 && (
         <Box
           sx={{
@@ -417,7 +360,6 @@ export default function CartDialog({ open, onClose }) {
         </Box>
       )}
 
-      {/* ── Cart Items ── */}
       <DialogContent
         sx={{
           px: 2.5,
@@ -473,20 +415,18 @@ export default function CartDialog({ open, onClose }) {
               Continue Shopping
             </Button>
           </Box>
-        ) : cartItems && cartItems.length > 0 && (
+        ) : (
+          cartItems &&
+          cartItems.length > 0 &&
           cartItems.map((item) => (
             <CartItem
-              key={item._id}
+              key={item.productId}
               item={item}
-              onIncrease={() => {
-                /* dispatch(increaseQty(item.id)) */
-              }}
-              onDecrease={() => {
-                /* dispatch(decreaseQty(item.id)) */
-              }}
-              onRemove={() => {
-                /* dispatch(removeItem(item.id)) */
-              }}
+              onIncrease={() =>
+                handleQuantityIncrease (item.productId, item.quantity)
+              }
+              onDecrease={() => handleQuantityDecrease(item.productId, item.quantity)}
+              onRemove={() => handleDelete(item.productId)}
             />
           ))
         )}

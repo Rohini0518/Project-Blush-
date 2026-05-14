@@ -23,8 +23,8 @@ const AdminProductImageUpload = (props) => {
     if (file) {
       setImageFile(file);
       showToast("File Added", "success");
-    } else alert("no file uploaded");
-    console.log(file, "uploaded file");
+    } else       showToast("File Not Added", "error");
+
   };
 
   const handleDragOver = (e) => {
@@ -33,7 +33,6 @@ const AdminProductImageUpload = (props) => {
 
   const handleDrop = (e) => {
     e.preventDefault();
-    console.log(e.dataTransfer.files, "-e.dataTransfer.files");
     const droppedFile = e.dataTransfer.files?.[0];
     if (droppedFile) setImageFile(droppedFile);
   };
@@ -47,33 +46,25 @@ const AdminProductImageUpload = (props) => {
   };
 
   const uploadImageToCloudinary = async () => {
-    console.log(axiosInstance, "axios Instance");
 
     try {
       const data = new FormData();
       data.append("img-file", imageFile);
-      console.log(axiosInstance, "axios Instance");
       const response = await axiosInstance.post(
         "/api/admin/products/upload-image",
         data,
       );
-      console.log(
-        response.data,
-        response.data.result.url,
-        "imageupload response-data",
-      );
+      
       if (response) {
         setUploadedImage(response.data.result.url);
         setimageLoading(false);
       }
-      console.log(uploadedImage, "uploadedImageUrl -done");
     } catch (error) {
       console.log(error, "uploadimage error");
     }
   };
 
   useEffect(() => {
-    console.log("uploadimagetocloudinary,imageFIle-", imageFile);
     if (imageFile) uploadImageToCloudinary();
   }, [imageFile]);
 

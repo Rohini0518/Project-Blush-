@@ -29,18 +29,16 @@ const AuthLogin = () => {
       }
       const result = await dispatch(loginUser(formData)).unwrap();
 
-      // console.log(result?.success, "resultsucces");
-      // console.log(result, "just complete result");
+      
 
       if (result?.success) {
         navigate("/");
-        console.log("success login");
+              showToast("Login Success", "success");
       } else {
-        console.log("auth failed");
+              showToast("Auth Failed", "error");
       }
     } catch (error) {
-      alert("Login Failed");
-      console.log("login Failed-error",error);
+              showToast("Login Failed", "error");
     }
   };
 

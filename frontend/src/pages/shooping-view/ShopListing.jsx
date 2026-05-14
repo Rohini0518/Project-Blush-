@@ -63,7 +63,6 @@ const ShoppingListing = () => {
 
     setFilters(newFilters);
   }, []);
-  console.log(filters, "all selected filters");
 
   useEffect(() => {
     dispatch(

@@ -25,7 +25,6 @@ export default function HomeProductSection({ search }: propsType) {
         );
         const datajson = await response.json();
         const productsData = datajson.data;
-        console.log(productsData, "products-data");
         setData(productsData);
       } catch (err) {
         console.error("Error:", err);

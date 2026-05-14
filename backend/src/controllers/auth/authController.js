@@ -36,7 +36,6 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
     const checkUser = await User.findOne({ email });
-    console.log(checkUser, "checkuser findone-email");
     if (!checkUser)
       return res.json({
         success: false,
@@ -75,7 +74,6 @@ const loginUser = async (req, res) => {
       user: senduserData,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       success: false,
       message: "Something went wrong",

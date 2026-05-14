@@ -44,12 +44,10 @@ export default function ShopHeader({ search = "", setSearch }) {
 
   const cartItems = useSelector((state) => state.shoppingCart.cartItems);
 
-  console.log("items in shop header", cartItems);
   const [cartOpen, setCartOpen] = useState(false);
 
   const totalQuantity = cartItems?.reduce((sum, item) => item.quantity + sum, 0) || 0;
 
-  console.log(totalQuantity, "totalqunatity cart");
   const handleLogout = async () => {
     try {
       const logout = await dispatch(logoutUser()).unwrap();
@@ -71,7 +69,6 @@ export default function ShopHeader({ search = "", setSearch }) {
     handleMenuClose();
     navigate("/shop/account");
   };
-  console.log(user, user.userName);
   return (
     <Box
       sx={{
