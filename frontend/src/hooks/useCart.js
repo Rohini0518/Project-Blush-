@@ -2,13 +2,13 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCartItem, updateCartItem, addToCart } from "../store/shop/cartSlice";
 
-export function useCart() {
+export default function useCart() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.shoppingCart.cartItems);
   const { user } = useSelector((state) => state.auth);
   const userId = user?.id;
 
-  const increase = useCallback(
+  const increaseCart = useCallback(
     async (productId, qty) => {
       if (!userId || !productId) return;
       try {
@@ -16,13 +16,13 @@ export function useCart() {
           updateCartItem({ userId, productId, quantity: qty + 1 }),
         ).unwrap();
       } catch (error) {
-        console.error("Failed to increase quantity:", error);
+        console.error("Failed to increaseCart quantity:", error);
       }
     },
     [userId],
   );
 
-  const decrease = useCallback(
+  const decreaseCart = useCallback(
     async (productId, qty) => {
       if (!userId || !productId) return;
       try {
@@ -51,5 +51,5 @@ export function useCart() {
     [dispatch, userId],
   );
 
-  return { increase, decrease, addCartItem, cartItems };
+  return { increaseCart, decreaseCart, addCartItem, cartItems };
 }

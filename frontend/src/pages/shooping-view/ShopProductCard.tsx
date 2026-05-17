@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { Box, Button, Chip, Typography, IconButton } from "@mui/material";
 import ShopProductDetails from "./ShopProductDetails";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addToCart,
-  deleteCartItem,
-  updateCartItem,
-} from "../../store/shop/cartSlice";
+import useCart from "../../hooks/useCart";
 
 interface Product {
   _id: string;
@@ -26,12 +21,10 @@ export default function ShopProductCard({ product }: ProductCardProps) {
   const { image, title, price, salePrice, sizes, _id: productId } = product;
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-const { cartItems } = useSelector((state: any) => state.shoppingCart);
-const cartItem = cartItems.find((item) => item.productId === productId);
-const quantity = cartItem?.quantity ?? 0;
-  const dispatch = useDispatch();
-  const { user } = useSelector((state: any) => state.auth);
-  const userId = user?.id;
+  const { increaseCart, decreaseCart, addCartItem, cartItems } = useCart();
+  const cartItem = cartItems.find((item) => item.productId === productId);
+  const quantity = cartItem?.quantity ?? 0;
+
   const availableSizes = sizes && sizes.length > 0 ? sizes : DEFAULT_SIZES;
   const hasSale = salePrice && salePrice < price;
   const discountPct = hasSale
@@ -45,37 +38,6 @@ const quantity = cartItem?.quantity ?? 0;
 
   const handleOpen = () => {
     setOpen(true);
-  };
-  const handleAddToCart = async () => {
-    if (!userId) {
-      console.warn("User not found ");
-      return;
-    }
-     await dispatch(
-      addToCart({ userId, productId, quantity: 1 }),
-    );
-
-   
-  };
-
-  const handleIncrease = async (e) => {
-    e.stopPropagation();
-    if (!userId || !productId) return;
-   await dispatch(
-      updateCartItem({ userId, productId, quantity: quantity+1 }),
-    );
-  };
-
-  const handleDecrease = async (e) => {
-    e.stopPropagation();
-    if (!userId || !productId) return;
-    if (quantity === 1) {
-       await dispatch(deleteCartItem({ userId, productId }));
-    } else {
-      await dispatch(
-        updateCartItem({ userId, productId, quantity: quantity-1 }),
-      );
-    }
   };
 
   return (
@@ -119,7 +81,7 @@ const quantity = cartItem?.quantity ?? 0;
           onClick={handleOpen}
         />
         <ShopProductDetails
-          productId={product._id}
+          productId={productId}
           open={open}
           onClose={handleClose}
         />
@@ -249,7 +211,7 @@ const quantity = cartItem?.quantity ?? 0;
 
         {quantity === 0 ? (
           <Button
-            onClick={handleAddToCart}
+            onClick={()=>addCartItem(productId,1)}
             sx={{
               mt: 1,
               width: "100%",
@@ -284,7 +246,7 @@ const quantity = cartItem?.quantity ?? 0;
             }}
           >
             <IconButton
-              onClick={handleDecrease}
+              onClick={()=>decreaseCart(productId,quantity)}
               size="small"
               sx={{
                 borderRadius: 0,
@@ -314,7 +276,7 @@ const quantity = cartItem?.quantity ?? 0;
             </Typography>
 
             <IconButton
-              onClick={handleIncrease}
+              onClick={()=>increaseCart(productId,quantity)}
               size="small"
               sx={{
                 borderRadius: 0,
