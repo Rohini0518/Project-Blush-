@@ -8,7 +8,7 @@ import {
   Button,
   Slide,
 } from "@mui/material";
-import { forwardRef, useEffect } from "react";
+import { forwardRef } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -16,8 +16,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteCartItem, updateCartItem } from "./cartSlice";
+import useCart from "../../hooks/useCart";
 
 const SlideTransition = forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -141,7 +140,7 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <QtyButton onClick={onDecrease} disabled={item.quantity <= 1}>
+          <QtyButton onClick={onDecrease} disabled={item.quantity < 1}>
             <RemoveIcon sx={{ fontSize: 14 }} />
           </QtyButton>
           <Typography
@@ -181,8 +180,8 @@ function CartItem({ item, onIncrease, onDecrease, onRemove }) {
 
 export default function CartDialog({ open, onClose }) {
   // const items = MOCK_CART;
-  const { user } = useSelector((state) => state.auth);
-  const cartItems = useSelector((state) => state.shoppingCart.cartItems);
+  const { increaseCart, decreaseCart, handleDeleteCartItem, cartItems } =
+    useCart();
   const subtotal = cartItems.reduce((s, i) => s + i.salePrice * i.quantity, 0);
   const savings = cartItems?.reduce(
     (s, i) => s + (i.price ? (i.price - i.salePrice) * i.quantity : 0),
@@ -192,33 +191,6 @@ export default function CartDialog({ open, onClose }) {
   const delivery = subtotal >= 999 ? 0 : 99;
   const total = subtotal + delivery;
   const itemCount = cartItems?.reduce((s, i) => s + i.quantity, 0) || 0;
-  const dispatch = useDispatch();
-
-  const handleQuantityIncrease  = async (productId, quantity) => {
-    const userId = user.id;
-    if (!userId) return;
-    await dispatch(
-      updateCartItem({ userId, productId, quantity: quantity + 1 }),
-    );
-  };
-
-  const handleQuantityDecrease = async (productId, quantity) => {
-    const userId = user.id;
-    if (!userId) return;
-    if (quantity == 1) {
-      await dispatch(deleteCartItem({ userId, productId }));
-    } else {
-      await dispatch(
-        updateCartItem({ userId, productId, quantity: quantity - 1 }),
-      );
-    }
-  };
-
-  const handleDelete = async (productId) => {
-    const userId = user.id;
-    if (!userId) return;
-    await dispatch(deleteCartItem({ userId, productId }));
-  };
 
   return (
     <Dialog
@@ -422,11 +394,9 @@ export default function CartDialog({ open, onClose }) {
             <CartItem
               key={item.productId}
               item={item}
-              onIncrease={() =>
-                handleQuantityIncrease (item.productId, item.quantity)
-              }
-              onDecrease={() => handleQuantityDecrease(item.productId, item.quantity)}
-              onRemove={() => handleDelete(item.productId)}
+              onIncrease={() => increaseCart(item.productId, item.quantity)}
+              onDecrease={() => decreaseCart(item.productId, item.quantity)}
+              onRemove={() => handleDeleteCartItem(item.productId)}
             />
           ))
         )}

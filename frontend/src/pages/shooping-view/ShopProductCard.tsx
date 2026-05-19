@@ -211,7 +211,7 @@ export default function ShopProductCard({ product }: ProductCardProps) {
 
         {quantity === 0 ? (
           <Button
-            onClick={()=>addCartItem(productId,1)}
+            onClick={() => addCartItem(productId, 1)}
             sx={{
               mt: 1,
               width: "100%",
@@ -246,7 +246,7 @@ export default function ShopProductCard({ product }: ProductCardProps) {
             }}
           >
             <IconButton
-              onClick={()=>decreaseCart(productId,quantity)}
+              onClick={() => decreaseCart(productId, quantity)}
               size="small"
               sx={{
                 borderRadius: 0,
@@ -276,7 +276,7 @@ export default function ShopProductCard({ product }: ProductCardProps) {
             </Typography>
 
             <IconButton
-              onClick={()=>increaseCart(productId,quantity)}
+              onClick={() => increaseCart(productId, quantity)}
               size="small"
               sx={{
                 borderRadius: 0,
