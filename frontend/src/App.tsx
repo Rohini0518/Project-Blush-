@@ -20,6 +20,7 @@ import { checkAuth } from "./store/authSlice";
 import { useEffect } from "react";
 import AdminOrders from "./pages/admin-view/AdminOrders";
 import ShoppingListing from "./pages/shooping-view/ShopListing";
+import Address from "./components/shop/address";
 
 function App() {
   
@@ -79,6 +80,7 @@ if(isLoading) return <div>Loading....</div>
           <Route path="checkout" element={<ShopCheckout />} />
           <Route path="account" element={<ShopAccount />} />
           <Route path="listing" element={<ShoppingListing />} />
+          <Route path="address" element={<Address />}/>
         </Route>
         <Route path="unauth-page" element={<UnAuthPage/>}/>
         <Route path="*" element={<NotFound />}></Route>
