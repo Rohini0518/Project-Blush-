@@ -1,5 +1,4 @@
-import Address from '../../models/addressModel';
-
+import Address from "../../models/addressModel.js";
 
 const addAddress = async (req, res) => {
   try {
@@ -38,6 +37,7 @@ const addAddress = async (req, res) => {
 
 const fetchAllAddress = async (req, res) => {
   try {
+    console.log("fetch adres")
     const { userId } = req.params;
     if (!userId) {
       return res.status(400).json({
@@ -47,7 +47,7 @@ const fetchAllAddress = async (req, res) => {
     }
 
     const addressList = await Address.find({ userId });
-
+    console.log(addressList);
     res.status(200).json({
       success: true,
       data: addressList,
@@ -79,7 +79,7 @@ const editAddress = async (req, res) => {
         userId,
       },
       formData,
-      { new: true }
+      { new: true },
     );
 
     if (!address) {

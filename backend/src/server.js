@@ -10,6 +10,7 @@ import cartrouter from "./routes/shop/cart-router.js";
 import { configureCloudinary } from "./helpers/cloudinaryConfig.js";
 import shoprouter from "./routes/shop/shop-product-routes.js";
 import { otpRouter } from "./emailOtpAuth/routes/otpAuth.js";
+import addressRouter from "./routes/shop/address-router.js";
 
 
 configureCloudinary();
@@ -47,6 +48,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/shop/products", shoprouter);
 app.use("/api/shop/cart", cartrouter);
+app.use("/api/shop/address",addressRouter);
 app.listen(5000, () => {
   console.log("server running on local port 5000");
 });

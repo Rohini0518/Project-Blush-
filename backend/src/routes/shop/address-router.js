@@ -1,16 +1,16 @@
 import {Router} from 'express';
-const {
+import {
   addAddress,
   fetchAllAddress,
   editAddress,
   deleteAddress,
-} = require("../../controllers/shop/address-controller");
+} from "../../controllers/shop/address-controller.js";
 
 const addressRouter = Router();
 
-router.post("/add", addAddress);
-router.get("/get/:userId", fetchAllAddress);
-router.delete("/delete/:userId/:addressId", deleteAddress);
-router.put("/update/:userId/:addressId", editAddress);
+addressRouter.post("/add", addAddress);
+addressRouter.get("/get/:userId", fetchAllAddress);
+addressRouter.delete("/delete/:userId/:addressId", deleteAddress);
+addressRouter.put("/update/:userId/:addressId", editAddress);
 
 export default addressRouter;
