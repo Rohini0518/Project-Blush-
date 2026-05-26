@@ -132,7 +132,6 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
         background: "#fff",
       }}
     >
-      {/* Saved Addresses Grid */}
       {addressList && addressList.length > 0 && (
         <Box sx={{ p: 3, pb: 2 }}>
           <Typography
@@ -193,9 +192,7 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
         <Divider sx={{ mx: 3, borderColor: "#f5f5f5" }} />
       )}
 
-      {/* Form Section */}
       <Box sx={{ p: 3, pt: addressList && addressList.length > 0 ? 2.5 : 3 }}>
-        {/* Form Header */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.2, mb: 2.5 }}>
           <Paper
             elevation={0}
@@ -231,7 +228,6 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
           </Box>
         </Box>
 
-        {/* Form */}
         <Box
           sx={{
             background: "#fafafa",
