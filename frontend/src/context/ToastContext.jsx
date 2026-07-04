@@ -1,11 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
 
-
-
-
-
-
 export const ToastContext = createContext();
 
 export const ToastProvider=({children})=>{
@@ -19,7 +14,7 @@ export const ToastProvider=({children})=>{
   const showToast=(message="success",severity="success")=>{
     setToast({
       open:true,
-      message,
+      message,A
       severity,
     })
   }
