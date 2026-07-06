@@ -230,7 +230,7 @@ export default function ShopProductCard({ product }: ProductCardProps) {
               "&:hover": { background: "#1a1a1a", color: "#fff" },
             }}
           >
-            Add To Cart
+            Add To Cart rho
           </Button>
         ) : (
           <Box

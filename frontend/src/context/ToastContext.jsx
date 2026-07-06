@@ -14,7 +14,7 @@ export const ToastProvider=({children})=>{
   const showToast=(message="success",severity="success")=>{
     setToast({
       open:true,
-      message,A
+      message,
       severity,
     })
   }
