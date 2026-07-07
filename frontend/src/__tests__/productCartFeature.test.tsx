@@ -56,3 +56,33 @@ screen.debug();
   console.log(mockAddCartItem.mock.calls);
   expect(mockAddCartItem).toHaveBeenCalledWith("prod123", 1);
 });
+
+
+// Integration Testing:
+// Now you want to test the whole feature.
+// Now you want to test the whole feature.
+//
+// Imagine your app structure is:
+//
+// CartProvider
+// │
+// ├── ShopProductCard
+// │
+// └── ShoppingCart
+//
+// Both components use the same context.
+//
+// When ShopProductCard calls addCartItem(),
+// the CartProvider updates the cart state.
+//
+// Because the context changes,
+// ShoppingCart automatically re-renders.
+//
+// That's the integration you're trying to test.
+// Render the real CartProvider with both ShopProductCard and ShoppingCart.
+// Both components share the same cart context.
+// When ShopProductCard calls addCartItem(), the CartProvider updates the cart state.
+// Because the context changes, ShoppingCart automatically re-renders.
+// Verify the user-visible result (product appears in the cart), not just that addCartItem() was called.
+
+//just render the cartdialog file also in this test case and write test cases also so we can parallerly check the complete cart flow, 

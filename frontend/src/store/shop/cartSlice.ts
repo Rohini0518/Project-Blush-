@@ -1,13 +1,55 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../api/axiosInstance";
 
-const initialState = {
+interface CartItem {
+  productId: string;
+  quantity: number;
+  title?: string;
+  image?: string;
+  price?: number;
+}
+interface CartState {
+  cartItems: CartItem[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+const initialState:CartState = {
   cartItems: [],
   isLoading: false,
   error: null,
 };
 
-export const addToCart = createAsyncThunk(
+interface CartPayload {
+  userId: string;
+  productId: string;
+  quantity: number;
+}
+
+interface CartResponse {
+  success: boolean;
+  data: {
+    items: CartItem[];
+  };
+}
+
+interface DeleteCartPayload {
+  userId:string;
+  productId:string;
+}
+
+///createAsyncThunk<
+    // Returned,
+    // ThunkArg
+// >(
+    // type,
+    // payloadCreator
+// )
+// Ask yourself:
+
+// A (1st generic) → What does return give back? ✅
+// B (2nd generic) → What argument do I pass to dispatch()? ✅
+export const addToCart = createAsyncThunk<CartResponse,CartPayload>(
   "cart/addToCart",
   async ({ userId, productId, quantity }) => {
     const response = await axiosInstance.post("/api/shop/cart/add", {
@@ -19,7 +61,19 @@ export const addToCart = createAsyncThunk(
   },
 );
 
-export const fetchCartItems = createAsyncThunk(
+// fetchCartItems:
+
+// Current :   createAsyncThunk(
+
+// Question:What does it return?  ans) response.data
+
+// which is CartResponse
+
+// Question:What argument does it receive? ans)userId (which is :::string)
+
+// So write:::createAsyncThunk<  CartResponse, string>(
+
+export const fetchCartItems = createAsyncThunk<CartResponse,string>(
   "cart/fetchCart",
   async (userId) => {
     const response = await axiosInstance.get(`/api/shop/cart/get/${userId}`);
@@ -28,7 +82,7 @@ export const fetchCartItems = createAsyncThunk(
   },
 );
 
-export const updateCartItem = createAsyncThunk(
+export const updateCartItem = createAsyncThunk<CartResponse,CartPayload>(
   "/cart/updateCartItem",
   async ({ userId, productId, quantity }) => {
     const response = await axiosInstance.put("/api/shop/cart/update-cart", {
@@ -39,7 +93,7 @@ export const updateCartItem = createAsyncThunk(
     return response?.data;
   },
 );
-export const deleteCartItem = createAsyncThunk(
+export const deleteCartItem = createAsyncThunk<CartResponse,DeleteCartPayload>(
   "cart/deleteCart",
   async ({ userId, productId }) => {
     const response = await axiosInstance.delete(
@@ -64,7 +118,7 @@ const shoppingCartSlice = createSlice({
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
       })
       .addCase(fetchCartItems.pending, (state) => {
         state.isLoading = true;
@@ -76,7 +130,7 @@ const shoppingCartSlice = createSlice({
       })
       .addCase(fetchCartItems.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
       })
       .addCase(updateCartItem.pending, (state) => {
         state.isLoading = true;
@@ -87,7 +141,7 @@ const shoppingCartSlice = createSlice({
       })
       .addCase(updateCartItem.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
       })
       .addCase(deleteCartItem.pending, (state) => {
         state.isLoading = true;
@@ -98,7 +152,7 @@ const shoppingCartSlice = createSlice({
       })
       .addCase(deleteCartItem.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
+        state.error = action.error.message ?? null;
       });
   },
 });
