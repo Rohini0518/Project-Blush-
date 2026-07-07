@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { getProductDetails } from "../../store/shop/shopProductsSlice";
 import {
   Dialog,
@@ -15,6 +14,14 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+
+interface ShopProductDetailsProps{
+  productId:string;
+  open:boolean;
+  onClose:()=>void;
+}
+
 
 const STATIC_REVIEWS = [
   {
@@ -46,9 +53,9 @@ const STATIC_REVIEWS = [
   },
 ];
 
-const ShopProductDetails = ({ productId, open, onClose }) => {
-  const dispatch = useDispatch();
-  const { productDetails, isLoading } = useSelector(
+const ShopProductDetails = ({ productId, open, onClose }:ShopProductDetailsProps) => {
+  const dispatch = useAppDispatch();
+  const { productDetails, isLoading } = useAppSelector(
     (state) => state.shopProducts,
   );
   const [quantity, setQuantity] = useState(0);
@@ -60,7 +67,7 @@ const ShopProductDetails = ({ productId, open, onClose }) => {
   }, [dispatch, productId, open]);
   const stock = productDetails?.totalStock;
 
-  const displayPrice = productDetails?.salePrice || productDetails?.price ;
+  const displayPrice = productDetails?.salePrice ?? productDetails?.price ;
   const originalPrice = productDetails?.salePrice
     ? productDetails?.price
     : null;
