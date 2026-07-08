@@ -44,7 +44,20 @@
 
 // export default Cart;
 
-import mongoose from "mongoose";
+import mongoose, {Document,Types} from "mongoose";
+
+interface CartItems{
+  productId:Types.ObjectId;
+  quantity: number;
+}
+
+interface CartDocument extends Document{
+  userId:Types.ObjectId;
+  items:CartItems[];
+}
+
+
+
 
 const CartSchema = new mongoose.Schema(
   {

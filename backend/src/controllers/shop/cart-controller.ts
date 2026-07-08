@@ -1,7 +1,25 @@
 import Cart from "../../models/cartModel.js";
 import AdminProducts from "../../models/admin/adminProductModel.js";
+import type { Request, Response} from "express";
 
-const addToCart = async (req, res) => {
+interface CartItemRequest{
+  userId:string;
+  productId:string;
+  quantity:number;
+}
+
+
+interface FetchCartItemsRequestParams{
+  userId:string;
+}
+
+
+interface DeleteCartItemParams{
+  userId:string;
+  productId:string;
+}
+
+const addToCart = async (req:Request<{}, {}, CartItemRequest>, res:Response):Promise<void> => {
   try {
     const { userId, productId, quantity } = req.body;
     if (!userId || !productId || quantity <= 0) {
@@ -39,15 +57,23 @@ const addToCart = async (req, res) => {
       data: savedcart,
       message: "cart item added succesfully",
     });
-  } catch (error) {
+  }
+  catch (error) {
+  if (error instanceof Error) {
     res.status(500).json({
       success: false,
       message: error.message,
     });
+  } else {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
   }
+}
 };
 
-const fetchCartItems = async (req, res) => {
+const fetchCartItems = async (req:Request<FetchCartItemsRequestParams>, res:Response):Promise<void> => {
   try {
     const { userId } = req.params;
     if (!userId) {
@@ -91,14 +117,21 @@ const fetchCartItems = async (req, res) => {
       },
     });
   } catch (error) {
+    if(error instanceof Error){
     res.status(500).json({
       success: false,
       message: error.message,
+    });}
+    else{
+       res.status(500).json({
+      success: false,
+      message: "Something Went Wrong",
     });
+    }
   }
 };
 
-const updateCartItemQuantity = async (req, res) => {
+const updateCartItemQuantity = async (req:Request<{}, {}, CartItemRequest>, res:Response):Promise<void> => {
   try {
     const { userId, productId, quantity } = req.body;
     if (!userId || !productId || quantity <= 0) {
@@ -145,15 +178,23 @@ const updateCartItemQuantity = async (req, res) => {
         items: populateCartItems,
       },
     });
-  } catch (error) {
+  }
+  catch (error) {
+    if(error instanceof Error){
     res.status(500).json({
       success: false,
       message: error.message,
+    });}
+    else{
+       res.status(500).json({
+      success: false,
+      message: "Something Went Wrong",
     });
+    }
   }
 };
 
-const deleteCartItem = async (req, res) => {
+const deleteCartItem = async (req:Request<DeleteCartItemParams>, res:Response):Promise<void> => {
   try {
     const { userId, productId } = req.params;
     console.log(userId,productId,"userID productid deletecart")
@@ -197,11 +238,19 @@ const deleteCartItem = async (req, res) => {
         items: populateCartItems,
       },
     });
-  } catch (error) {
+  } 
+ catch (error) {
+    if(error instanceof Error){
     res.status(500).json({
       success: false,
       message: error.message,
+    });}
+    else{
+       res.status(500).json({
+      success: false,
+      message: "Something Went Wrong",
     });
+    }
   }
 };
 
